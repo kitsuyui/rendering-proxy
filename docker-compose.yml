@@ -1,0 +1,22 @@
+version: "2.3"
+services:
+  fetcher:
+    build: fetcher
+    links:
+      - "browser"
+    environment:
+      - CHROMIUM_DEBUGGER_ADDRESS=browser
+
+  browser:
+    build: browser
+    ulimits:
+      nproc: 32
+      nofile:
+        soft: 10000
+        hard: 20000
+    cpu_count: 1
+    cpu_percent: 10
+    mem_limit: 100m
+    memswap_limit: 100m
+    environment:
+      - USER_AGENT="Mozilla/5.0 MyBot"
