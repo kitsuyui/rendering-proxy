@@ -1,12 +1,16 @@
 #!/bin/sh
 exec tini -- chromium-browser \
+--disable-accelerated-2d-canvas \
+--disable-accelerated-video-decode \
 --disable-background-networking \
+--disable-client-side-phishing-detection \
 --disable-breakpad \
 --disable-default-apps \
 --disable-extensions \
 --disable-gpu \
 --disable-sync \
 --disable-translate \
+--font-cache-shared-handle \
 --headless \
 --incognito \
 --metrics-recording-only \
