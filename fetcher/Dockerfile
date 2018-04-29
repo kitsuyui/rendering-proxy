@@ -1,4 +1,4 @@
-FROM node:alpine@sha256:5149aec8f508d48998e6230cdc8e6832cba192088b442c8ef7e23df3c6892cd3
+FROM node:alpine@sha256:bde41330043a15e404c994614b774377445deff9c676320d842aa2c87a382924
 ADD yarn.lock /
 ADD package.json /
 RUN yarn
