@@ -51,16 +51,34 @@ const getRenderedDom = async (
   waitUntil = undefined,
 ) => {
   const page = await browser.newPage();
-  const getCurrentDom = () => document.documentElement.outerHTML;
   try {
-    await page.goto(url, {waitUntil});
+    const previousURL = page.url();
+    try {
+      await page.goto(url, {
+        waitUntil,
+      });
+    } catch (e) {
+      throw e;
+    }
     if (evaluate) {
       await page.evaluate(evaluate);
     }
-    return await page.evaluate(getCurrentDom);
+    return await page.evaluate(browserDownload);
   } finally {
     await page.close();
   }
+}
+
+const browserDownload = () => {
+  const getCurrentDOM = () => document.documentElement.outerHTML;
+  const plainData = [
+    'application/json', 'text/plain',
+  ];
+  const contentType = document.contentType;
+  if (plainData.includes(contentType)) {
+    return document.body.innerText;
+  }
+  return getCurrentDOM();
 }
 
 if (require.main === module) {
