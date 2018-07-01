@@ -7,7 +7,7 @@ Using [Headless Chromium](https://chromium.googlesource.com/chromium/src/+/lkgr/
 
 ```console
 $ docker-compose up -d browser
-$ docker-compose run --no-deps fetcher https://example.com/
+$ docker-compose run --rm fetcher https://example.com/
 <html><head>
 ...
 </body></html>
@@ -20,6 +20,6 @@ $ docker-compose run --no-deps fetcher https://example.com/
 When `--evaluate` is specified, JavaScript code is evaluated before getting DOM.
 
 ```console
-$ docker-compose run --no-deps fetcher https://example.com/ --evaluate 'document.write("yay")'
+$ docker-compose run --rm fetcher https://example.com/ --evaluate 'document.write("yay")'
 <html><head></head><body>yay</body></html>
 ```
