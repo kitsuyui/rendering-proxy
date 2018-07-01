@@ -1,0 +1,17 @@
+version: 2
+jobs:
+  build:
+    machine:
+      docker_layer_caching: true
+
+    steps:
+      - checkout
+
+      - run:
+          name: build image
+          command: |
+            docker-compose build
+      - run:
+          name: run tests
+          command: |
+            docker-compose run --rm fetcher https://example.com/
