@@ -14,4 +14,10 @@ jobs:
       - run:
           name: run tests
           command: |
-            docker-compose run --rm fetcher https://example.com/
+            docker-compose run -T --rm fetcher testserver/json > /dev/null
+            docker-compose run -T --rm fetcher testserver/html > /dev/null
+            docker-compose run -T --rm fetcher testserver/robots.txt > /dev/null
+            docker-compose run -T --rm fetcher testserver/image/jpeg > /dev/null
+            docker-compose run -T --rm fetcher testserver/image/png > /dev/null
+            docker-compose run -T --rm fetcher testserver/image/svg > /dev/null
+            docker-compose run -T --rm fetcher testserver/image/webp > /dev/null

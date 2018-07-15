@@ -1,13 +1,9 @@
 version: "3.2"
 services:
   fetcher:
-    build: fetcher
+    build: .
     links:
-      - "browser"
-    environment:
-      - CHROMIUM_DEBUGGER_ADDRESS=browser
+      - "testserver"
 
-  browser:
-    build: browser
-    environment:
-      - USER_AGENT=Mozilla/5.0 MyBot
+  testserver:
+    image: kennethreitz/httpbin@sha256:18b93fda4cdd5fd420abe6b60ee6e025022ec21e263eedf62828957a71d09193
