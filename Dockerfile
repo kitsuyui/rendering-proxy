@@ -4,5 +4,10 @@ ADD yarn.lock .
 ADD package.json .
 RUN PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true yarn
 ADD index.js /
+ADD server.js /
+ADD cli.js /
+ADD utils.js /
 ENV CHROMIUM_EXECUTABLE=/usr/bin/chromium-browser
 ENTRYPOINT ["tini", "--", "node", "index.js"]
+CMD ["server"]
+EXPOSE 8080

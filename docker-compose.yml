@@ -4,6 +4,11 @@ services:
     build: .
     links:
       - "testserver"
+    ports:
+      - "8080:8080"
 
   testserver:
     image: kennethreitz/httpbin@sha256:18b93fda4cdd5fd420abe6b60ee6e025022ec21e263eedf62828957a71d09193
+
+  testcurl:
+    image: byrnedo/alpine-curl:latest@sha256:00c64bda2814f95a13ad6a46d6de487dc88f424f2b1f6c62c6dfce36701fe516
