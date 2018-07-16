@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "neodoc": "^2.0.2",
+    "neodoc": "2.0.2",
     "node-fetch": "2.1.2",
     "puppeteer": "1.6.0"
   }
