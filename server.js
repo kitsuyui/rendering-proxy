@@ -18,11 +18,23 @@ const main = async (port) => {
     const url = req.url.slice(1);
     const result = await getRenderedContent(browser, url, evaluate, waitUntil);
     for (const key of Object.keys(result.headers)) {
+      if (ignoreHeaders.includes(key.toLowerCase())) {
+        continue;
+      }
       res.setHeader(key, result.headers[key]);
     }
-    res.end(await result.body);
+    res.write(result.body);
+    res.end();
   });
   httpServer.listen(port);;
 };
+
+const ignoreHeaders = [
+  'accept-ranges',
+  'content-length',
+  'transfer-encoding',
+  'connection',
+  'content-encoding',
+];
 
 module.exports = { main };
