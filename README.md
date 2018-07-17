@@ -1,6 +1,8 @@
 # Fetcher
 
 [![CircleCI Status](https://circleci.com/gh/kitsuyui/rendering-proxy.svg?style=shield&circle-token=:circle-token)](https://circleci.com/gh/kitsuyui/rendering-proxy)
+[![Docker Pulls](https://img.shields.io/docker/pulls/kitsuyui/rendering-proxy.svg)](https://hub.docker.com/r/kitsuyui/rendering-proxy/)
+
 
 Fetching rendered DOM easily and simply. Like cURL.
 Using [Headless Chromium](https://chromium.googlesource.com/chromium/src/+/lkgr/headless/README.md).
