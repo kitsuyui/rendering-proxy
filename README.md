@@ -40,3 +40,6 @@ When `--evaluate` is specified, JavaScript code is evaluated before getting DOM.
 $ docker run --rm kitsuyui/rendering-proxy cli https://example.com/ --evaluate 'document.write("yay")'
 <html><head></head><body>yay</body></html>
 ```
+## LICENSE
+
+The 3-Clause BSD License. See also LISENCE file.
