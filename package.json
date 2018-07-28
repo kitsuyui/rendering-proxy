@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "access-log": "0.4.1",
     "neodoc": "2.0.2",
     "node-fetch": "2.1.2",
     "puppeteer": "1.6.0"
