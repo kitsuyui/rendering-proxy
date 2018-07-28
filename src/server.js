@@ -4,8 +4,6 @@ const accesslog = require("access-log");
 const puppeteer = require("puppeteer");
 const { chromiumOptions, getRenderedContent } = require("./utils");
 
-const CERTIFICATE_DOWNLOAD_HOSTNAME = "mitm";
-
 const main = async port => {
   const executablePath = process.env.CHROMIUM_EXECUTABLE;
   const browser = await puppeteer.launch({
