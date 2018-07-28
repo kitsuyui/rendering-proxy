@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 const neodoc = require("neodoc");
 const { main: serverMain } = require("./src/server");
 const { main: cliMain } = require("./src/cli");
@@ -6,9 +7,8 @@ const main = async () => {
   const args = neodoc.run(
     `
 Usage:
-  fetcher [--help]
-  fetcher cli [--help] [--waitUntil=<wait-until>] [--evaluate=<script>] <url>
-  fetcher server [--help] [--port=<port>]
+  rendering-proxy cli [--help] [--waitUntil=<wait-until>] [--evaluate=<script>] <url>
+  rendering-proxy server [--help] [--port=<port>]
 
 Options:
   --waitUntil=<wait-until> [default: "load"]

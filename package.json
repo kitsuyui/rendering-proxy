@@ -9,6 +9,9 @@
     "lint": "prettier-eslint --write index.js src/* test/*",
     "start": "node index.js"
   },
+  "bin": {
+    "rendering-proxy": "./index.js"
+  },
   "name": "rendering-proxy",
   "description": "[![CircleCI Status](https://circleci.com/gh/kitsuyui/rendering-proxy.svg?style=shield&circle-token=:circle-token)](https://circleci.com/gh/kitsuyui/rendering-proxy) [![Docker Pulls](https://img.shields.io/docker/pulls/kitsuyui/rendering-proxy.svg)](https://hub.docker.com/r/kitsuyui/rendering-proxy/)",
   "version": "0.1.0",
