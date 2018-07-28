@@ -1,5 +1,6 @@
 const http = require('http');
 const https = require('https');
+const accesslog = require('access-log');
 const puppeteer = require('puppeteer');
 const { chromiumOptions, getRenderedContent } = require('./utils');
 
@@ -16,6 +17,7 @@ const main = async (port) => {
     const evaluate = undefined;
     const waitUntil = undefined;
     const url = req.url.slice(1);
+    accesslog(req, res);
     const result = await getRenderedContent(browser, url, evaluate, waitUntil);
     for (const key of Object.keys(result.headers)) {
       if (ignoreHeaders.includes(key.toLowerCase())) {
