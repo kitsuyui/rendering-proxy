@@ -1,16 +1,16 @@
-const http = require('http');
-const https = require('https');
-const accesslog = require('access-log');
-const puppeteer = require('puppeteer');
-const { chromiumOptions, getRenderedContent } = require('./utils');
+const http = require("http");
+const https = require("https");
+const accesslog = require("access-log");
+const puppeteer = require("puppeteer");
+const { chromiumOptions, getRenderedContent } = require("./utils");
 
-const CERTIFICATE_DOWNLOAD_HOSTNAME = 'mitm';
+const CERTIFICATE_DOWNLOAD_HOSTNAME = "mitm";
 
-const main = async (port) => {
+const main = async port => {
   const executablePath = process.env.CHROMIUM_EXECUTABLE;
   const browser = await puppeteer.launch({
     executablePath,
-    args: chromiumOptions,
+    args: chromiumOptions
   });
 
   const httpServer = http.createServer(async (req, res) => {
@@ -28,15 +28,15 @@ const main = async (port) => {
     res.write(result.body);
     res.end();
   });
-  httpServer.listen(port);;
+  httpServer.listen(port);
 };
 
 const ignoreHeaders = [
-  'accept-ranges',
-  'content-length',
-  'transfer-encoding',
-  'connection',
-  'content-encoding',
+  "accept-ranges",
+  "content-length",
+  "transfer-encoding",
+  "connection",
+  "content-encoding"
 ];
 
 module.exports = { main };

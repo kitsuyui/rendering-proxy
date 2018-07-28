@@ -4,5 +4,33 @@
     "neodoc": "2.0.2",
     "node-fetch": "2.2.0",
     "puppeteer": "1.6.1"
-  }
+  },
+  "scripts": {
+    "lint": "prettier-eslint --write index.js src/* test/*",
+    "start": "node index.js"
+  },
+  "name": "rendering-proxy",
+  "description": "[![CircleCI Status](https://circleci.com/gh/kitsuyui/rendering-proxy.svg?style=shield&circle-token=:circle-token)](https://circleci.com/gh/kitsuyui/rendering-proxy) [![Docker Pulls](https://img.shields.io/docker/pulls/kitsuyui/rendering-proxy.svg)](https://hub.docker.com/r/kitsuyui/rendering-proxy/)",
+  "version": "0.1.0",
+  "main": "index.js",
+  "devDependencies": {
+    "eslint": "^5.2.0",
+    "eslint-config-standard": "^12.0.0-alpha.0",
+    "prettier-eslint-cli": "^4.7.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kitsuyui/rendering-proxy.git"
+  },
+  "keywords": [
+    "rendering",
+    "chromium",
+    "proxy"
+  ],
+  "author": "Yui Kitsu <kitsuyui@kitsuyui.com>",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/kitsuyui/rendering-proxy/issues"
+  },
+  "homepage": "https://github.com/kitsuyui/rendering-proxy#readme"
 }
