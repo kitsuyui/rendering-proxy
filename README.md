@@ -9,6 +9,12 @@ Using [Headless Chromium](https://chromium.googlesource.com/chromium/src/+/lkgr/
 
 ![rendering-proxy](https://user-images.githubusercontent.com/2596972/43354885-7dad9750-928e-11e8-9220-821348efca5e.png)
 
+So this library provides simplicity in these cases:
+
+- Crawlers
+- Text browsers
+- Command line interface like curl wget
+
 # Usage
 
 ## Server mode
