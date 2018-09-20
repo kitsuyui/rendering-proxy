@@ -8,7 +8,7 @@ services:
       - "8080:8080"
 
   testserver:
-    image: kennethreitz/httpbin@sha256:18b93fda4cdd5fd420abe6b60ee6e025022ec21e263eedf62828957a71d09193
+    image: kennethreitz/httpbin@sha256:2c7abc4803080c22928265744410173b6fea3b898872c01c5fd0f0f9df4a59fb
 
   testcurl:
     image: byrnedo/alpine-curl:latest@sha256:e8cf497b3005c2f66c8411f814f3818ecd683dfea45267ebfb4918088a26a18c
