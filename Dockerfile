@@ -1,4 +1,4 @@
-FROM alpine:edge@sha256:8d9872bf7dc946db1b3cd2bf70752f59085ec3c5035ca1d820d30f1d1267d65d
+FROM alpine:3.8
 RUN apk --update --no-cache add nodejs-current yarn tini chromium
 WORKDIR /app
 RUN mkdir -p /app
