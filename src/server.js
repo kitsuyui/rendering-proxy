@@ -17,6 +17,11 @@ const main = async port => {
     const url = req.url.slice(1);
     accesslog(req, res);
     const result = await getRenderedContent(browser, url, evaluate, waitUntil);
+    if (result.errors) {
+      res.statusCode = 502;
+      const errorMessage = encodeURI(result.errors.join("\n"));
+      res.setHeader("X-UA-Errors", errorMessage);
+    }
     for (const key of Object.keys(result.headers)) {
       if (ignoreHeaders.includes(key.toLowerCase())) {
         continue;
