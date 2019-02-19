@@ -20,6 +20,7 @@ const chromiumOptions = [
 ];
 
 const htmlContentTypes = ["text/html", "application/xhtml+xml"];
+const uaLogLevels = ["error", "warning"];
 
 const getRenderedContent = async (
   browser,
@@ -28,32 +29,42 @@ const getRenderedContent = async (
   waitUntil = undefined
 ) => {
   const page = await browser.newPage();
+  const errors = [];
+  page.on("console", message => {
+    if (uaLogLevels.includes(message.type())) {
+      errors.push(message.text());
+    }
+  });
+  page.on("pageerror", err => {
+    errors.push(err.toString());
+  });
   try {
     let response = await page.goto(url, { waitUntil });
     if (evaluate) {
       let response = await page.evaluate(evaluate);
     }
-    return await getContent(page, response);
+    return await getContent(page, response, errors);
   } finally {
     await page.close();
   }
 };
 
-const getContent = async (page, response) => {
+const getContent = async (page, response, errors) => {
   const headers = Object.assign({}, response.headers());
   const contentType = headers["content-type"];
   if (htmlContentTypes.includes(contentType)) {
     const script = () => document.documentElement.outerHTML;
     const textHTML = await page.evaluate(script);
-    return new Response(headers, Buffer.from(textHTML));
+    return new Response(headers, Buffer.from(textHTML), errors);
   }
-  return new Response(headers, await response.buffer());
+  return new Response(headers, await response.buffer(), errors);
 };
 
 class Response {
-  constructor(headers, body) {
+  constructor(headers, body, errors) {
     this.headers = headers;
     this.body = body;
+    this.errors = errors;
   }
 }
 
