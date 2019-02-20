@@ -32,7 +32,11 @@ const getRenderedContent = async (
   const errors = [];
   page.on("console", message => {
     if (uaLogLevels.includes(message.type())) {
-      errors.push(message.text());
+      errors.push({
+        type: consoleMessage.type(),
+        text: message.text(),
+        location: message.location(),
+      });
     }
   });
   page.on("pageerror", err => {

@@ -17,7 +17,7 @@ const main = async port => {
     const url = req.url.slice(1);
     accesslog(req, res);
     const result = await getRenderedContent(browser, url, evaluate, waitUntil);
-    if (result.errors) {
+    if (result.errors.length > 0) {
       res.statusCode = 502;
       const errorMessage = encodeURI(result.errors.join("\n"));
       res.setHeader("X-UA-Errors", errorMessage);
