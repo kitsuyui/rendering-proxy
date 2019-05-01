@@ -19,7 +19,6 @@ const chromiumOptions = [
   "--safebrowsing-disable-auto-update"
 ];
 
-const htmlContentTypes = ["text/html", "application/xhtml+xml"];
 const uaLogLevels = ["error", "warning"];
 
 const getRenderedContent = async (
@@ -49,14 +48,23 @@ const getRenderedContent = async (
     }
     return await getContent(page, response, errors);
   } finally {
-    await page.close();
+    setImmediate(async () => {
+      await page.close();
+    });
   }
 };
 
+const isContentTypeHTML = (contentType) => {
+  const htmlContentTypes = ["text/html", "application/xhtml+xml"];
+  return htmlContentTypes.some((htmlContentType) => {
+    return contentType.startsWith(htmlContentType);
+  });
+}
+
+
 const getContent = async (page, response, errors) => {
   const headers = Object.assign({}, response.headers());
-  const contentType = headers["content-type"];
-  if (htmlContentTypes.includes(contentType)) {
+  if (isContentTypeHTML(headers["content-type"])) {
     const script = () => document.documentElement.outerHTML;
     const textHTML = await page.evaluate(script);
     return new Response(headers, Buffer.from(textHTML), errors);

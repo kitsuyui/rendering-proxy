@@ -10,10 +10,12 @@ jobs:
       - run:
           name: build image
           command: |
+            set -eu
             docker-compose build
       - run:
           name: run tests
           command: |
+            set -eu
             docker-compose run -T --rm rendering-proxy cli testserver/json > /dev/null
             docker-compose run -T --rm rendering-proxy cli testserver/html > /dev/null
             docker-compose run -T --rm rendering-proxy cli testserver/robots.txt > /dev/null
