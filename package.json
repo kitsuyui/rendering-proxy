@@ -7,7 +7,8 @@
   },
   "scripts": {
     "lint": "prettier-eslint --write index.js src/* test/*",
-    "start": "node index.js"
+    "start": "node index.js",
+    "test": "node test/index.js"
   },
   "bin": {
     "rendering-proxy": "./index.js"

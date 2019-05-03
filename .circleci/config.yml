@@ -16,6 +16,9 @@ jobs:
           name: run tests
           command: |
             set -eu
+
+            docker-compose run -T --entrypoint=yarn --rm rendering-proxy test
+
             docker-compose run -T --rm rendering-proxy cli testserver/json > /dev/null
             docker-compose run -T --rm rendering-proxy cli testserver/html > /dev/null
             docker-compose run -T --rm rendering-proxy cli testserver/robots.txt > /dev/null

@@ -34,7 +34,7 @@ const getRenderedContent = async (
       errors.push({
         type: consoleMessage.type(),
         text: message.text(),
-        location: message.location(),
+        location: message.location()
       });
     }
   });
@@ -54,13 +54,12 @@ const getRenderedContent = async (
   }
 };
 
-const isContentTypeHTML = (contentType) => {
+const isContentTypeHTML = contentType => {
   const htmlContentTypes = ["text/html", "application/xhtml+xml"];
-  return htmlContentTypes.some((htmlContentType) => {
+  return htmlContentTypes.some(htmlContentType => {
     return contentType.startsWith(htmlContentType);
   });
-}
-
+};
 
 const getContent = async (page, response, errors) => {
   const headers = Object.assign({}, response.headers());
@@ -82,5 +81,6 @@ class Response {
 
 module.exports = {
   chromiumOptions,
-  getRenderedContent
+  getRenderedContent,
+  isContentTypeHTML
 };
