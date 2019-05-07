@@ -48,4 +48,4 @@ $ docker run --rm kitsuyui/rendering-proxy cli https://example.com/ --evaluate '
 ```
 ## LICENSE
 
-The 3-Clause BSD License. See also LISENCE file.
+The 3-Clause BSD License. See also LICENSE file.
