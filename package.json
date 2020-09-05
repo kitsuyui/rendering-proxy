@@ -2,7 +2,7 @@
   "dependencies": {
     "access-log": "0.4.1",
     "neodoc": "2.0.2",
-    "node-fetch": "2.6.0",
+    "node-fetch": "2.6.1",
     "puppeteer": "5.2.1"
   },
   "scripts": {
