@@ -19,7 +19,7 @@
   "main": "index.js",
   "devDependencies": {
     "eslint": "7.11.0",
-    "eslint-config-standard": "14.1.1",
+    "eslint-config-standard": "15.0.1",
     "prettier-eslint-cli": "5.0.0"
   },
   "repository": {
