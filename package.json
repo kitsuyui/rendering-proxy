@@ -20,7 +20,7 @@
   "devDependencies": {
     "eslint": "7.16.0",
     "eslint-config-standard": "16.0.1",
-    "prettier-eslint-cli": "5.0.0"
+    "prettier-eslint-cli": "5.0.1"
   },
   "repository": {
     "type": "git",
