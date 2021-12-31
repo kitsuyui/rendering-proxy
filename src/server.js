@@ -15,6 +15,13 @@ const main = async port => {
     const evaluate = undefined;
     const waitUntil = undefined;
     const url = req.url.slice(1);
+
+    if (!(url.startsWith("https://") || url.startsWith("http://"))) {
+      res.writeHead(204);
+      res.end();
+      return
+    }
+
     accesslog(req, res);
     const result = await getRenderedContent(browser, url, evaluate, waitUntil);
     if (result.errors.length > 0) {
