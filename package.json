@@ -2,7 +2,7 @@
   "dependencies": {
     "access-log": "0.4.1",
     "neodoc": "2.0.2",
-    "puppeteer": "13.4.1"
+    "puppeteer": "13.5.1"
   },
   "scripts": {
     "lint": "prettier-eslint --write index.js src/* test/*",
