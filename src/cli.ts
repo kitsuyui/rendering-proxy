@@ -25,11 +25,11 @@ export async function main(url: string, waitUntil: WaitUntil, evaluate?: string)
   }
   browser.close();
   process.exit();
-};
+}
 
-export function fillURLProtocolScheme(url: string, scheme: string = "http://"): string {
+export function fillURLProtocolScheme(url: string, scheme = "http://"): string {
   if (urlParse(url).protocol) {
     return url;
   }
   return scheme + url;
-};
+}

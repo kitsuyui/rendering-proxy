@@ -51,9 +51,9 @@ export async function getRenderedContent(
     errors.push(err.toString());
   });
   try {
-    let response = await page.goto(url, { waitUntil });
+    const response = await page.goto(url, { waitUntil });
     if (evaluate) {
-      let response = await page.evaluate(evaluate);
+      await page.evaluate(evaluate);
     }
     if (!response) {
       return null;
@@ -64,7 +64,7 @@ export async function getRenderedContent(
       await page.close();
     });
   }
-};
+}
 
 export function isContentTypeHTML(contentType: string): boolean {
   const htmlContentTypes = ["text/html", "application/xhtml+xml"];
@@ -81,7 +81,7 @@ async function getContent(page: Page, response: HTTPResponse, errors: ErrorInfo[
     return new Response(headers, Buffer.from(textHTML), errors);
   }
   return new Response(headers, await response.buffer(), errors);
-};
+}
 
 class Response {
   headers: {[key: string]: string};

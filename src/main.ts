@@ -22,7 +22,7 @@ export async function main(): Promise<void> {
   .demandCommand(1)
   .help()
   .argv;
-};
+}
 
 if (require.main === module) {
   main();

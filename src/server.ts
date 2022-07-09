@@ -44,7 +44,7 @@ export async function main(port: number) {
     res.end();
   });
   httpServer.listen(port);
-};
+}
 
 const ignoreHeaders = [
   "accept-ranges",
