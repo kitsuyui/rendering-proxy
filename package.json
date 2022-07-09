@@ -5,7 +5,9 @@
   },
   "scripts": {
     "build": "tsc",
-    "test": "node test/index.js"
+    "test": "node test/index.js",
+    "lint": "eslint ./src",
+    "format": "eslint --fix ./src"
   },
   "bin": {
     "rendering-proxy": "./dist/main.js"
@@ -18,6 +20,9 @@
     "@types/node": "^18.0.3",
     "@types/puppeteer": "^5.4.6",
     "@types/yargs": "^17.0.10",
+    "@typescript-eslint/eslint-plugin": "^5.30.5",
+    "@typescript-eslint/parser": "^5.30.5",
+    "eslint": "^8.19.0",
     "typescript": "^4.7.4"
   },
   "repository": {
