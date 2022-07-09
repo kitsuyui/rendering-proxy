@@ -1,25 +1,40 @@
 {
   "dependencies": {
-    "access-log": "0.4.1",
-    "neodoc": "2.0.2",
-    "puppeteer": "13.7.0"
+    "puppeteer": "^15.3.2",
+    "yargs": "^17.5.1"
   },
   "scripts": {
-    "lint": "prettier-eslint --write index.js src/* test/*",
-    "start": "node index.js",
-    "test": "node test/index.js"
+    "build": "tsc",
+    "test": "jest",
+    "lint": "eslint ./src ; prettier --check ./src",
+    "format": "eslint --fix ./src ; prettier --write ./src"
   },
   "bin": {
-    "rendering-proxy": "./index.js"
+    "rendering-proxy": "./dist/main.js"
   },
   "name": "rendering-proxy",
-  "description": "[![CircleCI Status](https://circleci.com/gh/kitsuyui/rendering-proxy.svg?style=shield&circle-token=:circle-token)](https://circleci.com/gh/kitsuyui/rendering-proxy) [![Docker Pulls](https://img.shields.io/docker/pulls/kitsuyui/rendering-proxy.svg)](https://hub.docker.com/r/kitsuyui/rendering-proxy/)",
+  "description": "Proxy to get the DOM rendered in a headless browser",
   "version": "0.1.0",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "devDependencies": {
-    "eslint": "8.15.0",
-    "eslint-config-standard": "17.0.0",
-    "prettier-eslint-cli": "6.0.1"
+    "@swc/core": "^1.2.211",
+    "@swc/jest": "^0.2.21",
+    "@types/jest": "^28.1.4",
+    "@types/node": "^18.0.3",
+    "@types/puppeteer": "^5.4.6",
+    "@types/yargs": "^17.0.10",
+    "@typescript-eslint/eslint-plugin": "^5.30.5",
+    "@typescript-eslint/parser": "^5.30.5",
+    "eslint": "^8.19.0",
+    "eslint-config-prettier": "^8.5.0",
+    "jest": "^28.1.2",
+    "prettier": "^2.7.1",
+    "ts-jest": "^28.0.5",
+    "typescript": "^4.7.4"
   },
   "repository": {
     "type": "git",
