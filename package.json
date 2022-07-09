@@ -13,7 +13,7 @@
     "rendering-proxy": "./index.js"
   },
   "name": "rendering-proxy",
-  "description": "[![CircleCI Status](https://circleci.com/gh/kitsuyui/rendering-proxy.svg?style=shield&circle-token=:circle-token)](https://circleci.com/gh/kitsuyui/rendering-proxy) [![Docker Pulls](https://img.shields.io/docker/pulls/kitsuyui/rendering-proxy.svg)](https://hub.docker.com/r/kitsuyui/rendering-proxy/)",
+  "description": "Proxy to get the DOM rendered in a headless browser",
   "version": "0.1.0",
   "main": "index.js",
   "devDependencies": {
