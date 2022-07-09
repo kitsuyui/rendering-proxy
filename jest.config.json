@@ -1,0 +1,12 @@
+{
+  "testMatch": [
+    "**/*.test.js",
+    "**/*.test.ts"
+  ],
+  "testPathIgnorePatterns": [
+    "<rootDir>/node_modules/"
+  ],
+  "transform": {
+    "^.+.(t|j)s?$": ["@swc/jest"]
+  }
+}
