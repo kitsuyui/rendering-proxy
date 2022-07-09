@@ -1,17 +1,17 @@
-const assert = require("assert");
-const utils = require("../src/utils.js");
+const assert = require('assert');
+const utils = require('../src/utils.js');
 
 const testIsContentTypeHTML = () => {
   const testCases = {
-    "text/html": true,
-    "text/plain": false,
-    "text/html; charset=UTF-8": true,
-    "text/plain; charset=UTF-8": false,
-    "application/xhtml+xml": true,
-    "application/xhtml+xml; UTF-8": true,
-    "text/javascript": false,
-    "application/json": false,
-    "audio/midi": false
+    'text/html': true,
+    'text/plain': false,
+    'text/html; charset=UTF-8': true,
+    'text/plain; charset=UTF-8': false,
+    'application/xhtml+xml': true,
+    'application/xhtml+xml; UTF-8': true,
+    'text/javascript': false,
+    'application/json': false,
+    'audio/midi': false,
   };
 
   for (let key of Object.keys(testCases)) {

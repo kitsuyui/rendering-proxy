@@ -1,33 +1,36 @@
-import puppeteer from "puppeteer";
-import { parse as urlParse } from "url";
-import { chromiumOptions, getRenderedContent } from "./utils";
-import type { WaitUntil } from "./utils";
+import puppeteer from 'puppeteer';
+import { parse as urlParse } from 'url';
+import { chromiumOptions, getRenderedContent } from './utils';
+import type { WaitUntil } from './utils';
 
-export async function main(url: string, waitUntil: WaitUntil, evaluate?: string): Promise<void> {
-  process.on("unhandledRejection", err => {
+export async function main(
+  url: string,
+  waitUntil: WaitUntil,
+  evaluate?: string
+): Promise<void> {
+  process.on('unhandledRejection', (err) => {
     console.error(err);
     process.exit(1);
   });
   const executablePath = process.env.CHROMIUM_EXECUTABLE;
   const browser = await puppeteer.launch({
     executablePath,
-    args: chromiumOptions
+    args: chromiumOptions,
   });
   const filledUrl = fillURLProtocolScheme(url);
-  const result = await getRenderedContent(
-    browser,
-    filledUrl,
-    {evaluate, waitUntil}
-  );
+  const result = await getRenderedContent(browser, filledUrl, {
+    evaluate,
+    waitUntil,
+  });
   if (result) {
-    process.stdout.setEncoding("binary");
+    process.stdout.setEncoding('binary');
     process.stdout.write(result.body);
   }
   browser.close();
   process.exit();
 }
 
-export function fillURLProtocolScheme(url: string, scheme = "http://"): string {
+export function fillURLProtocolScheme(url: string, scheme = 'http://'): string {
   if (urlParse(url).protocol) {
     return url;
   }
