@@ -1,4 +1,14 @@
-const chromiumOptions = [
+import { Browser, Page, HTTPResponse, ConsoleMessageType, ConsoleMessageLocation} from "puppeteer";
+import type { PuppeteerLifeCycleEvent } from "puppeteer";
+
+export type WaitUntil = PuppeteerLifeCycleEvent | PuppeteerLifeCycleEvent[] | undefined;
+type ErrorInfo = {
+  type: ConsoleMessageType;
+  text: string;
+  location: ConsoleMessageLocation;
+} | string;
+
+export const chromiumOptions = [
   "--disable-accelerated-2d-canvas",
   "--disable-accelerated-video-decode",
   "--disable-background-networking",
@@ -21,19 +31,18 @@ const chromiumOptions = [
 
 const uaLogLevels = ["error", "warning"];
 
-const getRenderedContent = async (
-  browser,
-  url,
-  evaluate = undefined,
-  waitUntil = undefined
-) => {
+export async function getRenderedContent(
+  browser: Browser,
+  url: string,
+  { evaluate, waitUntil }: { evaluate?: string; waitUntil: WaitUntil; }
+): Promise<Response | null> {
   const page = await browser.newPage();
-  const errors = [];
+  const errors: ErrorInfo[] = [];
   page.on("console", message => {
     if (uaLogLevels.includes(message.type())) {
       errors.push({
-        type: consoleMessage.type(),
-        text: message.text(),
+        type: message.type(),
+        text: message.text().toString(),
         location: message.location()
       });
     }
@@ -46,6 +55,9 @@ const getRenderedContent = async (
     if (evaluate) {
       let response = await page.evaluate(evaluate);
     }
+    if (!response) {
+      return null;
+    }
     return await getContent(page, response, errors);
   } finally {
     setImmediate(async () => {
@@ -54,14 +66,14 @@ const getRenderedContent = async (
   }
 };
 
-const isContentTypeHTML = contentType => {
+export function isContentTypeHTML(contentType: string): boolean {
   const htmlContentTypes = ["text/html", "application/xhtml+xml"];
   return htmlContentTypes.some(htmlContentType => {
     return contentType.startsWith(htmlContentType);
   });
-};
+}
 
-const getContent = async (page, response, errors) => {
+async function getContent(page: Page, response: HTTPResponse, errors: ErrorInfo[]): Promise<Response> {
   const headers = Object.assign({}, response.headers());
   if (isContentTypeHTML(headers["content-type"])) {
     const script = () => document.documentElement.outerHTML;
@@ -72,15 +84,13 @@ const getContent = async (page, response, errors) => {
 };
 
 class Response {
-  constructor(headers, body, errors) {
+  headers: {[key: string]: string};
+  body: Buffer;
+  errors: ErrorInfo[]
+
+  constructor(headers: {[key: string]: string}, body: Buffer, errors: ErrorInfo[]) {
     this.headers = headers;
     this.body = body;
     this.errors = errors;
   }
 }
-
-module.exports = {
-  chromiumOptions,
-  getRenderedContent,
-  isContentTypeHTML
-};

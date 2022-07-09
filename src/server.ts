@@ -1,19 +1,20 @@
-const http = require("http");
-const https = require("https");
-const accesslog = require("access-log");
-const puppeteer = require("puppeteer");
-const { chromiumOptions, getRenderedContent } = require("./utils");
+import http from "http";
+import { IncomingMessage, ServerResponse } from "http";
+// const accesslog = require("access-log");
+import puppeteer from "puppeteer";
+import { chromiumOptions, getRenderedContent } from "./utils";
 
-const main = async port => {
+export async function main(port: number) {
   const executablePath = process.env.CHROMIUM_EXECUTABLE;
   const browser = await puppeteer.launch({
     executablePath,
     args: chromiumOptions
   });
 
-  const httpServer = http.createServer(async (req, res) => {
+  const httpServer = http.createServer(async (req: IncomingMessage, res: ServerResponse) => {
     const evaluate = undefined;
     const waitUntil = undefined;
+    if (!req.url) return;
     const url = req.url.slice(1);
 
     if (!(url.startsWith("https://") || url.startsWith("http://"))) {
@@ -22,8 +23,12 @@ const main = async port => {
       return
     }
 
-    accesslog(req, res);
-    const result = await getRenderedContent(browser, url, evaluate, waitUntil);
+    // accesslog(req, res);
+    const result = await getRenderedContent(browser, url, { evaluate, waitUntil });
+    if (!result) {
+      res.end();
+      return;
+    }
     if (result.errors.length > 0) {
       res.statusCode = 502;
       const errorMessage = encodeURI(result.errors.join("\n"));
@@ -48,5 +53,3 @@ const ignoreHeaders = [
   "connection",
   "content-encoding"
 ];
-
-module.exports = { main };
