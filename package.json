@@ -6,8 +6,8 @@
   "scripts": {
     "build": "tsc",
     "test": "node test/index.js",
-    "lint": "eslint ./src",
-    "format": "eslint --fix ./src"
+    "lint": "eslint ./src ; prettier --check ./src",
+    "format": "eslint --fix ./src ; prettier --write ./src"
   },
   "bin": {
     "rendering-proxy": "./dist/main.js"
@@ -23,6 +23,8 @@
     "@typescript-eslint/eslint-plugin": "^5.30.5",
     "@typescript-eslint/parser": "^5.30.5",
     "eslint": "^8.19.0",
+    "eslint-config-prettier": "^8.5.0",
+    "prettier": "^2.7.1",
     "typescript": "^4.7.4"
   },
   "repository": {
