@@ -1,14 +1,14 @@
 {
   "dependencies": {
-    "puppeteer": "^15.3.2"
+    "puppeteer": "^15.3.2",
+    "yargs": "^17.5.1"
   },
   "scripts": {
-    "lint": "prettier-eslint --write index.js src/* test/*",
-    "start": "node index.js",
+    "build": "tsc",
     "test": "node test/index.js"
   },
   "bin": {
-    "rendering-proxy": "./index.js"
+    "rendering-proxy": "./dist/main.js"
   },
   "name": "rendering-proxy",
   "description": "Proxy to get the DOM rendered in a headless browser",
@@ -17,6 +17,7 @@
   "devDependencies": {
     "@types/node": "^18.0.3",
     "@types/puppeteer": "^5.4.6",
+    "@types/yargs": "^17.0.10",
     "typescript": "^4.7.4"
   },
   "repository": {

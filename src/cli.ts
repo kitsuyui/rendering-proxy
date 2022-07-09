@@ -3,7 +3,7 @@ import { parse as urlParse } from "url";
 import { chromiumOptions, getRenderedContent } from "./utils";
 import type { WaitUntil } from "./utils";
 
-export async function main(url: string, waitUntil: WaitUntil, evaluate = undefined): Promise<void> {
+export async function main(url: string, waitUntil: WaitUntil, evaluate?: string): Promise<void> {
   process.on("unhandledRejection", err => {
     console.error(err);
     process.exit(1);
