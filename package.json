@@ -15,7 +15,11 @@
   "name": "rendering-proxy",
   "description": "Proxy to get the DOM rendered in a headless browser",
   "version": "0.1.0",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "devDependencies": {
     "@swc/core": "^1.2.211",
     "@swc/jest": "^0.2.21",

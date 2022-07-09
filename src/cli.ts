@@ -3,7 +3,7 @@ import { parse as urlParse } from 'url';
 import { chromiumOptions, getRenderedContent } from './utils';
 import type { WaitUntil } from './utils';
 
-export async function main(
+export async function cliMain(
   url: string,
   waitUntil: WaitUntil,
   evaluate?: string

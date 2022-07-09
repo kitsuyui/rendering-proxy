@@ -1,6 +1,7 @@
+#!/usr/bin/env node
 import yargs from 'yargs';
-import { main as serverMain } from './server';
-import { main as cliMain } from './cli';
+import { serverMain as serverMain } from './server';
+import { cliMain as cliMain } from './cli';
 import type { WaitUntil } from './utils';
 
 export async function main(): Promise<void> {

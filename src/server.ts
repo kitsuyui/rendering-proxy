@@ -4,7 +4,7 @@ import { IncomingMessage, ServerResponse } from 'http';
 import puppeteer from 'puppeteer';
 import { chromiumOptions, getRenderedContent } from './utils';
 
-export async function main(port: number) {
+export async function serverMain(port: number) {
   const executablePath = process.env.CHROMIUM_EXECUTABLE;
   const browser = await puppeteer.launch({
     executablePath,
