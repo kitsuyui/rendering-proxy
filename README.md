@@ -1,6 +1,6 @@
 # rendering-proxy
 
-[![CircleCI Status](https://circleci.com/gh/kitsuyui/rendering-proxy.svg?style=shield&circle-token=:circle-token)](https://circleci.com/gh/kitsuyui/rendering-proxy)
+[![test](https://github.com/kitsuyui/rendering-proxy/actions/workflows/test.yml/badge.svg)](https://github.com/kitsuyui/rendering-proxy/actions/workflows/test.yml)
 [![Docker Pulls](https://img.shields.io/docker/pulls/kitsuyui/rendering-proxy.svg)](https://hub.docker.com/r/kitsuyui/rendering-proxy/)
 
 
