@@ -1,4 +1,4 @@
-FROM alpine:3.15
+FROM alpine:3.16
 RUN apk --update --no-cache add nodejs-current yarn tini chromium
 WORKDIR /app
 RUN mkdir -p /app
