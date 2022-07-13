@@ -21,7 +21,7 @@
     "dist"
   ],
   "devDependencies": {
-    "@swc/core": "1.2.212",
+    "@swc/core": "1.2.213",
     "@swc/jest": "^0.2.21",
     "@types/jest": "28.1.5",
     "@types/node": "^18.0.3",
