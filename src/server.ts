@@ -1,15 +1,11 @@
 import http from 'http';
 import { IncomingMessage, ServerResponse } from 'http';
 // const accesslog = require("access-log");
-import puppeteer from 'puppeteer';
-import { chromiumOptions, getRenderedContent } from './utils';
+import { getRenderedContent } from './utils';
+import { getPuppeteer } from './chromium';
 
 export async function serverMain(port: number) {
-  const executablePath = process.env.CHROMIUM_EXECUTABLE;
-  const browser = await puppeteer.launch({
-    executablePath,
-    args: chromiumOptions,
-  });
+  const browser = await getPuppeteer();
 
   const httpServer = http.createServer(
     async (req: IncomingMessage, res: ServerResponse) => {
@@ -29,10 +25,6 @@ export async function serverMain(port: number) {
         evaluate,
         waitUntil,
       });
-      if (!result) {
-        res.end();
-        return;
-      }
       if (result.errors.length > 0) {
         res.statusCode = 502;
         const errorMessage = encodeURI(result.errors.join('\n'));

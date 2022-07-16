@@ -4,6 +4,7 @@ import {
   HTTPResponse,
   ConsoleMessageType,
   ConsoleMessageLocation,
+  ConsoleMessage,
 } from 'puppeteer';
 import type { PuppeteerLifeCycleEvent } from 'puppeteer';
 
@@ -11,70 +12,65 @@ export type WaitUntil =
   | PuppeteerLifeCycleEvent
   | PuppeteerLifeCycleEvent[]
   | undefined;
-type ErrorInfo =
-  | {
-      type: ConsoleMessageType;
-      text: string;
-      location: ConsoleMessageLocation;
-    }
-  | string;
 
-export const chromiumOptions = [
-  '--disable-accelerated-2d-canvas',
-  '--disable-accelerated-video-decode',
-  '--disable-background-networking',
-  '--disable-client-side-phishing-detection',
-  '--disable-breakpad',
-  '--disable-default-apps',
-  '--disable-extensions',
-  '--disable-gpu',
-  '--disable-sync',
-  '--disable-translate',
-  '--font-cache-shared-handle',
-  '--incognito',
-  '--metrics-recording-only',
-  '--mute-audio',
-  '--no-default-browser-check',
-  '--no-first-run',
-  '--no-sandbox',
-  '--safebrowsing-disable-auto-update',
-];
+interface ConsoleItem {
+  type: ConsoleMessageType;
+  text: string;
+  location: ConsoleMessageLocation;
+}
 
-const uaLogLevels = ['error', 'warning'];
+interface BaseResponse {
+  headers: { [key: string]: string };
+  body: Buffer;
+}
+
+interface BrowserState {
+  errors: string[];
+  consoleLogs: ConsoleItem[];
+}
+
+type RenderResult = BaseResponse & BrowserState;
 
 export async function getRenderedContent(
   browser: Browser,
   url: string,
   { evaluate, waitUntil }: { evaluate?: string; waitUntil: WaitUntil }
-): Promise<Response | null> {
+): Promise<RenderResult> {
   const page = await browser.newPage();
-  const errors: ErrorInfo[] = [];
+  const browserState: BrowserState = {
+    consoleLogs: [],
+    errors: [],
+  };
   page.on('console', (message) => {
-    if (uaLogLevels.includes(message.type())) {
-      errors.push({
-        type: message.type(),
-        text: message.text().toString(),
-        location: message.location(),
-      });
-    }
+    browserState.consoleLogs.push(convertConsoleMessage(message));
   });
   page.on('pageerror', (err) => {
-    errors.push(err.toString());
+    browserState.errors.push(err.toString());
   });
   try {
     const response = await page.goto(url, { waitUntil });
     if (evaluate) {
-      await page.evaluate(evaluate);
+      try {
+        await page.evaluate(evaluate);
+      } catch (err) {
+        browserState.errors.push(String(err));
+      }
     }
     if (!response) {
-      return null;
+      return { ...emptyBaseResponse(), ...browserState };
     }
-    return await getContent(page, response, errors);
+    return { ...(await getContent(page, response)), ...browserState };
   } finally {
-    setImmediate(async () => {
-      await page.close();
-    });
+    await page.close();
   }
+}
+
+function convertConsoleMessage(message: ConsoleMessage): ConsoleItem {
+  return {
+    type: message.type(),
+    text: message.text().toString(),
+    location: message.location(),
+  };
 }
 
 export function isContentTypeHTML(contentType: string): boolean {
@@ -84,32 +80,22 @@ export function isContentTypeHTML(contentType: string): boolean {
   });
 }
 
-async function getContent(
-  page: Page,
-  response: HTTPResponse,
-  errors: ErrorInfo[]
-): Promise<Response> {
-  const headers = Object.assign({}, response.headers());
-  if (isContentTypeHTML(headers['content-type'])) {
-    const script = () => document.documentElement.outerHTML;
-    const textHTML = await page.evaluate(script);
-    return new Response(headers, Buffer.from(textHTML), errors);
-  }
-  return new Response(headers, await response.buffer(), errors);
+function emptyBaseResponse(): BaseResponse {
+  return {
+    body: Buffer.from([]),
+    headers: {},
+  };
 }
 
-class Response {
-  headers: { [key: string]: string };
-  body: Buffer;
-  errors: ErrorInfo[];
-
-  constructor(
-    headers: { [key: string]: string },
-    body: Buffer,
-    errors: ErrorInfo[]
-  ) {
-    this.headers = headers;
-    this.body = body;
-    this.errors = errors;
+async function getContent(
+  page: Page,
+  response: HTTPResponse
+): Promise<BaseResponse> {
+  const headers = { ...response.headers() };
+  if (isContentTypeHTML(headers['content-type'] || '')) {
+    const script = () => document.documentElement.outerHTML;
+    const textHTML = await page.evaluate(script);
+    return { body: Buffer.from(textHTML), headers };
   }
+  return { body: await response.buffer(), headers };
 }
