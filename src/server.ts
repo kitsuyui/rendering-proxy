@@ -25,10 +25,6 @@ export async function serverMain(port: number) {
         evaluate,
         waitUntil,
       });
-      if (!result) {
-        res.end();
-        return;
-      }
       if (result.errors.length > 0) {
         res.statusCode = 502;
         const errorMessage = encodeURI(result.errors.join('\n'));

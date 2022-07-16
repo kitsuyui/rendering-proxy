@@ -4,6 +4,7 @@ import {
   HTTPResponse,
   ConsoleMessageType,
   ConsoleMessageLocation,
+  ConsoleMessage,
 } from 'puppeteer';
 import type { PuppeteerLifeCycleEvent } from 'puppeteer';
 
@@ -18,30 +19,33 @@ interface ConsoleItem {
   location: ConsoleMessageLocation;
 }
 
-interface Response {
+interface BaseResponse {
   headers: { [key: string]: string };
   body: Buffer;
+}
+
+interface BrowserState {
   errors: string[];
   consoleLogs: ConsoleItem[];
 }
+
+type RenderResult = BaseResponse & BrowserState;
 
 export async function getRenderedContent(
   browser: Browser,
   url: string,
   { evaluate, waitUntil }: { evaluate?: string; waitUntil: WaitUntil }
-): Promise<Response | null> {
+): Promise<RenderResult> {
   const page = await browser.newPage();
-  const consoleLogs: ConsoleItem[] = [];
-  const errors: string[] = [];
+  const browserState: BrowserState = {
+    consoleLogs: [],
+    errors: [],
+  };
   page.on('console', (message) => {
-    consoleLogs.push({
-      type: message.type(),
-      text: message.text().toString(),
-      location: message.location(),
-    });
+    browserState.consoleLogs.push(convertConsoleMessage(message));
   });
   page.on('pageerror', (err) => {
-    errors.push(err.toString());
+    browserState.errors.push(err.toString());
   });
   try {
     const response = await page.goto(url, { waitUntil });
@@ -49,16 +53,24 @@ export async function getRenderedContent(
       try {
         await page.evaluate(evaluate);
       } catch (err) {
-        errors.push(String(err));
+        browserState.errors.push(String(err));
       }
     }
     if (!response) {
-      return null;
+      return { ...emptyBaseResponse(), ...browserState };
     }
-    return await getContent(page, response, errors, consoleLogs);
+    return { ...(await getContent(page, response)), ...browserState };
   } finally {
     await page.close();
   }
+}
+
+function convertConsoleMessage(message: ConsoleMessage): ConsoleItem {
+  return {
+    type: message.type(),
+    text: message.text().toString(),
+    location: message.location(),
+  };
 }
 
 export function isContentTypeHTML(contentType: string): boolean {
@@ -68,17 +80,22 @@ export function isContentTypeHTML(contentType: string): boolean {
   });
 }
 
+function emptyBaseResponse(): BaseResponse {
+  return {
+    body: Buffer.from([]),
+    headers: {},
+  };
+}
+
 async function getContent(
   page: Page,
-  response: HTTPResponse,
-  errors: string[],
-  consoleLogs: ConsoleItem[]
-): Promise<Response> {
+  response: HTTPResponse
+): Promise<BaseResponse> {
   const headers = { ...response.headers() };
-  if (isContentTypeHTML(headers['content-type'])) {
+  if (isContentTypeHTML(headers['content-type'] || '')) {
     const script = () => document.documentElement.outerHTML;
     const textHTML = await page.evaluate(script);
-    return { headers, body: Buffer.from(textHTML), errors, consoleLogs };
+    return { body: Buffer.from(textHTML), headers };
   }
-  return { headers, body: await response.buffer(), errors, consoleLogs };
+  return { body: await response.buffer(), headers };
 }

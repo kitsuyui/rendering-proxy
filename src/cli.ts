@@ -18,10 +18,8 @@ export async function cliMain(
     evaluate,
     waitUntil,
   });
-  if (result) {
-    process.stdout.setEncoding('binary');
-    process.stdout.write(result.body);
-  }
+  process.stdout.setEncoding('binary');
+  process.stdout.write(result.body);
   browser.close();
   process.exit();
 }
