@@ -74,7 +74,7 @@ async function getContent(
   errors: string[],
   consoleLogs: ConsoleItem[]
 ): Promise<Response> {
-  const headers = Object.assign({}, response.headers());
+  const headers = { ...response.headers() };
   if (isContentTypeHTML(headers['content-type'])) {
     const script = () => document.documentElement.outerHTML;
     const textHTML = await page.evaluate(script);
