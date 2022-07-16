@@ -18,6 +18,13 @@ interface ConsoleItem {
   location: ConsoleMessageLocation;
 }
 
+interface Response {
+  headers: { [key: string]: string };
+  body: Buffer;
+  errors: string[];
+  consoleLogs: ConsoleItem[];
+}
+
 export async function getRenderedContent(
   browser: Browser,
   url: string,
@@ -71,26 +78,7 @@ async function getContent(
   if (isContentTypeHTML(headers['content-type'])) {
     const script = () => document.documentElement.outerHTML;
     const textHTML = await page.evaluate(script);
-    return new Response(headers, Buffer.from(textHTML), errors, consoleLogs);
+    return { headers, body: Buffer.from(textHTML), errors, consoleLogs };
   }
-  return new Response(headers, await response.buffer(), errors, consoleLogs);
-}
-
-class Response {
-  headers: { [key: string]: string };
-  body: Buffer;
-  errors: string[];
-  consoleLogs: ConsoleItem[];
-
-  constructor(
-    headers: { [key: string]: string },
-    body: Buffer,
-    errors: string[],
-    consoleLogs: ConsoleItem[]
-  ) {
-    this.headers = headers;
-    this.body = body;
-    this.errors = errors;
-    this.consoleLogs = consoleLogs;
-  }
+  return { headers, body: await response.buffer(), errors, consoleLogs };
 }
