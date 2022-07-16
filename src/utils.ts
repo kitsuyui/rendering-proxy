@@ -11,15 +11,12 @@ export type WaitUntil =
   | PuppeteerLifeCycleEvent
   | PuppeteerLifeCycleEvent[]
   | undefined;
-type ErrorInfo =
-  | {
-      type: ConsoleMessageType;
-      text: string;
-      location: ConsoleMessageLocation;
-    }
-  | string;
 
-const uaLogLevels = ['error', 'warning'];
+interface ConsoleItem {
+  type: ConsoleMessageType;
+  text: string;
+  location: ConsoleMessageLocation;
+}
 
 export async function getRenderedContent(
   browser: Browser,
@@ -27,15 +24,14 @@ export async function getRenderedContent(
   { evaluate, waitUntil }: { evaluate?: string; waitUntil: WaitUntil }
 ): Promise<Response | null> {
   const page = await browser.newPage();
-  const errors: ErrorInfo[] = [];
+  const consoleLogs: ConsoleItem[] = [];
+  const errors: string[] = [];
   page.on('console', (message) => {
-    if (uaLogLevels.includes(message.type())) {
-      errors.push({
-        type: message.type(),
-        text: message.text().toString(),
-        location: message.location(),
-      });
-    }
+    consoleLogs.push({
+      type: message.type(),
+      text: message.text().toString(),
+      location: message.location(),
+    });
   });
   page.on('pageerror', (err) => {
     errors.push(err.toString());
@@ -43,12 +39,16 @@ export async function getRenderedContent(
   try {
     const response = await page.goto(url, { waitUntil });
     if (evaluate) {
-      await page.evaluate(evaluate);
+      try {
+        await page.evaluate(evaluate);
+      } catch (err) {
+        errors.push(String(err));
+      }
     }
     if (!response) {
       return null;
     }
-    return await getContent(page, response, errors);
+    return await getContent(page, response, errors, consoleLogs);
   } finally {
     await page.close();
   }
@@ -64,29 +64,33 @@ export function isContentTypeHTML(contentType: string): boolean {
 async function getContent(
   page: Page,
   response: HTTPResponse,
-  errors: ErrorInfo[]
+  errors: string[],
+  consoleLogs: ConsoleItem[]
 ): Promise<Response> {
   const headers = Object.assign({}, response.headers());
   if (isContentTypeHTML(headers['content-type'])) {
     const script = () => document.documentElement.outerHTML;
     const textHTML = await page.evaluate(script);
-    return new Response(headers, Buffer.from(textHTML), errors);
+    return new Response(headers, Buffer.from(textHTML), errors, consoleLogs);
   }
-  return new Response(headers, await response.buffer(), errors);
+  return new Response(headers, await response.buffer(), errors, consoleLogs);
 }
 
 class Response {
   headers: { [key: string]: string };
   body: Buffer;
-  errors: ErrorInfo[];
+  errors: string[];
+  consoleLogs: ConsoleItem[];
 
   constructor(
     headers: { [key: string]: string },
     body: Buffer,
-    errors: ErrorInfo[]
+    errors: string[],
+    consoleLogs: ConsoleItem[]
   ) {
     this.headers = headers;
     this.body = body;
     this.errors = errors;
+    this.consoleLogs = consoleLogs;
   }
 }

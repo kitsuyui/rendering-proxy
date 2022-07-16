@@ -35,6 +35,45 @@ describe('getRenderedContent', () => {
     expect(result?.body.toString()).toContain('<title>Example Domain</title>');
   });
 
+  test('test console', async () => {
+    const result = await getRenderedContent(browser, 'https://example.com/', {
+      waitUntil: 'domcontentloaded',
+      evaluate:
+        'console.log("Hello, Console!"); console.error("Error, Console!");',
+    });
+    expect(result?.consoleLogs).toStrictEqual([
+      {
+        location: {
+          columnNumber: 8,
+          lineNumber: 0,
+          url: 'pptr://__puppeteer_evaluation_script__',
+        },
+        text: 'Hello, Console!',
+        type: 'log',
+      },
+      {
+        location: {
+          columnNumber: 40,
+          lineNumber: 0,
+          url: 'pptr://__puppeteer_evaluation_script__',
+        },
+        text: 'Error, Console!',
+        type: 'error',
+      },
+    ]);
+    expect(result?.errors).toStrictEqual([]);
+  });
+
+  test('test errors', async () => {
+    const result = await getRenderedContent(browser, 'https://example.com/', {
+      waitUntil: 'domcontentloaded',
+      evaluate: 'throw new Error("Error!")',
+    });
+    expect(result?.errors).toStrictEqual([
+      'Error: Evaluation failed: Error: Error!\n    at pptr://__puppeteer_evaluation_script__:1:7',
+    ]);
+  });
+
   test('get json', async () => {
     const result = await getRenderedContent(
       browser,
