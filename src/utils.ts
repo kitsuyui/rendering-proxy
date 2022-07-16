@@ -50,9 +50,7 @@ export async function getRenderedContent(
     }
     return await getContent(page, response, errors);
   } finally {
-    setImmediate(async () => {
-      await page.close();
-    });
+    await page.close();
   }
 }
 
