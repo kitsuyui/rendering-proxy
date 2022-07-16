@@ -19,27 +19,6 @@ type ErrorInfo =
     }
   | string;
 
-export const chromiumOptions = [
-  '--disable-accelerated-2d-canvas',
-  '--disable-accelerated-video-decode',
-  '--disable-background-networking',
-  '--disable-client-side-phishing-detection',
-  '--disable-breakpad',
-  '--disable-default-apps',
-  '--disable-extensions',
-  '--disable-gpu',
-  '--disable-sync',
-  '--disable-translate',
-  '--font-cache-shared-handle',
-  '--incognito',
-  '--metrics-recording-only',
-  '--mute-audio',
-  '--no-default-browser-check',
-  '--no-first-run',
-  '--no-sandbox',
-  '--safebrowsing-disable-auto-update',
-];
-
 const uaLogLevels = ['error', 'warning'];
 
 export async function getRenderedContent(

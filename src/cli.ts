@@ -1,6 +1,6 @@
-import puppeteer from 'puppeteer';
 import { parse as urlParse } from 'url';
-import { chromiumOptions, getRenderedContent } from './utils';
+import { getRenderedContent } from './utils';
+import { getPuppeteer } from './chromium';
 import type { WaitUntil } from './utils';
 
 export async function cliMain(
@@ -12,11 +12,7 @@ export async function cliMain(
     console.error(err);
     process.exit(1);
   });
-  const executablePath = process.env.CHROMIUM_EXECUTABLE;
-  const browser = await puppeteer.launch({
-    executablePath,
-    args: chromiumOptions,
-  });
+  const browser = await getPuppeteer();
   const filledUrl = fillURLProtocolScheme(url);
   const result = await getRenderedContent(browser, filledUrl, {
     evaluate,
