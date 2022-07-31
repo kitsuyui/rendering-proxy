@@ -11,4 +11,4 @@ services:
     image: kennethreitz/httpbin@sha256:599fe5e5073102dbb0ee3dbb65f049dab44fa9fc251f6835c9990f8fb196a72b
 
   testcurl:
-    image: byrnedo/alpine-curl:latest@sha256:13a2725eb80b639f6d2856d54c052dec3981224b4533a434034afd868f627d41
+    image: byrnedo/alpine-curl:latest@sha256:1f0026f3bd20ca970f4e0ffa97e69eea72d24769c942230a49ddf0e1974cb0c0
