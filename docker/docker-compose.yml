@@ -9,6 +9,15 @@ services:
     ports:
       - "8080:8080"
 
+  rendering-proxy-firefox:
+    build:
+      context: ..
+      dockerfile: ./docker/firefox.Dockerfile
+    links:
+      - "testserver"
+    ports:
+      - "8081:8080"
+
   testserver:
     image: kennethreitz/httpbin@sha256:599fe5e5073102dbb0ee3dbb65f049dab44fa9fc251f6835c9990f8fb196a72b
 

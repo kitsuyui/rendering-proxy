@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "puppeteer": "^15.3.2",
+    "puppeteer": "^15.5.0",
     "yargs": "^17.5.1"
   },
   "scripts": {

@@ -92,6 +92,36 @@ async function getContent(
   response: HTTPResponse
 ): Promise<BaseResponse> {
   const headers = { ...response.headers() };
+
+  // workaround
+  if (
+    headers['content-type'] === 'application/json' &&
+    process.env.PUPPETEER_PRODUCT === 'firefox'
+  ) {
+    return {
+      body: Buffer.from(
+        JSON.stringify({
+          error: [
+            'JSON content-type is not supported in Firefox yet. Use Chrome instead. See following issue:',
+            'https://github.com/puppeteer/puppeteer/issues/7344',
+            'https://github.com/puppeteer/puppeteer/issues/7772',
+          ],
+        })
+      ),
+      headers,
+    };
+  }
+
+  if (
+    headers['content-type'] === 'text/plain' &&
+    process.env.PUPPETEER_PRODUCT === 'firefox'
+  ) {
+    /* istanbul ignore next */
+    const script = () => document.documentElement.textContent || '';
+    const text = await page.evaluate(script);
+    return { body: Buffer.from(text), headers };
+  }
+
   if (isContentTypeHTML(headers['content-type'] || '')) {
     /*
      * Coverage instrumentation by nyc is not working in browsers.
