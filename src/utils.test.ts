@@ -1,6 +1,9 @@
 import { isContentTypeHTML, getRenderedContent } from './utils';
 import { getPuppeteer } from './chromium';
 import type { Browser } from 'puppeteer';
+import { spawn, type ChildProcess } from 'child_process';
+import cheerio from 'cheerio';
+import sleep from 'sleep-promise';
 
 describe('isContentTypeHTML', () => {
   test('HTML content types', () => {
@@ -105,5 +108,41 @@ describe('getRenderedContent', () => {
       }
     }`)
     );
+  });
+});
+
+describe('test virtual dom', () => {
+  let browser: Browser;
+  let reactServer: ChildProcess;
+  let vueServer: ChildProcess;
+
+  beforeAll(async () => {
+    browser = await getPuppeteer();
+    reactServer = spawn('http-server', ['-p', '8001', 'tests/fixtures/react']);
+    vueServer = spawn('http-server', ['-p', '8002', 'tests/fixtures/vue']);
+    await sleep(1000);
+  });
+  afterAll(async () => {
+    await browser.close();
+    reactServer.kill();
+    vueServer.kill();
+  });
+
+  test('React', async () => {
+    const result = await getRenderedContent(browser, 'http://localhost:8001/', {
+      waitUntil: 'domcontentloaded',
+    });
+    const dom = cheerio.load(result?.body.toString());
+    expect(dom('h1.title').text()).toEqual('Hello, rendering-proxy!');
+    expect(dom('.factorial').text()).toEqual('factorial(5) = 120');
+  });
+
+  test('Vue', async () => {
+    const result = await getRenderedContent(browser, 'http://localhost:8002/', {
+      waitUntil: 'domcontentloaded',
+    });
+    const dom = cheerio.load(result?.body.toString());
+    expect(dom('h1.title').text()).toEqual('Hello, rendering-proxy!');
+    expect(dom('.fibonacci').text()).toEqual('fibonacci(10) = 55');
   });
 });

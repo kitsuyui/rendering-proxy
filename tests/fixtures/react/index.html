@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <title>React Example</title>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+
+    function factorial(n) {
+      if (n === 0) {
+        return 1;
+      }
+      return n * factorial(n - 1);
+    }
+
+    const Factorial = (props) => <span className="factorial">factorial({props.num}) = {factorial(props.num)}</span>;
+
+    const AppTitle = () => <h1 className="title">Hello, rendering-proxy!</h1>;
+
+    const App = () => (
+      <div>
+        <AppTitle />
+        <p><Factorial num={5} /></p>
+      </div>
+    );
+
+    ReactDOM.render(
+      <App />,
+      document.getElementById('root')
+    );
+  </script>
+</head>
+
+<body>
+  <div id="root"></div>
+</body>
+
+</html>
