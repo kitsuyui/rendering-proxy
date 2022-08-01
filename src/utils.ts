@@ -93,6 +93,11 @@ async function getContent(
 ): Promise<BaseResponse> {
   const headers = { ...response.headers() };
   if (isContentTypeHTML(headers['content-type'] || '')) {
+    /*
+     * Coverage instrumentation by nyc is not working in browsers.
+     * discussed at https://github.com/istanbuljs/nyc/issues/514#issuecomment-434352869
+     */
+    /* istanbul ignore next */
     const script = () => document.documentElement.outerHTML;
     const textHTML = await page.evaluate(script);
     return { body: Buffer.from(textHTML), headers };

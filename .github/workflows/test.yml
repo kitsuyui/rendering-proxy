@@ -33,3 +33,14 @@ jobs:
 
       - name: Test packaging
         run: npm pack
+
+      - name: Upload coverage to Codecov
+        if: matrix.node-version == '18.x'
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: coverage/cobertura-coverage.xml
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: true
+          verbose: true

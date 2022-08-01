@@ -8,5 +8,10 @@
   ],
   "transform": {
     "^.+.(t|j)s?$": ["@swc/jest"]
-  }
+  },
+  "collectCoverage": true,
+  "coverageReporters": [
+    "text",
+    "cobertura"
+  ]
 }
