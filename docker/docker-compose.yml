@@ -1,7 +1,9 @@
 version: "3.2"
 services:
-  rendering-proxy:
-    build: .
+  rendering-proxy-chromium:
+    build:
+      context: ..
+      dockerfile: ./docker/chromium.Dockerfile
     links:
       - "testserver"
     ports:
