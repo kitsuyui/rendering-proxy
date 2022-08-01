@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Vue Example</title>
+    <script crossorigin src="https://unpkg.com/vue@3"></script>
+
+    <script
+      crossorigin
+      src="https://unpkg.com/@babel/standalone/babel.min.js"
+    ></script>
+    <script type="text/babel">
+      const { createApp } = Vue;
+
+      const fibonacci = (n) => {
+        if (n === 0) {
+          return 0;
+        }
+        if (n === 1) {
+          return 1;
+        }
+        return fibonacci(n - 1) + fibonacci(n - 2);
+      };
+
+      const FibonacciComponent = {
+        props: {
+          num: Number,
+        },
+        computed: {
+          fibonacci() {
+            return fibonacci(this.num);
+          },
+        },
+        template: `<span class="fibonacci">fibonacci({{ num }}) = {{ fibonacci }}</span>`,
+      };
+
+      createApp({
+        components: {
+          FibonacciComponent,
+        },
+        template: `
+        <div>
+          <h1 class="title">Hello, rendering-proxy!</h1>
+          <FibonacciComponent :num="10" />
+        </div>
+      `,
+      }).mount('#root');
+    </script>
+  </head>
+
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
