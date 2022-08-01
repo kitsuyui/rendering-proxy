@@ -1,6 +1,6 @@
 import { parse as urlParse } from 'url';
 import { getRenderedContent } from './utils';
-import { getPuppeteer } from './chromium';
+import { getPuppeteer } from './browsers';
 import type { WaitUntil } from './utils';
 
 export async function cliMain(

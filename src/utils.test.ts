@@ -1,5 +1,5 @@
 import { isContentTypeHTML, getRenderedContent } from './utils';
-import { getPuppeteer } from './chromium';
+import { getPuppeteer } from './browsers';
 import type { Browser } from 'puppeteer';
 import { spawn, type ChildProcess } from 'child_process';
 import cheerio from 'cheerio';
@@ -44,26 +44,41 @@ describe('getRenderedContent', () => {
       evaluate:
         'console.log("Hello, Console!"); console.error("Error, Console!");',
     });
-    expect(result?.consoleLogs).toStrictEqual([
-      {
-        location: {
-          columnNumber: 8,
-          lineNumber: 0,
-          url: 'pptr://__puppeteer_evaluation_script__',
+    if (process.env.PUPPETEER_PRODUCT === 'chrome') {
+      expect(result?.consoleLogs).toStrictEqual([
+        {
+          location: {
+            columnNumber: 8,
+            lineNumber: 0,
+            url: 'pptr://__puppeteer_evaluation_script__',
+          },
+          text: 'Hello, Console!',
+          type: 'log',
         },
-        text: 'Hello, Console!',
-        type: 'log',
-      },
-      {
-        location: {
-          columnNumber: 40,
-          lineNumber: 0,
-          url: 'pptr://__puppeteer_evaluation_script__',
+        {
+          location: {
+            columnNumber: 40,
+            lineNumber: 0,
+            url: 'pptr://__puppeteer_evaluation_script__',
+          },
+          text: 'Error, Console!',
+          type: 'error',
         },
-        text: 'Error, Console!',
-        type: 'error',
-      },
-    ]);
+      ]);
+    } else if (process.env.PUPPETEER_PRODUCT === 'firefox') {
+      expect(result?.consoleLogs).toStrictEqual([
+        {
+          location: {},
+          text: 'Hello, Console!',
+          type: 'log',
+        },
+        {
+          location: {},
+          text: 'Error, Console!',
+          type: 'error',
+        },
+      ]);
+    }
     expect(result?.errors).toStrictEqual([]);
   });
 
@@ -72,9 +87,15 @@ describe('getRenderedContent', () => {
       waitUntil: 'domcontentloaded',
       evaluate: 'throw new Error("Error!")',
     });
-    expect(result?.errors).toStrictEqual([
-      'Error: Evaluation failed: Error: Error!\n    at pptr://__puppeteer_evaluation_script__:1:7',
-    ]);
+    if (process.env.PUPPETEER_PRODUCT === 'chrome') {
+      expect(result?.errors).toStrictEqual([
+        'Error: Evaluation failed: Error: Error!\n    at pptr://__puppeteer_evaluation_script__:1:7',
+      ]);
+    } else if (process.env.PUPPETEER_PRODUCT === 'firefox') {
+      expect(result?.errors).toStrictEqual([
+        'Error: Evaluation failed: Error!',
+      ]);
+    }
   });
 
   test('get json', async () => {
@@ -85,8 +106,9 @@ describe('getRenderedContent', () => {
         waitUntil: 'domcontentloaded',
       }
     );
-    expect(JSON.parse(result?.body.toString() || '')).toEqual(
-      JSON.parse(`{
+    if (process.env.PUPPETEER_PRODUCT === 'chrome') {
+      expect(JSON.parse(result?.body.toString() || '')).toEqual(
+        JSON.parse(`{
       "slideshow": {
         "author": "Yours Truly",
         "date": "date of publication",
@@ -107,7 +129,17 @@ describe('getRenderedContent', () => {
         "title": "Sample Slide Show"
       }
     }`)
-    );
+      );
+    } else if (process.env.PUPPETEER_PRODUCT === 'firefox') {
+      expect(JSON.parse(result?.body.toString() || '')).toEqual(
+        JSON.parse(`{
+          "error": [
+            "JSON content-type is not supported in Firefox yet. Use Chrome instead. See following issue:",
+            "https://github.com/puppeteer/puppeteer/issues/7344",
+            "https://github.com/puppeteer/puppeteer/issues/7772"
+          ]}`)
+      );
+    }
   });
 });
 

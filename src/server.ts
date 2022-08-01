@@ -2,7 +2,7 @@ import http from 'http';
 import { IncomingMessage, ServerResponse } from 'http';
 // const accesslog = require("access-log");
 import { getRenderedContent } from './utils';
-import { getPuppeteer } from './chromium';
+import { getPuppeteer } from './browsers';
 
 export async function serverMain(port: number) {
   const browser = await getPuppeteer();
@@ -34,7 +34,11 @@ export async function serverMain(port: number) {
         if (ignoreHeaders.includes(key.toLowerCase())) {
           continue;
         }
-        res.setHeader(key, result.headers[key]);
+        if (key.toLowerCase() === 'set-cookie') {
+          res.setHeader(key, result.headers[key].split('\n'));
+        } else {
+          res.setHeader(key, result.headers[key]);
+        }
       }
       res.write(result.body);
       res.end();

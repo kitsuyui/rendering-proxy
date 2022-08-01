@@ -8,27 +8,50 @@ jobs:
 
       - name: Build docker image
         run: |
-          docker-compose build
+          docker-compose -f docker/docker-compose.yml build
 
-      - name: Test cli mode
+      - name: Test cli mode chromium
         run: |
-          docker-compose run -T --entrypoint=yarn --rm rendering-proxy test --coverage=false
-          docker-compose run -T --rm rendering-proxy cli testserver/json > /dev/null
-          docker-compose run -T --rm rendering-proxy cli testserver/html > /dev/null
-          docker-compose run -T --rm rendering-proxy cli testserver/robots.txt > /dev/null
-          docker-compose run -T --rm rendering-proxy cli testserver/image/jpeg > /dev/null
-          docker-compose run -T --rm rendering-proxy cli testserver/image/png > /dev/null
-          docker-compose run -T --rm rendering-proxy cli testserver/image/svg > /dev/null
-          docker-compose run -T --rm rendering-proxy cli testserver/image/webp > /dev/null
+          docker-compose -f docker/docker-compose.yml run -T --entrypoint=yarn --rm rendering-proxy-chromium test --coverage=false
+          docker-compose -f docker/docker-compose.yml run -T --rm rendering-proxy-chromium cli testserver/json > /dev/null
+          docker-compose -f docker/docker-compose.yml run -T --rm rendering-proxy-chromium cli testserver/html > /dev/null
+          docker-compose -f docker/docker-compose.yml run -T --rm rendering-proxy-chromium cli testserver/robots.txt > /dev/null
+          docker-compose -f docker/docker-compose.yml run -T --rm rendering-proxy-chromium cli testserver/image/jpeg > /dev/null
+          docker-compose -f docker/docker-compose.yml run -T --rm rendering-proxy-chromium cli testserver/image/png > /dev/null
+          docker-compose -f docker/docker-compose.yml run -T --rm rendering-proxy-chromium cli testserver/image/svg > /dev/null
+          docker-compose -f docker/docker-compose.yml run -T --rm rendering-proxy-chromium cli testserver/image/webp > /dev/null
+
+      - name: Test cli mode firefox
+        run: |
+          docker-compose -f docker/docker-compose.yml run -T --entrypoint=yarn --rm rendering-proxy-firefox test --coverage=false
+          docker-compose -f docker/docker-compose.yml run -T --rm rendering-proxy-firefox cli testserver/json > /dev/null
+          docker-compose -f docker/docker-compose.yml run -T --rm rendering-proxy-firefox cli testserver/html > /dev/null
+          docker-compose -f docker/docker-compose.yml run -T --rm rendering-proxy-firefox cli testserver/robots.txt > /dev/null
+
+          # TODO: These tests are not working yet.
+          # docker-compose -f docker/docker-compose.yml run -T --rm rendering-proxy-firefox cli testserver/image/jpeg > /dev/null
+          # docker-compose -f docker/docker-compose.yml run -T --rm rendering-proxy-firefox cli testserver/image/png > /dev/null
+          # docker-compose -f docker/docker-compose.yml run -T --rm rendering-proxy-firefox cli testserver/image/svg > /dev/null
+          # docker-compose -f docker/docker-compose.yml run -T --rm rendering-proxy-firefox cli testserver/image/webp > /dev/null
 
       - name: Test server mode
         run: |
-          docker-compose up -d
-          container=$(docker-compose ps -q rendering-proxy)
-          docker-compose run -T --rm testcurl -s -o /dev/null http://rendering-proxy:8080/http://testserver/json
-          docker-compose run -T --rm testcurl -s -o /dev/null http://rendering-proxy:8080/http://testserver/html
-          docker-compose run -T --rm testcurl -s -o /dev/null http://rendering-proxy:8080/http://testserver/robots.txt
-          docker-compose run -T --rm testcurl -s -o /dev/null http://rendering-proxy:8080/http://testserver/image/jpeg
-          docker-compose run -T --rm testcurl -s -o /dev/null http://rendering-proxy:8080/http://testserver/image/png
-          docker-compose run -T --rm testcurl -s -o /dev/null http://rendering-proxy:8080/http://testserver/image/svg
-          docker-compose run -T --rm testcurl -s -o /dev/null http://rendering-proxy:8080/http://testserver/image/webp
+          docker-compose -f docker/docker-compose.yml up -d
+
+          docker-compose -f docker/docker-compose.yml run -T --rm testcurl -s -o /dev/null http://rendering-proxy-chromium:8080/http://testserver/json
+          docker-compose -f docker/docker-compose.yml run -T --rm testcurl -s -o /dev/null http://rendering-proxy-chromium:8080/http://testserver/html
+          docker-compose -f docker/docker-compose.yml run -T --rm testcurl -s -o /dev/null http://rendering-proxy-chromium:8080/http://testserver/robots.txt
+          docker-compose -f docker/docker-compose.yml run -T --rm testcurl -s -o /dev/null http://rendering-proxy-chromium:8080/http://testserver/image/jpeg
+          docker-compose -f docker/docker-compose.yml run -T --rm testcurl -s -o /dev/null http://rendering-proxy-chromium:8080/http://testserver/image/png
+          docker-compose -f docker/docker-compose.yml run -T --rm testcurl -s -o /dev/null http://rendering-proxy-chromium:8080/http://testserver/image/svg
+          docker-compose -f docker/docker-compose.yml run -T --rm testcurl -s -o /dev/null http://rendering-proxy-chromium:8080/http://testserver/image/webp
+
+          docker-compose -f docker/docker-compose.yml run -T --rm testcurl -s -o /dev/null http://rendering-proxy-firefox:8080/http://testserver/json
+          docker-compose -f docker/docker-compose.yml run -T --rm testcurl -s -o /dev/null http://rendering-proxy-firefox:8080/http://testserver/html
+          docker-compose -f docker/docker-compose.yml run -T --rm testcurl -s -o /dev/null http://rendering-proxy-firefox:8080/http://testserver/robots.txt
+
+          # TODO: These tests are not working yet.
+          # docker-compose -f docker/docker-compose.yml run -T --rm testcurl -s -o /dev/null http://rendering-proxy-firefox:8080/http://testserver/image/jpeg
+          # docker-compose -f docker/docker-compose.yml run -T --rm testcurl -s -o /dev/null http://rendering-proxy-firefox:8080/http://testserver/image/png
+          # docker-compose -f docker/docker-compose.yml run -T --rm testcurl -s -o /dev/null http://rendering-proxy-firefox:8080/http://testserver/image/svg
+          # docker-compose -f docker/docker-compose.yml run -T --rm testcurl -s -o /dev/null http://rendering-proxy-firefox:8080/http://testserver/image/webp

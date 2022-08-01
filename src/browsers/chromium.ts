@@ -25,6 +25,7 @@ const chromiumOptions = [
 export async function getPuppeteer(): Promise<Browser> {
   const executablePath = process.env.CHROMIUM_EXECUTABLE;
   const browser = await puppeteer.launch({
+    product: 'chrome',
     executablePath,
     args: chromiumOptions,
   });
