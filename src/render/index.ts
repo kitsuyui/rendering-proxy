@@ -1,6 +1,6 @@
 import { type Page, type Browser, type BrowserContext } from 'playwright';
 
-const lifeCycleEvents = [
+export const lifeCycleEvents = [
   'load',
   'domcontentloaded',
   'networkidle',

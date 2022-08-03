@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { lifeCycleEvents, LifecycleEvent } from './render';
 import { server, cli } from './';
 import yargs from 'yargs';
 
@@ -8,13 +9,18 @@ export async function main(): Promise<void> {
       'cli [url]',
       'CLi mode',
       (builder) => {
-        return builder.positional('url', {
-          type: 'string',
-          demandOption: true,
-        });
+        return builder
+          .option('u', {
+            alias: 'waitUntil',
+            default: 'networkidle',
+            choices: lifeCycleEvents,
+          })
+          .positional('url', { type: 'string', demandOption: true });
       },
       async (args) => {
-        await cli.main(args.url);
+        const url = args.url;
+        const waitUntil = args.u as LifecycleEvent;
+        await cli.main({ url, waitUntil });
       }
     )
     .command(
