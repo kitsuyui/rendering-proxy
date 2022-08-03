@@ -26,11 +26,9 @@ describe('browser', () => {
   test('getBrowser with parameters', async () => {
     // Test all parameters
     for (const name of selectableBrowsers) {
-      for (const headless of [true, false]) {
-        const browser = await getBrowser({ name, headless });
-        expect(browser.browserType().name()).toBe(name);
-        await browser.close();
-      }
+      const browser = await getBrowser({ name });
+      expect(browser.browserType().name()).toBe(name);
+      await browser.close();
     }
   });
 
