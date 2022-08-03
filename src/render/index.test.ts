@@ -5,7 +5,6 @@ import { getBrowser } from '../browser';
 import { spawn, type ChildProcess } from 'child_process';
 import sleep from 'sleep-promise';
 
-
 describe('test virtual dom', () => {
   let browser: Browser;
   let reactServer: ChildProcess;
