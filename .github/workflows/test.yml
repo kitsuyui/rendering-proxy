@@ -28,9 +28,7 @@ jobs:
         run: yarn lint
 
       - name: Test
-        run: |
-          PUPPETEER_PRODUCT='chrome' yarn add puppeteer && yarn test
-          PUPPETEER_PRODUCT='firefox' yarn add puppeteer && yarn test
+        run: yarn test
 
       - name: Build
         run: yarn build
