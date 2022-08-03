@@ -1,4 +1,9 @@
-import { getBrowserTypeByName, getBrowser, selectableBrowsers } from './index';
+import {
+  getBrowserTypeByName,
+  getBrowser,
+  selectableBrowsers,
+  withBrowser,
+} from './index';
 
 describe('browser', () => {
   test('getBrowserByName', () => {
@@ -27,5 +32,14 @@ describe('browser', () => {
         await browser.close();
       }
     }
+  });
+
+  test('withBrowser()', async () => {
+    const box = [];
+    for await (const browser of withBrowser()) {
+      box.push(browser);
+      expect(box[0].isConnected()).toBe(true);
+    }
+    expect(box[0].isConnected()).toBe(false);
   });
 });

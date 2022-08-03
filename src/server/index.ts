@@ -2,7 +2,7 @@ import { type Browser } from 'playwright';
 import { excludeUnusedHeaders } from '../lib/headers';
 import { isAbsoluteURL } from '../lib/url';
 import http from 'http';
-import { getBrowser, SelectableBrowsers } from '../browser';
+import { SelectableBrowsers, withBrowser } from '../browser';
 import { getRenderedContent } from '../render';
 
 export function createHandler(browser: Browser) {
@@ -38,7 +38,13 @@ export async function main({
   name = 'chromium',
   headless = true,
 }: { port?: number; name?: SelectableBrowsers; headless?: boolean } = {}) {
-  const browser = await getBrowser({ name, headless });
-  const server = http.createServer(createHandler(browser));
-  server.listen(port);
+  for await (const browser of withBrowser({ name, headless })) {
+    const server = http.createServer(createHandler(browser));
+    server.listen(port);
+    await new Promise((resolve) => {
+      server.on('exit', (err) => {
+        resolve(err);
+      });
+    });
+  }
 }

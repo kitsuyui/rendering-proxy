@@ -33,3 +33,18 @@ export async function getBrowser({
   const browser = await browserType.launch({ headless });
   return browser;
 }
+
+export async function* withBrowser({
+  name = 'chromium',
+  headless = true,
+}: {
+  name?: SelectableBrowsers;
+  headless?: boolean;
+} = {}): AsyncIterable<Browser> {
+  const browser = await getBrowser({ name, headless });
+  try {
+    yield browser;
+  } finally {
+    await browser.close();
+  }
+}
