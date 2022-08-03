@@ -1,19 +1,23 @@
 import { getRenderedContent, type RenderRequest } from '../render';
-import { withBrowser } from '../browser';
+import { withBrowser, SelectableBrowsers } from '../browser';
 import { ensureURLStartsWithProtocolScheme } from '../lib/url';
 import { Writable } from 'stream';
 
-export async function main(request: RenderRequest): Promise<void> {
+interface CLiRequest extends RenderRequest {
+  name: SelectableBrowsers;
+}
+
+export async function main(request: CLiRequest): Promise<void> {
   process.stdout.setEncoding('binary');
   await renderToStream(request, process.stdout);
   process.exit();
 }
 
 export async function renderToStream(
-  request: RenderRequest,
+  request: CLiRequest,
   writable: Writable
 ): Promise<void> {
-  for await (const browser of withBrowser()) {
+  for await (const browser of withBrowser({ name: request.name })) {
     const url_ = ensureURLStartsWithProtocolScheme(request.url);
     const result = await getRenderedContent(browser, {
       url: url_,

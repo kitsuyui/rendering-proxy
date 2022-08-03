@@ -3,7 +3,8 @@ services:
   rendering-proxy-chromium:
     build:
       context: ..
-      dockerfile: ./docker/chromium.Dockerfile
+      dockerfile: ./docker/Dockerfile
+    command: ['server', '--browser=chromium']
     links:
       - "testserver"
     ports:
@@ -12,7 +13,8 @@ services:
   rendering-proxy-firefox:
     build:
       context: ..
-      dockerfile: ./docker/firefox.Dockerfile
+      dockerfile: ./docker/Dockerfile
+    command: ['server', '--browser=firefox']
     links:
       - "testserver"
     ports:
