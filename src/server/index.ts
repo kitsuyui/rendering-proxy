@@ -3,6 +3,7 @@ import { excludeUnusedHeaders } from '../lib/headers';
 import { isAbsoluteURL } from '../lib/url';
 import http from 'http';
 import { getBrowser, SelectableBrowsers } from '../browser';
+import { getRenderedContent } from '../render';
 
 export function createHandler(browser: Browser) {
   return async function renderHandler(
@@ -14,16 +15,13 @@ export function createHandler(browser: Browser) {
     if (!originUrl) return terminateRequestWithEmpty(req, res);
     if (!isAbsoluteURL(originUrl)) return terminateRequestWithEmpty(req, res);
 
-    const context = await browser.newContext();
-    const page = await context.newPage();
-    const response = await page.goto(originUrl);
-    if (!response) return terminateRequestWithEmpty(req, res);
-
-    const body = await response.body();
-    const headers = excludeUnusedHeaders({ ...response.headers() });
-    const status = response.status();
+    const renderedContent = await getRenderedContent(browser, {
+      url: originUrl,
+    });
+    const headers = excludeUnusedHeaders(renderedContent.headers);
+    const status = renderedContent.status;
     res.writeHead(status, headers);
-    res.end(body, 'binary');
+    res.end(renderedContent.body, 'binary');
   };
 }
 
