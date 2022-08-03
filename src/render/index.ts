@@ -1,4 +1,4 @@
-import { type Browser } from 'playwright';
+import { type Page, type Browser, type BrowserContext } from 'playwright';
 
 const lifeCycleEvents = [
   'load',
@@ -41,27 +41,50 @@ export async function getRenderedContent(
 ): Promise<RenderResult> {
   const { url } = request;
   const waitUntil = request.waitUntil || 'networkidle';
-  const context = await browser.newContext();
-  const page = await context.newPage();
-  const response = await page.goto(url, { waitUntil });
 
-  if (!response) return emptyRenderResult();
-  const headers = { ...response.headers() };
-
-  let body;
-  if (isRenderableContentType(headers['content-type'] || '')) {
-    body = Buffer.from(await page.content());
-  } else {
-    body = await response.body();
+  for await (const context of withBrowserContext(browser)) {
+    for await (const page of withPage(context)) {
+      try {
+        const response = await page.goto(url, { waitUntil });
+        if (!response) return emptyRenderResult();
+        const headers = { ...response.headers() };
+        let body;
+        if (isRenderableContentType(headers['content-type'] || '')) {
+          body = Buffer.from(await page.content());
+        } else {
+          body = await response.body();
+        }
+        const status = response.status();
+        return {
+          status,
+          headers,
+          body,
+        };
+      } catch (e) {
+        return emptyRenderResult();
+      }
+    }
   }
+  /* istanbul ignore next */
+  return emptyRenderResult(); // unreachable
+}
 
-  const status = response.status();
-  await page.close();
-  await context.close();
+async function* withBrowserContext(
+  browser: Browser
+): AsyncIterable<BrowserContext> {
+  const context = await browser.newContext();
+  try {
+    yield context;
+  } finally {
+    context.close();
+  }
+}
 
-  return {
-    status,
-    headers,
-    body,
-  };
+async function* withPage(context: BrowserContext): AsyncIterable<Page> {
+  const page = await context.newPage();
+  try {
+    yield page;
+  } finally {
+    page.close();
+  }
 }
