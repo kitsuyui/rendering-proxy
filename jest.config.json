@@ -9,6 +9,7 @@
     "<rootDir>/node_modules/",
     "<rootDir>/dist/"
   ],
+  "collectCoverageFrom": ["src/**/*.ts"],
   "transform": {
     "^.+.(t|j)s?$": ["@swc/jest"]
   },
