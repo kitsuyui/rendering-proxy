@@ -5,6 +5,8 @@ import {
   withBrowser,
 } from './index';
 
+jest.setTimeout(5000);
+
 describe('browser', () => {
   test('getBrowserByName', () => {
     expect(getBrowserTypeByName('chromium').name()).toBe('chromium');
