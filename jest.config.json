@@ -4,7 +4,8 @@
     "**/*.test.ts"
   ],
   "testPathIgnorePatterns": [
-    "<rootDir>/node_modules/"
+    "<rootDir>/node_modules/",
+    "<rootDir>/dist/"
   ],
   "transform": {
     "^.+.(t|j)s?$": ["@swc/jest"]

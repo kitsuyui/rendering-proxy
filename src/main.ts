@@ -1,8 +1,8 @@
 #!/usr/bin/env node
+import { lifeCycleEvents, LifecycleEvent } from './render';
+import { selectableBrowsers, SelectableBrowsers } from './browser';
+import { server, cli } from './';
 import yargs from 'yargs';
-import { serverMain as serverMain } from './server';
-import { cliMain as cliMain } from './cli';
-import type { WaitUntil } from './utils';
 
 export async function main(): Promise<void> {
   yargs
@@ -13,33 +13,43 @@ export async function main(): Promise<void> {
         return builder
           .option('u', {
             alias: 'waitUntil',
-            default: 'load',
-            choices: [
-              'load',
-              'domcontentloaded',
-              'networkidle0',
-              'networkidle2',
-            ],
+            default: 'networkidle',
+            choices: lifeCycleEvents,
           })
-          .option('e', { alias: 'evaluate', default: '', type: 'string' })
+          .option('b', {
+            alias: 'browser',
+            default: 'chromium',
+            choices: selectableBrowsers,
+          })
           .positional('url', { type: 'string', demandOption: true });
       },
       async (args) => {
-        await cliMain(args.url, args.u as WaitUntil, args.e);
+        const url = args.url;
+        const waitUntil = args.u as LifecycleEvent;
+        const browser = args.b as SelectableBrowsers;
+        await cli.main({ url, waitUntil, name: browser });
       }
     )
     .command(
       'server',
       'Server mode',
       (builder) => {
-        return builder.option('p', {
-          alias: 'port',
-          type: 'number',
-          default: 8080,
-        });
+        return builder
+          .option('p', {
+            alias: 'port',
+            type: 'number',
+            default: 8080,
+          })
+          .option('b', {
+            alias: 'browser',
+            default: 'chromium',
+            choices: selectableBrowsers,
+          });
       },
       async (args) => {
-        await serverMain(args.p);
+        const browser = args.b as SelectableBrowsers;
+        const port = args.p as number;
+        await server.main({ port, name: browser });
       }
     )
     .demandCommand(1)
