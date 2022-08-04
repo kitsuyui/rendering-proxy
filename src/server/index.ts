@@ -1,8 +1,10 @@
+import http from 'http';
+
 import { type Browser } from 'playwright';
+
+import { SelectableBrowsers, withBrowser } from '../browser';
 import { excludeUnusedHeaders } from '../lib/headers';
 import { isAbsoluteURL } from '../lib/url';
-import http from 'http';
-import { SelectableBrowsers, withBrowser } from '../browser';
 import { getRenderedContent } from '../render';
 
 export function createHandler(browser: Browser) {

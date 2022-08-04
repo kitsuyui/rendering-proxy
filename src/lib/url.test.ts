@@ -1,4 +1,4 @@
-import { isAbsoluteURL, ensureURLStartsWithProtocolScheme } from './url';
+import { ensureURLStartsWithProtocolScheme, isAbsoluteURL } from './url';
 
 describe('url', () => {
   test('isAbsoluteURL', () => {

@@ -1,9 +1,9 @@
 import {
+  type Browser,
+  type BrowserType,
   chromium,
   firefox,
   webkit,
-  type Browser,
-  type BrowserType,
 } from 'playwright';
 
 export const selectableBrowsers = ['chromium', 'firefox', 'webkit'] as const;

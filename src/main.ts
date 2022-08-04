@@ -1,8 +1,10 @@
 #!/usr/bin/env node
-import { lifeCycleEvents, LifecycleEvent } from './render';
-import { selectableBrowsers, SelectableBrowsers } from './browser';
-import { server, cli } from './';
 import yargs from 'yargs';
+
+import { SelectableBrowsers, selectableBrowsers } from './browser';
+import { LifecycleEvent, lifeCycleEvents } from './render';
+
+import { cli, server } from './';
 
 export async function main(): Promise<void> {
   yargs

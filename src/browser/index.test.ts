@@ -1,9 +1,9 @@
 import {
-  getBrowserTypeByName,
   getBrowser,
+  getBrowserOptionsByName,
+  getBrowserTypeByName,
   selectableBrowsers,
   withBrowser,
-  getBrowserOptionsByName,
 } from './index';
 
 jest.setTimeout(5000);

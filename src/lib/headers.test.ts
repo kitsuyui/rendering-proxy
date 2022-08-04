@@ -1,6 +1,6 @@
 import {
-  excludeHopByHopHeaders,
   excludeContentDependentHeaders,
+  excludeHopByHopHeaders,
   excludeUnusedHeaders,
 } from './headers';
 

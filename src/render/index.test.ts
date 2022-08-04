@@ -1,9 +1,12 @@
-import { getRenderedContent } from './index';
-import cheerio from 'cheerio';
+import { type ChildProcess, spawn } from 'child_process';
+
+import { load as cheerioLoad } from 'cheerio';
 import { type Browser } from 'playwright';
-import { getBrowser } from '../browser';
-import { spawn, type ChildProcess } from 'child_process';
 import sleep from 'sleep-promise';
+
+import { getBrowser } from '../browser';
+
+import { getRenderedContent } from './index';
 
 describe('test virtual dom', () => {
   let browser: Browser;
@@ -26,7 +29,7 @@ describe('test virtual dom', () => {
     const result = await getRenderedContent(browser, {
       url: 'http://localhost:8001/',
     });
-    const dom = cheerio.load(result.body.toString('utf8'));
+    const dom = cheerioLoad(result.body.toString('utf8'));
     expect(dom('h1.title').text()).toEqual('Hello, rendering-proxy!');
     expect(dom('.factorial').text()).toEqual('factorial(5) = 120');
     expect(browser.contexts.length).toBe(0);
@@ -36,7 +39,7 @@ describe('test virtual dom', () => {
     const result = await getRenderedContent(browser, {
       url: 'http://localhost:8002/',
     });
-    const dom = cheerio.load(result.body.toString('utf8'));
+    const dom = cheerioLoad(result.body.toString('utf8'));
     expect(dom('h1.title').text()).toEqual('Hello, rendering-proxy!');
     expect(dom('.fibonacci').text()).toEqual('fibonacci(10) = 55');
     expect(browser.contexts.length).toBe(0);

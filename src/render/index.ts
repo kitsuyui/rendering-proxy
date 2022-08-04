@@ -1,4 +1,4 @@
-import { type Page, type Browser, type BrowserContext } from 'playwright';
+import { type Browser, type BrowserContext, type Page } from 'playwright';
 
 export const lifeCycleEvents = [
   'load',
