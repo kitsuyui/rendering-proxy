@@ -11,6 +11,11 @@ export function createHandler(browser: Browser) {
     res: http.ServerResponse
   ) {
     if (!req.url) return terminateRequestWithEmpty(req, res);
+    if (req.url === '/health/') {
+      res.writeHead(200);
+      res.end('OK');
+      return;
+    }
     const originUrl = req.url.slice(1);
     if (!originUrl) return terminateRequestWithEmpty(req, res);
     if (!isAbsoluteURL(originUrl)) return terminateRequestWithEmpty(req, res);
