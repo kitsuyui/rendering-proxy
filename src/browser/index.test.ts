@@ -3,6 +3,7 @@ import {
   getBrowser,
   selectableBrowsers,
   withBrowser,
+  getBrowserOptionsByName,
 } from './index';
 
 jest.setTimeout(5000);
@@ -41,5 +42,17 @@ describe('browser', () => {
       expect(box[0].isConnected()).toBe(true);
     }
     expect(box[0].isConnected()).toBe(false);
+  });
+
+  test('getBrowserOptionsByName', () => {
+    expect(Array.isArray(getBrowserOptionsByName('chromium'))).toBe(true);
+    expect(Array.isArray(getBrowserOptionsByName('firefox'))).toBe(true);
+    expect(Array.isArray(getBrowserOptionsByName('webkit'))).toBe(true);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    expect(Array.isArray(getBrowserOptionsByName(''))).toBe(true);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    expect(Array.isArray(getBrowserOptionsByName('foobar'))).toBe(true);
   });
 });

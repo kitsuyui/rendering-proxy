@@ -48,7 +48,7 @@ export function getBrowserTypeByName(name: SelectableBrowsers): BrowserType {
   }
 }
 
-function getBrowserOptionsByName(name: SelectableBrowsers): string[] {
+export function getBrowserOptionsByName(name: SelectableBrowsers): string[] {
   switch (name) {
     case 'chromium':
       return chromiumOptions;
