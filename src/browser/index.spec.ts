@@ -8,8 +8,8 @@ import {
 
 jest.setTimeout(5000);
 
-describe('browser', () => {
-  test('getBrowserByName', () => {
+describe('getBrowserByName()', () => {
+  it('returns the browserType with the given name', () => {
     expect(getBrowserTypeByName('chromium').name()).toBe('chromium');
     expect(getBrowserTypeByName('firefox').name()).toBe('firefox');
     expect(getBrowserTypeByName('webkit').name()).toBe('webkit');
@@ -19,14 +19,16 @@ describe('browser', () => {
       getBrowserTypeByName('foobar');
     }).toThrow();
   });
+});
 
-  test('getBrowser() without parameter', async () => {
+describe('getBrowser()', () => {
+  it('returns chromium when without parameters', async () => {
     const browser = await getBrowser();
     expect(browser.browserType().name()).toBe('chromium');
     await browser.close();
   });
 
-  test('getBrowser with parameters', async () => {
+  it('returns the browser with the given name', async () => {
     // Test all parameters
     for (const name of selectableBrowsers) {
       const browser = await getBrowser({ name });
@@ -34,8 +36,10 @@ describe('browser', () => {
       await browser.close();
     }
   });
+});
 
-  test('withBrowser()', async () => {
+describe('withBrowser()', () => {
+  it('dispose of connections correctly', async () => {
     const box = [];
     for await (const browser of withBrowser()) {
       box.push(browser);
@@ -43,11 +47,16 @@ describe('browser', () => {
     }
     expect(box[0].isConnected()).toBe(false);
   });
+});
 
-  test('getBrowserOptionsByName', () => {
+describe('getBrowserOptionsByName', () => {
+  it('returns options array for known browsers', () => {
     expect(Array.isArray(getBrowserOptionsByName('chromium'))).toBe(true);
     expect(Array.isArray(getBrowserOptionsByName('firefox'))).toBe(true);
     expect(Array.isArray(getBrowserOptionsByName('webkit'))).toBe(true);
+  });
+
+  it('returns empty array for unknown browsers', () => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     expect(Array.isArray(getBrowserOptionsByName(''))).toBe(true);

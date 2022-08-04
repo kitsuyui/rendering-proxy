@@ -1,7 +1,9 @@
 {
   "testMatch": [
     "**/*.test.js",
-    "**/*.test.ts"
+    "**/*.test.ts",
+    "**/*.spec.js",
+    "**/*.spec.ts"
   ],
   "testPathIgnorePatterns": [
     "<rootDir>/node_modules/",

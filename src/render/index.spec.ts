@@ -8,7 +8,7 @@ import { getBrowser } from '../browser';
 
 import { getRenderedContent } from './index';
 
-describe('test virtual dom', () => {
+describe('getRenderedContent', () => {
   let browser: Browser;
   let reactServer: ChildProcess;
   let vueServer: ChildProcess;
@@ -25,7 +25,7 @@ describe('test virtual dom', () => {
     vueServer.kill();
   });
 
-  test('React', async () => {
+  it('responses rendered React', async () => {
     const result = await getRenderedContent(browser, {
       url: 'http://localhost:8001/',
     });
@@ -35,7 +35,7 @@ describe('test virtual dom', () => {
     expect(browser.contexts.length).toBe(0);
   });
 
-  test('Vue', async () => {
+  it('responses rendered Vue', async () => {
     const result = await getRenderedContent(browser, {
       url: 'http://localhost:8002/',
     });
@@ -45,7 +45,7 @@ describe('test virtual dom', () => {
     expect(browser.contexts.length).toBe(0);
   });
 
-  test('Image', async () => {
+  it('responses Image', async () => {
     const result = await getRenderedContent(browser, {
       url: 'https://i.picsum.photos/id/188/200/200.jpg?hmac=TipFoTVq-8WOmIswCmTNEcphuYngcdkCBi4YR7Hv6Cw',
     });
@@ -54,7 +54,7 @@ describe('test virtual dom', () => {
     expect(browser.contexts.length).toBe(0);
   });
 
-  test('Empty content', async () => {
+  it('can handle empty response', async () => {
     const result = await getRenderedContent(browser, {
       url: 'https://httpbin.org/status/204',
     });
