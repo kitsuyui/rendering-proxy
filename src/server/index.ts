@@ -7,6 +7,12 @@ import { excludeUnusedHeaders } from '../lib/headers';
 import { isAbsoluteURL } from '../lib/url';
 import { getRenderedContent } from '../render';
 
+interface ServerArgument {
+  port?: number;
+  name?: SelectableBrowsers;
+  headless?: boolean;
+}
+
 export function createHandler(browser: Browser) {
   return async function renderHandler(
     req: http.IncomingMessage,
@@ -32,7 +38,7 @@ export function createHandler(browser: Browser) {
   };
 }
 
-function terminateRequestWithEmpty(
+export function terminateRequestWithEmpty(
   req: http.IncomingMessage,
   res: http.ServerResponse
 ) {
@@ -40,16 +46,35 @@ function terminateRequestWithEmpty(
   res.end();
 }
 
+export async function* withServer({
+  port = 8080,
+  name = 'chromium',
+  headless = true,
+}: ServerArgument = {}): AsyncGenerator<http.Server> {
+  for await (const browser of withBrowser({ name, headless })) {
+    const server = http.createServer(createHandler(browser));
+    await new Promise((resolve) => {
+      server.listen(port, () => {
+        resolve(undefined);
+      });
+    });
+    try {
+      yield server;
+    } finally {
+      server.close();
+    }
+  }
+}
+
 export async function main({
   port = 8080,
   name = 'chromium',
   headless = true,
-}: { port?: number; name?: SelectableBrowsers; headless?: boolean } = {}) {
-  for await (const browser of withBrowser({ name, headless })) {
-    const server = http.createServer(createHandler(browser));
-    server.listen(port);
+}: ServerArgument = {}): Promise<void> {
+  for await (const _ of withServer({ port, name, headless })) {
+    _;
     await new Promise((resolve) => {
-      server.on('exit', (err) => {
+      process.on('exit', (err) => {
         resolve(err);
       });
     });
