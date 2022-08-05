@@ -1,13 +1,12 @@
 import {
-  excludeHopByHopHeaders,
   excludeContentDependentHeaders,
+  excludeHopByHopHeaders,
   excludeUnusedHeaders,
 } from './headers';
 
-describe('headers', () => {
-  test('excludeHopByHopHeaders', () => {
+describe('excludeHopByHopHeaders', () => {
+  it('returns headers excluded hop-by-hop header', () => {
     expect(excludeHopByHopHeaders({})).toStrictEqual({});
-
     expect(
       excludeHopByHopHeaders({
         connection: 'Keep-Alive',
@@ -17,10 +16,11 @@ describe('headers', () => {
       etag: '"3147526947"',
     });
   });
+});
 
-  test('excludeContentDependentHeaders', () => {
+describe('excludeContentDependentHeaders', () => {
+  it('returns headers excluded content-dependent header', () => {
     expect(excludeContentDependentHeaders({})).toStrictEqual({});
-
     expect(
       excludeContentDependentHeaders({
         'content-encoding': 'gzip',
@@ -30,10 +30,11 @@ describe('headers', () => {
       etag: '"3147526947"',
     });
   });
+});
 
-  test('excludeUnusedHeaders', () => {
+describe('excludeUnusedHeaders', () => {
+  it('returns headers excluded that unused by rendering-proxy', () => {
     expect(excludeUnusedHeaders({})).toStrictEqual({});
-
     expect(
       excludeUnusedHeaders({
         connection: 'Keep-Alive',

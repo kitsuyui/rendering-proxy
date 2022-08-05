@@ -1,12 +1,15 @@
 {
   "testMatch": [
     "**/*.test.js",
-    "**/*.test.ts"
+    "**/*.test.ts",
+    "**/*.spec.js",
+    "**/*.spec.ts"
   ],
   "testPathIgnorePatterns": [
     "<rootDir>/node_modules/",
     "<rootDir>/dist/"
   ],
+  "collectCoverageFrom": ["src/**/*.ts"],
   "transform": {
     "^.+.(t|j)s?$": ["@swc/jest"]
   },

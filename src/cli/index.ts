@@ -1,7 +1,8 @@
-import { getRenderedContent, type RenderRequest } from '../render';
-import { withBrowser, SelectableBrowsers } from '../browser';
-import { ensureURLStartsWithProtocolScheme } from '../lib/url';
 import { Writable } from 'stream';
+
+import { SelectableBrowsers, withBrowser } from '../browser';
+import { ensureURLStartsWithProtocolScheme } from '../lib/url';
+import { getRenderedContent, type RenderRequest } from '../render';
 
 interface CLiRequest extends RenderRequest {
   name: SelectableBrowsers;

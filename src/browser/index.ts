@@ -1,9 +1,9 @@
 import {
+  type Browser,
+  type BrowserType,
   chromium,
   firefox,
   webkit,
-  type Browser,
-  type BrowserType,
 } from 'playwright';
 
 export const selectableBrowsers = ['chromium', 'firefox', 'webkit'] as const;
@@ -48,7 +48,7 @@ export function getBrowserTypeByName(name: SelectableBrowsers): BrowserType {
   }
 }
 
-function getBrowserOptionsByName(name: SelectableBrowsers): string[] {
+export function getBrowserOptionsByName(name: SelectableBrowsers): string[] {
   switch (name) {
     case 'chromium':
       return chromiumOptions;
