@@ -6,6 +6,7 @@ import { SelectableBrowsers, withBrowser } from '../browser';
 import { excludeUnusedHeaders } from '../lib/headers';
 import { nestWith, runWith } from '../lib/run_with';
 import { isAbsoluteURL } from '../lib/url';
+import { waitForProcessExit } from '../lib/wait_for_exit';
 import { getRenderedContent } from '../render';
 
 interface ServerArgument {
@@ -14,7 +15,7 @@ interface ServerArgument {
   headless?: boolean;
 }
 
-export function createHandler(browser: Browser) {
+function createHandler(browser: Browser) {
   return async function renderHandler(
     req: http.IncomingMessage,
     res: http.ServerResponse
@@ -80,11 +81,5 @@ export async function main({
   name = 'chromium',
   headless = true,
 }: ServerArgument = {}): Promise<void> {
-  runWith(withServer({ port, name, headless }), async () => {
-    await new Promise((resolve) => {
-      process.on('exit', (err) => {
-        resolve(err);
-      });
-    });
-  });
+  runWith(withServer({ port, name, headless }), waitForProcessExit);
 }
