@@ -1,5 +1,7 @@
 import http, { IncomingMessage } from 'http';
 
+import { runWith } from '../lib/run_with';
+
 import { terminateRequestWithEmpty, withServer } from './index';
 
 describe('terminateRequestWithEmpty', () => {
@@ -21,8 +23,7 @@ describe('terminateRequestWithEmpty', () => {
 describe('withServer', () => {
   it('responses rendered content', async () => {
     const port = 8091;
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    for await (const server of withServer({ port })) {
+    await runWith(withServer({ port }), async () => {
       const res: IncomingMessage = await new Promise((resolve) => {
         return http.get(
           `http://localhost:${port}/https://httpbin.org/json`,
@@ -53,13 +54,12 @@ describe('withServer', () => {
           title: 'Sample Slide Show',
         },
       });
-    }
+    });
   });
 
   it('responses empty when invalid URL', async () => {
     const port = 8092;
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    for await (const _ of withServer({ port })) {
+    await runWith(withServer({ port }), async () => {
       const res: IncomingMessage = await new Promise((resolve) => {
         return http.get(`http://localhost:${port}/`, (res) => {
           return resolve(res);
@@ -67,13 +67,12 @@ describe('withServer', () => {
       });
       expect(res.statusCode).toBe(204);
       expect(res.read()).toBe(null);
-    }
+    });
   });
 
   it('responses health', async () => {
     const port = 8092;
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    for await (const _ of withServer({ port })) {
+    await runWith(withServer({ port }), async () => {
       const res: IncomingMessage = await new Promise((resolve) => {
         return http.get(`http://localhost:${port}/health/`, (res) => {
           return resolve(res);
@@ -81,6 +80,6 @@ describe('withServer', () => {
       });
       expect(res.statusCode).toBe(200);
       expect(res.read().toString('utf8')).toBe('OK');
-    }
+    });
   });
 });

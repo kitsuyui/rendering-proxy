@@ -1,6 +1,7 @@
 import { type Browser } from 'playwright';
 
 import { withPage } from '../browser';
+import { runWith } from '../lib/run_with';
 
 export const lifeCycleEvents = [
   'load',
@@ -44,7 +45,7 @@ export async function getRenderedContent(
   const { url } = request;
   const waitUntil = request.waitUntil || 'networkidle';
 
-  for await (const page of withPage(browser)) {
+  return await runWith(withPage(browser), async (page) => {
     try {
       const response = await page.goto(url, { waitUntil });
       if (!response) return emptyRenderResult();
@@ -64,7 +65,5 @@ export async function getRenderedContent(
     } catch (e) {
       return emptyRenderResult();
     }
-  }
-  /* istanbul ignore next */
-  return emptyRenderResult(); // unreachable
+  });
 }

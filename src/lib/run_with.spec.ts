@@ -1,4 +1,4 @@
-import { runWith } from './run_with';
+import { nestWith, runWith } from './run_with';
 
 class Resource {
   name: string;
@@ -12,7 +12,7 @@ class Resource {
   }
 }
 
-async function* withSomeResource(resource: Resource): AsyncGenerator<Resource> {
+async function* withSomeResource(resource: Resource): AsyncIterable<Resource> {
   try {
     yield resource;
   } finally {
@@ -20,7 +20,7 @@ async function* withSomeResource(resource: Resource): AsyncGenerator<Resource> {
   }
 }
 
-describe('withContext', () => {
+describe('runWith', () => {
   it('dispose will be called', async () => {
     const resource = new Resource('something');
     await runWith(withSomeResource(resource), async (resource) => {
@@ -39,5 +39,41 @@ describe('withContext', () => {
       expect(err.message).toBe('something');
     }
     expect(resource.disposed).toBe(true);
+  });
+});
+
+describe('nestWith', () => {
+  it('dispose will be called', async () => {
+    const resource = new Resource('something');
+    const resource2 = new Resource('something');
+    await runWith(
+      nestWith(withSomeResource(resource), () => {
+        return withSomeResource(resource2);
+      }),
+      async () => {
+        'do nothing';
+      }
+    );
+    expect(resource.disposed).toBe(true);
+    expect(resource2.disposed).toBe(true);
+  });
+
+  it('dispose will be called even if error occured', async () => {
+    const resource = new Resource('something');
+    const resource2 = new Resource('something');
+    try {
+      await runWith(
+        nestWith(withSomeResource(resource), () => {
+          return withSomeResource(resource2);
+        }),
+        async () => {
+          throw new Error('something');
+        }
+      );
+    } catch (err) {
+      expect(err.message).toBe('something');
+    }
+    expect(resource.disposed).toBe(true);
+    expect(resource2.disposed).toBe(true);
   });
 });
