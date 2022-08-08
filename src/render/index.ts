@@ -1,6 +1,6 @@
 import { type Browser } from 'playwright';
 
-import { withBrowserContext, withPage } from '../browser';
+import { withPage } from '../browser';
 
 export const lifeCycleEvents = [
   'load',
@@ -44,27 +44,25 @@ export async function getRenderedContent(
   const { url } = request;
   const waitUntil = request.waitUntil || 'networkidle';
 
-  for await (const context of withBrowserContext(browser)) {
-    for await (const page of withPage(context)) {
-      try {
-        const response = await page.goto(url, { waitUntil });
-        if (!response) return emptyRenderResult();
-        const headers = { ...response.headers() };
-        let body;
-        if (isRenderableContentType(headers['content-type'] || '')) {
-          body = Buffer.from(await page.content());
-        } else {
-          body = await response.body();
-        }
-        const status = response.status();
-        return {
-          status,
-          headers,
-          body,
-        };
-      } catch (e) {
-        return emptyRenderResult();
+  for await (const page of withPage(browser)) {
+    try {
+      const response = await page.goto(url, { waitUntil });
+      if (!response) return emptyRenderResult();
+      const headers = { ...response.headers() };
+      let body;
+      if (isRenderableContentType(headers['content-type'] || '')) {
+        body = Buffer.from(await page.content());
+      } else {
+        body = await response.body();
       }
+      const status = response.status();
+      return {
+        status,
+        headers,
+        body,
+      };
+    } catch (e) {
+      return emptyRenderResult();
     }
   }
   /* istanbul ignore next */

@@ -1,6 +1,5 @@
 import {
   type Browser,
-  type BrowserContext,
   type BrowserType,
   chromium,
   firefox,
@@ -93,19 +92,8 @@ export async function* withBrowser({
   }
 }
 
-export async function* withBrowserContext(
-  browser: Browser
-): AsyncIterable<BrowserContext> {
-  const context = await browser.newContext();
-  try {
-    yield context;
-  } finally {
-    context.close();
-  }
-}
-
-export async function* withPage(context: BrowserContext): AsyncIterable<Page> {
-  const page = await context.newPage();
+export async function* withPage(browser: Browser): AsyncIterable<Page> {
+  const page = await browser.newPage();
   try {
     yield page;
   } finally {
