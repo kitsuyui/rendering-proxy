@@ -6,8 +6,8 @@ export async function runWith<T, S>(
   for await (const item of generator) {
     return await fn(item);
   }
-  // unreachable
-  return undefined as never;
+  /* istanbul ignore next */
+  return undefined as never; // unreachable
 }
 
 export async function* nestWith<T, S>(
