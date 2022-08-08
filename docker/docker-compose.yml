@@ -9,6 +9,8 @@ services:
       - "testserver"
     ports:
       - "8080:8080"
+    environment:
+      - HTTPBIN_URL=http://testserver:8000
     healthcheck:
       test: ["CMD", "curl", "http://127.0.0.1:8080/health/"]
       interval: 1s
@@ -24,6 +26,8 @@ services:
       - "testserver"
     ports:
       - "8081:8080"
+    environment:
+      - HTTPBIN_URL=http://testserver:8000
     healthcheck:
       test: ["CMD", "curl", "http://127.0.0.1:8080/heatlh/"]
       interval: 1s
@@ -31,4 +35,6 @@ services:
       retries: 10
 
   testserver:
+    ports:
+      - "8000:80"
     image: kennethreitz/httpbin@sha256:599fe5e5073102dbb0ee3dbb65f049dab44fa9fc251f6835c9990f8fb196a72b

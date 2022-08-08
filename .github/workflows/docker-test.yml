@@ -13,18 +13,5 @@ jobs:
       - name: Test server mode
         run: |
           docker-compose -f docker/docker-compose.yml up -d
-          sleep 10
-          curl -v -s -o /dev/null http://localhost:8080/http://testserver/json
-          curl -v -s -o /dev/null http://localhost:8080/http://testserver/html
-          curl -v -s -o /dev/null http://localhost:8080/http://testserver/robots.txt
-          curl -v -s -o /dev/null http://localhost:8080/http://testserver/image/jpeg
-          curl -v -s -o /dev/null http://localhost:8080/http://testserver/image/png
-          curl -v -s -o /dev/null http://localhost:8080/http://testserver/image/svg
-          curl -v -s -o /dev/null http://localhost:8080/http://testserver/image/webp
-          curl -v -s -o /dev/null http://localhost:8081/http://testserver/json
-          curl -v -s -o /dev/null http://localhost:8081/http://testserver/html
-          curl -v -s -o /dev/null http://localhost:8081/http://testserver/robots.txt
-          curl -v -s -o /dev/null http://localhost:8081/http://testserver/image/jpeg
-          curl -v -s -o /dev/null http://localhost:8081/http://testserver/image/png
-          curl -v -s -o /dev/null http://localhost:8081/http://testserver/image/svg
-          curl -v -s -o /dev/null http://localhost:8081/http://testserver/image/webp
+          docker-compose -f docker/docker-compose.yml exec -T rendering-proxy-chromium yarn test
+          docker-compose -f docker/docker-compose.yml exec -T rendering-proxy-firefox yarn test
