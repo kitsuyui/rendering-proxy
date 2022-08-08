@@ -4,6 +4,7 @@ import { type Browser } from 'playwright';
 
 import { SelectableBrowsers, withBrowser } from '../browser';
 import { excludeUnusedHeaders } from '../lib/headers';
+import { runWith } from '../lib/run_with';
 import { isAbsoluteURL } from '../lib/url';
 import { getRenderedContent } from '../render';
 
@@ -71,12 +72,11 @@ export async function main({
   name = 'chromium',
   headless = true,
 }: ServerArgument = {}): Promise<void> {
-  for await (const _ of withServer({ port, name, headless })) {
-    _;
+  runWith(withServer({ port, name, headless }), async () => {
     await new Promise((resolve) => {
       process.on('exit', (err) => {
         resolve(err);
       });
     });
-  }
+  });
 }

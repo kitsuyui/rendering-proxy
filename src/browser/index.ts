@@ -83,7 +83,7 @@ export async function* withBrowser({
 }: {
   name?: SelectableBrowsers;
   headless?: boolean;
-} = {}): AsyncIterable<Browser> {
+} = {}): AsyncGenerator<Browser> {
   const browser = await getBrowser({ name, headless });
   try {
     yield browser;
@@ -92,7 +92,7 @@ export async function* withBrowser({
   }
 }
 
-export async function* withPage(browser: Browser): AsyncIterable<Page> {
+export async function* withPage(browser: Browser): AsyncGenerator<Page> {
   const page = await browser.newPage();
   try {
     yield page;

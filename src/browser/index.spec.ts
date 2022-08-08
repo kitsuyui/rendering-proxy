@@ -1,3 +1,7 @@
+import { Browser } from 'playwright';
+
+import { runWith } from '../lib/run_with';
+
 import {
   getBrowser,
   getBrowserOptionsByName,
@@ -40,11 +44,11 @@ describe('getBrowser()', () => {
 
 describe('withBrowser()', () => {
   it('dispose of connections correctly', async () => {
-    const box = [];
-    for await (const browser of withBrowser()) {
+    const box: Browser[] = [];
+    await runWith(withBrowser(), async (browser) => {
       box.push(browser);
       expect(box[0].isConnected()).toBe(true);
-    }
+    });
     expect(box[0].isConnected()).toBe(false);
   });
 });
