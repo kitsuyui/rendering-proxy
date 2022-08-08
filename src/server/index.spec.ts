@@ -22,7 +22,7 @@ describe('withServer', () => {
   it('responses rendered content', async () => {
     const port = 8091;
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    for await (const _ of withServer({ port })) {
+    for await (const server of withServer({ port })) {
       const res: IncomingMessage = await new Promise((resolve) => {
         return http.get(
           `http://localhost:${port}/https://httpbin.org/json`,

@@ -1,4 +1,6 @@
-import { type Browser, type BrowserContext, type Page } from 'playwright';
+import { type Browser } from 'playwright';
+
+import { withBrowserContext, withPage } from '../browser';
 
 export const lifeCycleEvents = [
   'load',
@@ -67,24 +69,4 @@ export async function getRenderedContent(
   }
   /* istanbul ignore next */
   return emptyRenderResult(); // unreachable
-}
-
-async function* withBrowserContext(
-  browser: Browser
-): AsyncIterable<BrowserContext> {
-  const context = await browser.newContext();
-  try {
-    yield context;
-  } finally {
-    context.close();
-  }
-}
-
-async function* withPage(context: BrowserContext): AsyncIterable<Page> {
-  const page = await context.newPage();
-  try {
-    yield page;
-  } finally {
-    page.close();
-  }
 }

@@ -1,8 +1,10 @@
 import {
   type Browser,
+  type BrowserContext,
   type BrowserType,
   chromium,
   firefox,
+  type Page,
   webkit,
 } from 'playwright';
 
@@ -88,5 +90,25 @@ export async function* withBrowser({
     yield browser;
   } finally {
     await browser.close();
+  }
+}
+
+export async function* withBrowserContext(
+  browser: Browser
+): AsyncIterable<BrowserContext> {
+  const context = await browser.newContext();
+  try {
+    yield context;
+  } finally {
+    context.close();
+  }
+}
+
+export async function* withPage(context: BrowserContext): AsyncIterable<Page> {
+  const page = await context.newPage();
+  try {
+    yield page;
+  } finally {
+    await page.close();
   }
 }
