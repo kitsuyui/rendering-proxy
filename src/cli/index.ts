@@ -10,7 +10,6 @@ interface CLiRequest extends RenderRequest {
 }
 
 export async function main(request: CLiRequest): Promise<void> {
-  process.stdout.setEncoding('binary');
   await renderToStream(request, process.stdout);
   process.exit();
 }
@@ -25,6 +24,6 @@ export async function renderToStream(
       url: url_,
       waitUntil: request.waitUntil,
     });
-    writable.write(result.body);
+    writable.write(result.body, 'binary');
   });
 }
