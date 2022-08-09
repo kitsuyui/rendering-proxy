@@ -1,7 +1,6 @@
 import { type Browser } from 'playwright';
 
-import { withPage } from '../browser';
-import { runWith } from '../lib/run_with';
+import { withDispose } from '../lib/with_dispose';
 
 export const lifeCycleEvents = [
   'load',
@@ -45,25 +44,30 @@ export async function getRenderedContent(
   const { url } = request;
   const waitUntil = request.waitUntil || 'networkidle';
 
-  return await runWith(withPage(browser), async (page) => {
+  return await withDispose(async (dispose) => {
+    const page = await browser.newPage();
+    dispose(async () => await page.close());
+
+    let response;
     try {
-      const response = await page.goto(url, { waitUntil });
-      if (!response) return emptyRenderResult();
-      const headers = { ...response.headers() };
-      let body;
-      if (isRenderableContentType(headers['content-type'] || '')) {
-        body = Buffer.from(await page.content());
-      } else {
-        body = await response.body();
-      }
-      const status = response.status();
-      return {
-        status,
-        headers,
-        body,
-      };
-    } catch (e) {
+      response = await page.goto(url, { waitUntil });
+    } catch (error) {
       return emptyRenderResult();
     }
+
+    if (!response) return emptyRenderResult();
+    const headers = { ...response.headers() };
+    let body;
+    if (isRenderableContentType(headers['content-type'] || '')) {
+      body = Buffer.from(await page.content());
+    } else {
+      body = await response.body();
+    }
+    const status = response.status();
+    return {
+      status,
+      headers,
+      body,
+    };
   });
 }

@@ -1,8 +1,8 @@
 import { Writable } from 'stream';
 
-import { SelectableBrowsers, withBrowser } from '../browser';
-import { runWith } from '../lib/run_with';
+import { getBrowser, SelectableBrowsers } from '../browser';
 import { ensureURLStartsWithProtocolScheme } from '../lib/url';
+import { withDispose } from '../lib/with_dispose';
 import { getRenderedContent, type RenderRequest } from '../render';
 
 interface CLiRequest extends RenderRequest {
@@ -18,7 +18,10 @@ export async function renderToStream(
   request: CLiRequest,
   writable: Writable
 ): Promise<void> {
-  await runWith(withBrowser({ name: request.name }), async (browser) => {
+  await withDispose(async (dispose) => {
+    const browser = await getBrowser({ name: request.name });
+    dispose(async () => await browser.close());
+
     const url_ = ensureURLStartsWithProtocolScheme(request.url);
     const result = await getRenderedContent(browser, {
       url: url_,

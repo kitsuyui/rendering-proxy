@@ -1,8 +1,9 @@
 import http, { IncomingMessage } from 'http';
 
-import { runWith } from '../lib/run_with';
+import { getBrowser } from '../browser';
+import { withDispose } from '../lib/with_dispose';
 
-import { terminateRequestWithEmpty, withServer } from './index';
+import { createServer, terminateRequestWithEmpty } from './index';
 
 describe('terminateRequestWithEmpty', () => {
   it('responses nothing', async () => {
@@ -23,7 +24,13 @@ describe('terminateRequestWithEmpty', () => {
 describe('withServer', () => {
   it('responses rendered content', async () => {
     const port = 8091;
-    await runWith(withServer({ port }), async () => {
+    const res = await withDispose(async (dispose) => {
+      const browser = await getBrowser();
+      dispose(async () => await browser.close());
+
+      const server = await createServer({ browser, port });
+      dispose(async () => server.close());
+
       const res: IncomingMessage = await new Promise((resolve) => {
         return http.get(
           `http://localhost:${port}/https://httpbin.org/json`,
@@ -32,34 +39,41 @@ describe('withServer', () => {
           }
         );
       });
-      expect(res.statusCode).toBe(200);
-      expect(JSON.parse(res.read().toString('utf8'))).toStrictEqual({
-        slideshow: {
-          author: 'Yours Truly',
-          date: 'date of publication',
-          slides: [
-            {
-              title: 'Wake up to WonderWidgets!',
-              type: 'all',
-            },
-            {
-              items: [
-                'Why <em>WonderWidgets</em> are great',
-                'Who <em>buys</em> WonderWidgets',
-              ],
-              title: 'Overview',
-              type: 'all',
-            },
-          ],
-          title: 'Sample Slide Show',
-        },
-      });
+      return res;
+    });
+    expect(res.statusCode).toBe(200);
+    expect(JSON.parse(res.read().toString('utf8'))).toStrictEqual({
+      slideshow: {
+        author: 'Yours Truly',
+        date: 'date of publication',
+        slides: [
+          {
+            title: 'Wake up to WonderWidgets!',
+            type: 'all',
+          },
+          {
+            items: [
+              'Why <em>WonderWidgets</em> are great',
+              'Who <em>buys</em> WonderWidgets',
+            ],
+            title: 'Overview',
+            type: 'all',
+          },
+        ],
+        title: 'Sample Slide Show',
+      },
     });
   });
 
   it('responses empty when invalid URL', async () => {
     const port = 8092;
-    await runWith(withServer({ port }), async () => {
+    await withDispose(async (dispose) => {
+      const browser = await getBrowser();
+      dispose(async () => await browser.close());
+
+      const server = await createServer({ browser, port });
+      dispose(async () => server.close());
+
       const res: IncomingMessage = await new Promise((resolve) => {
         return http.get(`http://localhost:${port}/`, (res) => {
           return resolve(res);
@@ -72,14 +86,21 @@ describe('withServer', () => {
 
   it('responses health', async () => {
     const port = 8092;
-    await runWith(withServer({ port }), async () => {
+    const res = await withDispose(async (dispose) => {
+      const browser = await getBrowser();
+      dispose(async () => await browser.close());
+
+      const server = await createServer({ browser, port });
+      dispose(async () => server.close());
+
       const res: IncomingMessage = await new Promise((resolve) => {
         return http.get(`http://localhost:${port}/health/`, (res) => {
           return resolve(res);
         });
       });
-      expect(res.statusCode).toBe(200);
-      expect(res.read().toString('utf8')).toBe('OK');
+      return res;
     });
+    expect(res.statusCode).toBe(200);
+    expect(res.read().toString('utf8')).toBe('OK');
   });
 });
