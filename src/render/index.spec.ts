@@ -7,24 +7,52 @@ import sleep from 'sleep-promise';
 
 import { getBrowser } from '../browser';
 
-import { getRenderedContent } from './index';
+import { getRenderedContent, RenderResult } from './index';
+
+expect.extend({
+  toBeResult(
+    result: RenderResult,
+    tobe: { status: number; size: number; hash: string }
+  ) {
+    const status = result.status;
+    const size = result.body.byteLength;
+    const hash = createHash('sha256').update(result.body).digest('hex');
+    const pass =
+      status === tobe.status && size === tobe.size && hash === tobe.hash;
+    if (pass) {
+      return {
+        message: () => `expected result not to be ${tobe}`,
+        pass: true,
+      };
+    } else {
+      return {
+        message: () => `expected result to be ${tobe}`,
+        pass: false,
+      };
+    }
+  },
+});
 
 describe('getRenderedContent', () => {
+  jest.setTimeout(10000);
   let browser: Browser;
   let reactServer: ChildProcess;
   let vueServer: ChildProcess;
-  const httpbin_url = process.env.HTTPBIN_URL || 'https://httpbin.org';
+  let imageServer: ChildProcess;
+  const httpbin_url = 'https://httpbin.org';
 
   beforeAll(async () => {
     browser = await getBrowser();
     reactServer = spawn('http-server', ['-p', '8001', 'tests/fixtures/react']);
     vueServer = spawn('http-server', ['-p', '8002', 'tests/fixtures/vue']);
+    imageServer = spawn('http-server', ['-p', '8003', 'tests/fixtures/images']);
     await sleep(1000);
   });
   afterAll(async () => {
     await browser.close();
     reactServer.kill();
     vueServer.kill();
+    imageServer.kill();
   });
 
   it('responses rendered React', async () => {
@@ -56,37 +84,58 @@ describe('getRenderedContent', () => {
     expect(browser.contexts.length).toBe(0);
   });
 
-  jest.setTimeout(10000);
-  test('images', async () => {
-    const testCases = [
-      {
-        url: `${httpbin_url}/image/png`,
-        size: 8090,
-        hash: '541a1ef5373be3dc49fc542fd9a65177b664aec01c8d8608f99e6ec95577d8c1',
-      },
-      {
-        url: `${httpbin_url}/image/jpeg`,
-        size: 35588,
-        hash: 'c028d7aa15e851b0eefb31638a1856498a237faf1829050832d3b9b19f9ab75f',
-      },
-      {
-        url: `${httpbin_url}/image/svg`,
-        size: 8984,
-        hash: '5abf3aba483ef89e6c7b482fc2f304bb211f2efc14e4393a4a9e7cce3d81290f',
-      },
-      {
-        url: `${httpbin_url}/image/webp`,
-        size: 10568,
-        hash: '567cfaf94ebaf279cea4eb0bc05c4655021fb4ee004aca52c096709d3ba87a63',
-      },
-    ];
-    for (const { url, size, hash } of testCases) {
-      const result = await getRenderedContent(browser, { url });
-      expect(result.status).toEqual(200);
-      expect(result.body.byteLength).toBe(size);
-      expect(createHash('sha256').update(result.body).digest('hex')).toEqual(
-        hash
-      );
-    }
+  test('image/png', async () => {
+    const result = await getRenderedContent(browser, {
+      url: 'http://localhost:8003/test.png',
+    });
+    expect(result).toBeResult({
+      status: 200,
+      size: 282503,
+      hash: 'ff37ead307f4a31a7d141704daec23a6c79ea29c3cb8e90aa7120a7380fec062',
+    });
+  });
+
+  test('image/jpeg', async () => {
+    const result = await getRenderedContent(browser, {
+      url: 'http://localhost:8003/test.jpg',
+    });
+    expect(result).toBeResult({
+      status: 200,
+      size: 197869,
+      hash: '64a50ee0db19825fe6c508f8f43155c2904c8dcffbe627d86eeef2d6a57e6e5f',
+    });
+  });
+
+  test('image/gif', async () => {
+    const result = await getRenderedContent(browser, {
+      url: 'http://localhost:8003/test.gif',
+    });
+    expect(result).toBeResult({
+      status: 200,
+      size: 120216,
+      hash: 'c467d1c8a71c3985267884d82522adfabc7ce10ff452b60dfe87dbca4a24cf65',
+    });
+  });
+
+  test('image/svg', async () => {
+    const result = await getRenderedContent(browser, {
+      url: 'http://localhost:8003/test.svg',
+    });
+    expect(result).toBeResult({
+      status: 200,
+      size: 2793,
+      hash: 'adba4cd4b28b98bc155c35bcb1eaf8088ce5a5cdba5441e3a811573032b5566f',
+    });
+  });
+
+  test('image/webp', async () => {
+    const result = await getRenderedContent(browser, {
+      url: 'http://localhost:8003/test.webp',
+    });
+    expect(result).toBeResult({
+      status: 200,
+      size: 88066,
+      hash: 'dd6750f655dc1f6b4a151ee368112ee8f2910a46691a338d507fabe1d89d85ed',
+    });
   });
 });
