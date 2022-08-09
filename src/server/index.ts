@@ -9,6 +9,8 @@ import { isAbsoluteURL } from '../lib/url';
 import { waitForProcessExit } from '../lib/wait_for_exit';
 import { getRenderedContent } from '../render';
 
+import { parseRenderingProxyHeader } from './request_options';
+
 interface ServerArgument {
   port?: number;
   name?: SelectableBrowsers;
@@ -30,10 +32,16 @@ export function createHandler(browser: Browser) {
     if (!originUrl) return terminateRequestWithEmpty(req, res);
     if (!isAbsoluteURL(originUrl)) return terminateRequestWithEmpty(req, res);
 
+    const options = parseRenderingProxyHeader(req.headers['x-rendering-proxy']);
     const renderedContent = await getRenderedContent(browser, {
       url: originUrl,
+      ...options,
     });
-    const headers = excludeUnusedHeaders(renderedContent.headers);
+
+    const headers = {
+      ...excludeUnusedHeaders(renderedContent.headers),
+      'x-rendering-proxy': JSON.stringify(renderedContent.evaluateResults),
+    };
     const status = renderedContent.status;
     res.writeHead(status, headers);
     res.end(renderedContent.body, 'binary');

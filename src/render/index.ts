@@ -15,7 +15,7 @@ export interface RenderRequest {
   evaluates?: string[];
 }
 
-interface EvaluateResult {
+export interface EvaluateResult {
   success: boolean;
   script: string;
   result: unknown;
