@@ -3,6 +3,7 @@ import {
   type BrowserType,
   chromium,
   firefox,
+  type Page,
   webkit,
 } from 'playwright';
 
@@ -88,5 +89,14 @@ export async function* withBrowser({
     yield browser;
   } finally {
     await browser.close();
+  }
+}
+
+export async function* withPage(browser: Browser): AsyncIterable<Page> {
+  const page = await browser.newPage();
+  try {
+    yield page;
+  } finally {
+    await page.close();
   }
 }

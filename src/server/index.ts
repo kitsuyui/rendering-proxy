@@ -4,7 +4,9 @@ import { type Browser } from 'playwright';
 
 import { SelectableBrowsers, withBrowser } from '../browser';
 import { excludeUnusedHeaders } from '../lib/headers';
+import { nestWith, runWith } from '../lib/run_with';
 import { isAbsoluteURL } from '../lib/url';
+import { waitForProcessExit } from '../lib/wait_for_exit';
 import { getRenderedContent } from '../render';
 
 interface ServerArgument {
@@ -13,7 +15,7 @@ interface ServerArgument {
   headless?: boolean;
 }
 
-export function createHandler(browser: Browser) {
+function createHandler(browser: Browser) {
   return async function renderHandler(
     req: http.IncomingMessage,
     res: http.ServerResponse
@@ -46,24 +48,32 @@ export function terminateRequestWithEmpty(
   res.end();
 }
 
-export async function* withServer({
+async function* withServerPre(arg: {
+  port: number;
+  browser: Browser;
+}): AsyncIterable<http.Server> {
+  const { port, browser } = arg;
+  const server = http.createServer(createHandler(browser));
+  await new Promise((resolve) => {
+    server.listen(port, () => {
+      resolve(undefined);
+    });
+  });
+  try {
+    yield server;
+  } finally {
+    server.close();
+  }
+}
+
+export function withServer({
   port = 8080,
   name = 'chromium',
   headless = true,
-}: ServerArgument = {}): AsyncGenerator<http.Server> {
-  for await (const browser of withBrowser({ name, headless })) {
-    const server = http.createServer(createHandler(browser));
-    await new Promise((resolve) => {
-      server.listen(port, () => {
-        resolve(undefined);
-      });
-    });
-    try {
-      yield server;
-    } finally {
-      server.close();
-    }
-  }
+}: ServerArgument = {}): AsyncIterable<http.Server> {
+  return nestWith(withBrowser({ name, headless }), (browser) =>
+    withServerPre({ browser, port })
+  );
 }
 
 export async function main({
@@ -71,12 +81,5 @@ export async function main({
   name = 'chromium',
   headless = true,
 }: ServerArgument = {}): Promise<void> {
-  for await (const _ of withServer({ port, name, headless })) {
-    _;
-    await new Promise((resolve) => {
-      process.on('exit', (err) => {
-        resolve(err);
-      });
-    });
-  }
+  runWith(withServer({ port, name, headless }), waitForProcessExit);
 }

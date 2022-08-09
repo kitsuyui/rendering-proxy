@@ -1,4 +1,7 @@
-import { type Browser, type BrowserContext, type Page } from 'playwright';
+import { type Browser } from 'playwright';
+
+import { withPage } from '../browser';
+import { runWith } from '../lib/run_with';
 
 export const lifeCycleEvents = [
   'load',
@@ -42,49 +45,25 @@ export async function getRenderedContent(
   const { url } = request;
   const waitUntil = request.waitUntil || 'networkidle';
 
-  for await (const context of withBrowserContext(browser)) {
-    for await (const page of withPage(context)) {
-      try {
-        const response = await page.goto(url, { waitUntil });
-        if (!response) return emptyRenderResult();
-        const headers = { ...response.headers() };
-        let body;
-        if (isRenderableContentType(headers['content-type'] || '')) {
-          body = Buffer.from(await page.content());
-        } else {
-          body = await response.body();
-        }
-        const status = response.status();
-        return {
-          status,
-          headers,
-          body,
-        };
-      } catch (e) {
-        return emptyRenderResult();
+  return await runWith(withPage(browser), async (page) => {
+    try {
+      const response = await page.goto(url, { waitUntil });
+      if (!response) return emptyRenderResult();
+      const headers = { ...response.headers() };
+      let body;
+      if (isRenderableContentType(headers['content-type'] || '')) {
+        body = Buffer.from(await page.content());
+      } else {
+        body = await response.body();
       }
+      const status = response.status();
+      return {
+        status,
+        headers,
+        body,
+      };
+    } catch (e) {
+      return emptyRenderResult();
     }
-  }
-  /* istanbul ignore next */
-  return emptyRenderResult(); // unreachable
-}
-
-async function* withBrowserContext(
-  browser: Browser
-): AsyncIterable<BrowserContext> {
-  const context = await browser.newContext();
-  try {
-    yield context;
-  } finally {
-    context.close();
-  }
-}
-
-async function* withPage(context: BrowserContext): AsyncIterable<Page> {
-  const page = await context.newPage();
-  try {
-    yield page;
-  } finally {
-    page.close();
-  }
+  });
 }

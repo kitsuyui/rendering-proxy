@@ -19,6 +19,14 @@ jobs:
           cache: yarn
           cache-dependency-path: yarn.lock
 
+      - name: cache playwright
+        uses: actions/cache@v3
+        id: playwright-cache
+        with:
+          path: |
+            ~/.cache/ms-playwright
+          key: cache-playwright-{{ matrix.node-version }}
+
       - name: Install dependencies
         run: |
           yarn install

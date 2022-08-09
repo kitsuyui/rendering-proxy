@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`main main 1`] = `
+Array [
+  "User-agent: *
+Disallow: /deny
+",
+]
+`;
+
+exports[`renderToStream render 1`] = `
+Array [
+  "User-agent: *
+Disallow: /deny
+",
+]
+`;
