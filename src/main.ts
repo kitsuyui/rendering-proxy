@@ -13,6 +13,7 @@ type ParsedArgs =
       url: string;
       p: number;
       b: string;
+      e: string[];
       _: (string | number)[];
       $0: string;
     }
@@ -40,6 +41,11 @@ export async function parseArgs(args: string[]): Promise<ParsedArgs> {
           default: 'chromium',
           choices: selectableBrowsers,
         })
+        .option('e', {
+          alias: 'evaluate',
+          default: [],
+          array: true,
+        })
         .positional('url', { type: 'string', demandOption: true });
     })
     .command('server', 'Server mode', (builder) => {
@@ -66,6 +72,7 @@ export async function main(): Promise<void> {
       url: argv.url,
       waitUntil: argv.u as LifecycleEvent,
       name: argv.b as SelectableBrowsers,
+      evaluates: argv.e as string[],
     });
   } else if (argv._[0] === 'server') {
     await server.main({
