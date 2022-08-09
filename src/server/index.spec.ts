@@ -1,7 +1,8 @@
 import http, { IncomingMessage } from 'http';
 
+import { runWithDefer } from 'with-defer';
+
 import { getBrowser } from '../browser';
-import { withDispose } from '../lib/with_dispose';
 
 import { createServer, terminateRequestWithEmpty } from './index';
 
@@ -24,12 +25,12 @@ describe('terminateRequestWithEmpty', () => {
 describe('withServer', () => {
   it('responses rendered content', async () => {
     const port = 8091;
-    const res = await withDispose(async (dispose) => {
+    const res = await runWithDefer(async (defer) => {
       const browser = await getBrowser();
-      dispose(async () => await browser.close());
+      defer(() => browser.close());
 
       const server = await createServer({ browser, port });
-      dispose(async () => server.close());
+      defer(() => server.close());
 
       const res: IncomingMessage = await new Promise((resolve) => {
         return http.get(
@@ -67,12 +68,12 @@ describe('withServer', () => {
 
   it('responses empty when invalid URL', async () => {
     const port = 8092;
-    await withDispose(async (dispose) => {
+    await runWithDefer(async (defer) => {
       const browser = await getBrowser();
-      dispose(async () => await browser.close());
+      defer(() => browser.close());
 
       const server = await createServer({ browser, port });
-      dispose(async () => server.close());
+      defer(() => server.close());
 
       const res: IncomingMessage = await new Promise((resolve) => {
         return http.get(`http://localhost:${port}/`, (res) => {
@@ -86,12 +87,12 @@ describe('withServer', () => {
 
   it('responses health', async () => {
     const port = 8092;
-    const res = await withDispose(async (dispose) => {
+    const res = await runWithDefer(async (defer) => {
       const browser = await getBrowser();
-      dispose(async () => await browser.close());
+      defer(() => browser.close());
 
       const server = await createServer({ browser, port });
-      dispose(async () => server.close());
+      defer(() => server.close());
 
       const res: IncomingMessage = await new Promise((resolve) => {
         return http.get(`http://localhost:${port}/health/`, (res) => {

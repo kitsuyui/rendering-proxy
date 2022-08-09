@@ -3882,6 +3882,11 @@ which@^2.0.1:
   dependencies:
     isexe "^2.0.0"
 
+with-defer@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/with-defer/-/with-defer-1.0.0.tgz#e14fc348900462c180a734457a5573c164afa30c"
+  integrity sha512-U4RvEJ+XgR5LnguENfI+KTpvb/QO/wllzXB8qfj+7p926qz3EPADAnWapF0gn1jXltt4EYM5Nq99x6ru5vMJfQ==
+
 word-wrap@^1.2.3:
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/word-wrap/-/word-wrap-1.2.3.tgz#610636f6b1f703891bd34771ccb17fb93b47079c"

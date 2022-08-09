@@ -1,6 +1,5 @@
 import { Browser } from 'playwright';
-
-import { withDispose } from '../lib/with_dispose';
+import { runWithDefer } from 'with-defer';
 
 import {
   getBrowser,
@@ -44,10 +43,10 @@ describe('getBrowser()', () => {
 describe('withBrowser()', () => {
   it('dispose of connections correctly', async () => {
     const box: Browser[] = [];
-    await withDispose(async (dispose) => {
+    await runWithDefer(async (defer) => {
       const browser = await getBrowser();
       box.push(browser);
-      dispose(async () => await browser.close());
+      defer(() => browser.close());
     });
     expect(box[0].isConnected()).toBe(false);
   });
