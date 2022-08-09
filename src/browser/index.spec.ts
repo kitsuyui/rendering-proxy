@@ -1,13 +1,12 @@
 import { Browser } from 'playwright';
 
-import { runWith } from '../lib/run_with';
+import { withDispose } from '../lib/with_dispose';
 
 import {
   getBrowser,
   getBrowserOptionsByName,
   getBrowserTypeByName,
   selectableBrowsers,
-  withBrowser,
 } from './index';
 
 jest.setTimeout(5000);
@@ -45,9 +44,10 @@ describe('getBrowser()', () => {
 describe('withBrowser()', () => {
   it('dispose of connections correctly', async () => {
     const box: Browser[] = [];
-    await runWith(withBrowser(), async (browser) => {
+    await withDispose(async (dispose) => {
+      const browser = await getBrowser();
       box.push(browser);
-      expect(box[0].isConnected()).toBe(true);
+      dispose(async () => await browser.close());
     });
     expect(box[0].isConnected()).toBe(false);
   });

@@ -2,11 +2,11 @@ import http from 'http';
 
 import { type Browser } from 'playwright';
 
-import { SelectableBrowsers, withBrowser } from '../browser';
+import { getBrowser, SelectableBrowsers } from '../browser';
 import { excludeUnusedHeaders } from '../lib/headers';
-import { nestWith, runWith } from '../lib/run_with';
 import { isAbsoluteURL } from '../lib/url';
 import { waitForProcessExit } from '../lib/wait_for_exit';
+import { withDispose } from '../lib/with_dispose';
 import { getRenderedContent } from '../render';
 
 interface ServerArgument {
@@ -15,7 +15,7 @@ interface ServerArgument {
   headless?: boolean;
 }
 
-function createHandler(browser: Browser) {
+export function createHandler(browser: Browser) {
   return async function renderHandler(
     req: http.IncomingMessage,
     res: http.ServerResponse
@@ -40,6 +40,22 @@ function createHandler(browser: Browser) {
   };
 }
 
+export async function createServer({
+  browser,
+  port = 8080,
+}: {
+  browser: Browser;
+  port: number;
+}): Promise<http.Server> {
+  const server = http.createServer(createHandler(browser));
+  await new Promise((resolve) => {
+    server.listen(port, () => {
+      resolve(undefined);
+    });
+  });
+  return server;
+}
+
 export function terminateRequestWithEmpty(
   req: http.IncomingMessage,
   res: http.ServerResponse
@@ -48,38 +64,18 @@ export function terminateRequestWithEmpty(
   res.end();
 }
 
-async function* withServerPre(arg: {
-  port: number;
-  browser: Browser;
-}): AsyncIterable<http.Server> {
-  const { port, browser } = arg;
-  const server = http.createServer(createHandler(browser));
-  await new Promise((resolve) => {
-    server.listen(port, () => {
-      resolve(undefined);
-    });
-  });
-  try {
-    yield server;
-  } finally {
-    server.close();
-  }
-}
-
-export function withServer({
-  port = 8080,
-  name = 'chromium',
-  headless = true,
-}: ServerArgument = {}): AsyncIterable<http.Server> {
-  return nestWith(withBrowser({ name, headless }), (browser) =>
-    withServerPre({ browser, port })
-  );
-}
-
 export async function main({
   port = 8080,
   name = 'chromium',
   headless = true,
 }: ServerArgument = {}): Promise<void> {
-  runWith(withServer({ port, name, headless }), waitForProcessExit);
+  await withDispose(async (dispose) => {
+    const browser = await getBrowser({ name, headless });
+    dispose(async () => await browser.close());
+
+    const server = await createServer({ browser, port });
+    dispose(async () => server.close());
+
+    await waitForProcessExit();
+  });
 }

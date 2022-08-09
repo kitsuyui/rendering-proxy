@@ -3,7 +3,6 @@ import {
   type BrowserType,
   chromium,
   firefox,
-  type Page,
   webkit,
 } from 'playwright';
 
@@ -75,28 +74,4 @@ export async function getBrowser({
     args: getBrowserOptionsByName(name),
   });
   return browser;
-}
-
-export async function* withBrowser({
-  name = 'chromium',
-  headless = true,
-}: {
-  name?: SelectableBrowsers;
-  headless?: boolean;
-} = {}): AsyncIterable<Browser> {
-  const browser = await getBrowser({ name, headless });
-  try {
-    yield browser;
-  } finally {
-    await browser.close();
-  }
-}
-
-export async function* withPage(browser: Browser): AsyncIterable<Page> {
-  const page = await browser.newPage();
-  try {
-    yield page;
-  } finally {
-    await page.close();
-  }
 }
