@@ -12,12 +12,20 @@ export type LifecycleEvent = typeof lifeCycleEvents[number];
 export interface RenderRequest {
   url: string;
   waitUntil?: LifecycleEvent;
+  evaluates?: string[];
+}
+
+interface EvaluateResult {
+  success: boolean;
+  script: string;
+  result: unknown;
 }
 
 export interface RenderResult {
   status: number;
   headers: { [key: string]: string };
   body: Buffer;
+  evaluateResults: EvaluateResult[];
 }
 
 function emptyRenderResult(): RenderResult {
@@ -25,6 +33,7 @@ function emptyRenderResult(): RenderResult {
     status: 204,
     headers: {},
     body: Buffer.from(''),
+    evaluateResults: [],
   };
 }
 
@@ -48,8 +57,19 @@ export async function getRenderedContent(
     defer(() => page.close());
 
     let response;
+    const evaluateResults = [];
     try {
       response = await page.goto(url, { waitUntil });
+      if (request.evaluates) {
+        for (const evaluate of request.evaluates) {
+          try {
+            const result = await page.evaluate(evaluate, { waitUntil });
+            evaluateResults.push({ success: true, result, script: evaluate });
+          } catch (error) {
+            evaluateResults.push({ success: false, result: String(error), script: evaluate });
+          }
+        }
+      }
     } catch (error) {
       return emptyRenderResult();
     }
@@ -67,6 +87,7 @@ export async function getRenderedContent(
       status,
       headers,
       body,
+      evaluateResults,
     };
   });
 }
