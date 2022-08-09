@@ -1,6 +1,5 @@
 import { type Browser } from 'playwright';
-
-import { withDispose } from '../lib/with_dispose';
+import { runWithDefer } from 'with-defer';
 
 export const lifeCycleEvents = [
   'load',
@@ -44,9 +43,9 @@ export async function getRenderedContent(
   const { url } = request;
   const waitUntil = request.waitUntil || 'networkidle';
 
-  return await withDispose(async (dispose) => {
+  return await runWithDefer(async (defer) => {
     const page = await browser.newPage();
-    dispose(async () => await page.close());
+    defer(() => page.close());
 
     let response;
     try {

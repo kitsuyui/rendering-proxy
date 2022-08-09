@@ -1,12 +1,12 @@
 import http from 'http';
 
 import { type Browser } from 'playwright';
+import { runWithDefer } from 'with-defer';
 
 import { getBrowser, SelectableBrowsers } from '../browser';
 import { excludeUnusedHeaders } from '../lib/headers';
 import { isAbsoluteURL } from '../lib/url';
 import { waitForProcessExit } from '../lib/wait_for_exit';
-import { withDispose } from '../lib/with_dispose';
 import { getRenderedContent } from '../render';
 
 interface ServerArgument {
@@ -69,12 +69,12 @@ export async function main({
   name = 'chromium',
   headless = true,
 }: ServerArgument = {}): Promise<void> {
-  await withDispose(async (dispose) => {
+  await runWithDefer(async (defer) => {
     const browser = await getBrowser({ name, headless });
-    dispose(async () => await browser.close());
+    defer(() => browser.close());
 
     const server = await createServer({ browser, port });
-    dispose(async () => server.close());
+    defer(() => server.close());
 
     await waitForProcessExit();
   });
