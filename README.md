@@ -16,22 +16,50 @@ So this library provides simplicity in these cases:
 - Text browsers
 - Command line interface like curl wget
 
+# Installation
+
+published on [npm](https://www.npmjs.com/package/rendering-proxy)
+
+```sh
+$ npm install rendering-proxy
+```
+
+```sh
+$ yarn add rendering-proxy
+```
+
 # Usage
 
-## Server mode
-
 ```console
-$ docker run -d -p 8080:8080 kitsuyui/rendering-proxy
-$ curl localhost:8080/https://example.com/
-<html><head>
-...
-</body></html>
+$ rendering-proxy --help
+rendering-proxy <command>
+
+Commands:
+  rendering-proxy cli [url]  CLi mode
+  rendering-proxy server     Server mode
+
+Options:
+  --version  Show version number                                       [boolean]
+  --help     Show help                                                 [boolean]
 ```
 
 ## CLI mode
 
 ```console
-$ docker run --rm kitsuyui/rendering-proxy cli https://example.com/
+$ yarn run rendering-proxy cli https://example.com/
+<html><head>
+...
+</body></html>
+```
+
+## Server mode
+
+```console
+$ yarn run rendering-proxy server --port=8080
+```
+
+```console
+$ curl http://localhost:8080/https://example.com/
 <html><head>
 ...
 </body></html>
@@ -44,7 +72,7 @@ $ docker run --rm kitsuyui/rendering-proxy cli https://example.com/
 When `-e`, `--evaluate` is specified, JavaScript code is evaluated before getting DOM.
 
 ```console
-$ yarn ts-node src/main.ts cli https://example.com/ -e 'document.title = "updated"' -e 'document.title += " twice"'
+$ yarn run rendering-proxy cli https://example.com/ -e 'document.title = "updated"' -e 'document.title += " twice"'
 <!DOCTYPE html><html><head>
     <title>updated twice</title>
 ...
