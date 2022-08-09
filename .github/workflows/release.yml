@@ -27,7 +27,11 @@ jobs:
       - name: update version
         if: github.event_name == 'release'
         run: |
+          git config user.email "dummy@dummy"
+          git config user.name "dummy"
           npm version from-git --allow-same-version
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - run: npm pack
 
