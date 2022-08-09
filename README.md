@@ -41,12 +41,15 @@ $ docker run --rm kitsuyui/rendering-proxy cli https://example.com/
 
 #### evaluate
 
-When `--evaluate` is specified, JavaScript code is evaluated before getting DOM.
+When `-e`, `--evaluate` is specified, JavaScript code is evaluated before getting DOM.
 
 ```console
-$ docker run --rm kitsuyui/rendering-proxy cli https://example.com/ --evaluate 'document.write("yay")'
-<html><head></head><body>yay</body></html>
+$ yarn ts-node src/main.ts cli https://example.com/ -e 'document.title = "updated"' -e 'document.title += " twice"'
+<!DOCTYPE html><html><head>
+    <title>updated twice</title>
+...
 ```
+
 ## LICENSE
 
 The 3-Clause BSD License. See also LICENSE file.

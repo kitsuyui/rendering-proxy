@@ -66,7 +66,11 @@ export async function getRenderedContent(
             const result = await page.evaluate(evaluate, { waitUntil });
             evaluateResults.push({ success: true, result, script: evaluate });
           } catch (error) {
-            evaluateResults.push({ success: false, result: String(error), script: evaluate });
+            evaluateResults.push({
+              success: false,
+              result: String(error),
+              script: evaluate,
+            });
           }
         }
       }

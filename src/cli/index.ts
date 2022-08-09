@@ -27,6 +27,7 @@ export async function renderToStream(
     const result = await getRenderedContent(browser, {
       url: url_,
       waitUntil: request.waitUntil,
+      evaluates: request.evaluates,
     });
     writable.write(result.body, 'binary');
   });

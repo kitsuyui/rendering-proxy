@@ -180,4 +180,15 @@ describe('getRenderedContent with evaluates', () => {
     expect(result.evaluateResults[2].script).toBe('navigator.userAgent');
     expect(result.evaluateResults[2].result).toContain('Mozilla/5.0');
   });
+
+  it('can update content body', async () => {
+    const result = await getRenderedContent(browser, {
+      url: 'http://example.com/',
+      evaluates: ['document.title = "Updated Title"'],
+    });
+    expect(result.evaluateResults[0].script).toBe(
+      'document.title = "Updated Title"'
+    );
+    expect(result.evaluateResults[0].result).toBe('Updated Title');
+  });
 });
