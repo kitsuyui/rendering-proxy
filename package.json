@@ -22,7 +22,7 @@
     "dist"
   ],
   "devDependencies": {
-    "@swc/core": "1.2.239",
+    "@swc/core": "1.2.241",
     "@swc/jest": "0.2.22",
     "@types/cheerio": "0.22.31",
     "@types/jest": "28.1.7",
