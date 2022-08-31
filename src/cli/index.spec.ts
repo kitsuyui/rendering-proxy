@@ -22,15 +22,19 @@ describe('renderToStream', () => {
 
 describe('main', () => {
   let called = false;
-  const outputs = [];
-  jest.spyOn(process, 'exit').mockImplementation(() => {
+  const outputs: string[] = [];
+  jest.spyOn(process, 'exit').mockImplementation(((
+    code?: number | undefined
+  ): void => {
     called = true;
-    process.emit('exit');
-  });
+    process.emit('exit', code ?? 0);
+  }) as (code?: number | undefined) => never);
 
-  jest.spyOn(process.stdout, 'write').mockImplementation((arg: Buffer) => {
-    outputs.push(arg.toString('utf8'));
-  });
+  jest.spyOn(process.stdout, 'write').mockImplementation(((
+    str: string | Uint8Array
+  ) => {
+    outputs.push(str.toString());
+  }) as (str: string | Uint8Array, encoding?: BufferEncoding | undefined) => never);
 
   it('main', async () => {
     expect(called).toBe(false);

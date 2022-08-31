@@ -5,6 +5,7 @@ import {
   firefox,
   webkit,
 } from 'playwright';
+import sleep from 'sleep-promise';
 
 export const selectableBrowsers = ['chromium', 'firefox', 'webkit'] as const;
 export type SelectableBrowsers = typeof selectableBrowsers[number];
@@ -73,5 +74,9 @@ export async function getBrowser({
     headless,
     args: getBrowserOptionsByName(name),
   });
+  // Wait for the browser to be ready.
+  while (!browser.isConnected()) {
+    await sleep(100);
+  }
   return browser;
 }
