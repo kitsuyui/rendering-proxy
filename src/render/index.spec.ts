@@ -9,29 +9,48 @@ import { getBrowser } from '../browser';
 
 import { getRenderedContent, RenderResult } from './index';
 
-expect.extend({
-  toBeResult(
-    result: RenderResult,
-    tobe: { status: number; size: number; hash: string }
-  ) {
-    const status = result.status;
-    const size = result.body.byteLength;
-    const hash = createHash('sha256').update(result.body).digest('hex');
-    const pass =
-      status === tobe.status && size === tobe.size && hash === tobe.hash;
-    if (pass) {
-      return {
-        message: () => `expected result not to be ${tobe}`,
-        pass: true,
-      };
-    } else {
-      return {
-        message: () => `expected result to be ${tobe}`,
-        pass: false,
-      };
-    }
-  },
-});
+interface ToBe {
+  status: number;
+  size: number;
+  hash: string;
+}
+
+function toBeResult(result: RenderResult, tobe: ToBe) {
+  const status = result.status;
+  const size = result.body.byteLength;
+  const hash = createHash('sha256').update(result.body).digest('hex');
+  const pass =
+    status === tobe.status && size === tobe.size && hash === tobe.hash;
+  if (pass) {
+    return {
+      message: () => `expected result not to be ${tobe}`,
+      pass: true,
+    };
+  } else {
+    return {
+      message: () => `expected result to be ${tobe}`,
+      pass: false,
+    };
+  }
+}
+
+export interface CustomMatchers<R = unknown> {
+  toBeResult(tobe: ToBe): R;
+}
+
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace jest {
+    // eslint-disable-next-line @typescript-eslint/no-empty-interface
+    interface Expect extends CustomMatchers {}
+    // eslint-disable-next-line @typescript-eslint/no-empty-interface
+    interface Matchers<R> extends CustomMatchers<R> {}
+    // eslint-disable-next-line @typescript-eslint/no-empty-interface
+    interface InverseAsymmetricMatchers extends CustomMatchers {}
+  }
+}
+
+expect.extend({ toBeResult });
 
 describe('getRenderedContent', () => {
   jest.setTimeout(10000);
