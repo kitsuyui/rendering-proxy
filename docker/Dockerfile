@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/playwright:v1.26.1-focal
+FROM mcr.microsoft.com/playwright:v1.27.0-focal
 
 WORKDIR /app
 RUN mkdir -p /app
