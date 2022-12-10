@@ -28,7 +28,7 @@
     "@types/cheerio": "0.22.31",
     "@types/jest": "29.2.4",
     "@types/node": "18.11.10",
-    "@types/yargs": "17.0.15",
+    "@types/yargs": "17.0.17",
     "@typescript-eslint/eslint-plugin": "5.46.0",
     "@typescript-eslint/parser": "5.46.0",
     "cheerio": "1.0.0-rc.12",
