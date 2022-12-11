@@ -27,7 +27,7 @@
     "@swc/jest": "0.2.24",
     "@types/cheerio": "0.22.31",
     "@types/jest": "29.2.4",
-    "@types/node": "18.11.10",
+    "@types/node": "18.11.13",
     "@types/yargs": "17.0.17",
     "@typescript-eslint/eslint-plugin": "5.46.0",
     "@typescript-eslint/parser": "5.46.0",
