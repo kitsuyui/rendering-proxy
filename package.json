@@ -1,9 +1,9 @@
 {
   "dependencies": {
     "playwright": "^1.24.2",
+    "sleep-promise": "^9.0.0",
     "with-defer": "^1.0.0",
-    "yargs": "^17.5.1",
-    "sleep-promise": "^9.0.0"
+    "yargs": "^17.5.1"
   },
   "scripts": {
     "build": "tsc",
