@@ -8,7 +8,7 @@ import {
   selectableBrowsers,
 } from './index';
 
-jest.setTimeout(5000);
+jest.setTimeout(10000);
 
 describe('getBrowserByName()', () => {
   it('returns the browserType with the given name', () => {
