@@ -7,7 +7,7 @@ export const lifeCycleEvents = [
   'networkidle',
   'commit',
 ] as const;
-export type LifecycleEvent = typeof lifeCycleEvents[number];
+export type LifecycleEvent = (typeof lifeCycleEvents)[number];
 
 export interface RenderRequest {
   url: string;

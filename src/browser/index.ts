@@ -8,7 +8,7 @@ import {
 import sleep from 'sleep-promise';
 
 export const selectableBrowsers = ['chromium', 'firefox', 'webkit'] as const;
-export type SelectableBrowsers = typeof selectableBrowsers[number];
+export type SelectableBrowsers = (typeof selectableBrowsers)[number];
 
 const chromiumOptions = [
   '--disable-accelerated-2d-canvas',
