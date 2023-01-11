@@ -34,7 +34,7 @@
     "cheerio": "1.0.0-rc.12",
     "eslint": "8.31.0",
     "eslint-config-prettier": "8.6.0",
-    "eslint-import-resolver-typescript": "3.5.2",
+    "eslint-import-resolver-typescript": "3.5.3",
     "eslint-plugin-import": "2.26.0",
     "eslint-plugin-unused-imports": "2.0.0",
     "http-server": "14.1.1",
