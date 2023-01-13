@@ -1,4 +1,4 @@
-.circleci/
+.github/
 .gitignore.in
 node_modules
 renovate.json
