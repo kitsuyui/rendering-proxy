@@ -6,80 +6,77 @@ import { LifecycleEvent, lifeCycleEvents } from './render';
 
 import { cli, server } from './';
 
-type ParsedArgs =
-  | {
-      [x: string]: unknown;
-      u: string;
-      url: string;
-      p: number;
-      b: string;
-      e: string[];
-      _: (string | number)[];
-      $0: string;
-    }
-  | {
-      [x: string]: unknown;
-      u: string;
-      url: string;
-      p: number;
-      b: string;
-      _: (string | number)[];
-      $0: string;
-    };
-
-export async function parseArgs(args: string[]): Promise<ParsedArgs> {
-  return await yargs(args)
-    .command('cli [url]', 'CLi mode', (builder) => {
-      return builder
-        .option('u', {
-          alias: 'waitUntil',
-          default: 'networkidle',
-          choices: lifeCycleEvents,
-        })
-        .option('b', {
-          alias: 'browser',
-          default: 'chromium',
-          choices: selectableBrowsers,
-        })
-        .option('e', {
-          alias: 'evaluate',
-          default: [],
-          array: true,
-        })
-        .positional('url', { type: 'string', demandOption: true });
-    })
-    .command('server', 'Server mode', (builder) => {
-      return builder
-        .option('p', {
-          alias: 'port',
-          type: 'number',
-          default: 8080,
-        })
-        .option('b', {
-          alias: 'browser',
-          default: 'chromium',
-          choices: selectableBrowsers,
-        });
-    })
-    .demandCommand(1)
-    .help().argv;
-}
-
 export async function main(): Promise<void> {
-  const argv = await parseArgs(process.argv.slice(2));
-  if (argv._[0] === 'cli') {
-    await cli.main({
-      url: argv.url,
-      waitUntil: argv.u as LifecycleEvent,
-      name: argv.b as SelectableBrowsers,
-      evaluates: argv.e as string[],
-    });
-  } else if (argv._[0] === 'server') {
-    await server.main({
-      port: argv.p,
-      name: argv.b as SelectableBrowsers,
-    });
-  }
+  yargs
+    .command(
+      'cli',
+      'Render a page from the command line',
+      (yargs) => {
+        return yargs
+          .option('url', {
+            alias: 'u',
+            type: 'string',
+            description: 'URL to render',
+            demandOption: true,
+          })
+          .option('waitUntil', {
+            alias: 'w',
+            type: 'string',
+            description: 'Wait until the page is loaded',
+            choices: lifeCycleEvents,
+            default: 'load',
+          })
+          .option('browser', {
+            alias: 'b',
+            type: 'string',
+            description: 'Browser to use',
+            choices: selectableBrowsers,
+            default: 'chromium',
+          })
+          .option('evaluate', {
+            alias: 'e',
+            type: 'array',
+            description: 'Evaluate JavaScript in the page',
+            default: [],
+          });
+      },
+      async (argv) => {
+        await cli.main({
+          url: argv.url,
+          waitUntil: argv.waitUntil as LifecycleEvent,
+          name: argv.browser as SelectableBrowsers,
+          evaluates: argv.evaluate as string[],
+        });
+      }
+    )
+    .command(
+      'server',
+      'Start a rendering proxy server',
+      (yargs) => {
+        return yargs
+          .option('port', {
+            alias: 'p',
+            type: 'number',
+            description: 'Port to listen',
+            default: 8080,
+          })
+          .option('browser', {
+            alias: 'b',
+            type: 'string',
+            description: 'Browser to use',
+            choices: selectableBrowsers,
+            default: 'chromium',
+          });
+      },
+      async (argv) => {
+        await server.main({
+          port: argv.port,
+          name: argv.browser as SelectableBrowsers,
+        });
+      }
+    )
+    .demandCommand(1, 'You need at least one command before moving on')
+    .help().argv;
 }
 
 if (require.main === module) {
