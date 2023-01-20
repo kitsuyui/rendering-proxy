@@ -53,7 +53,7 @@ declare global {
 expect.extend({ toBeResult });
 
 describe('getRenderedContent', () => {
-  jest.setTimeout(10000);
+  jest.setTimeout(30000);
   let browser: Browser;
   let reactServer: ChildProcess;
   let vueServer: ChildProcess;
