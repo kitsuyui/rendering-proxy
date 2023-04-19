@@ -12,6 +12,10 @@ services:
       interval: 1s
       timeout: 1s
       retries: 10
+    links:
+      - httpbin
+    environment:
+      - RUNNING_IN_DOCKER=true
 
   rendering-proxy-firefox:
     build:
@@ -25,3 +29,10 @@ services:
       interval: 1s
       timeout: 1s
       retries: 10
+    links:
+      - httpbin
+    environment:
+      - RUNNING_IN_DOCKER=true
+
+  httpbin:
+    image: kennethreitz/httpbin

@@ -1,6 +1,25 @@
+import { execSync } from 'child_process';
 import { Writable } from 'node:stream';
 
 import { main, renderToStream } from './index';
+
+let dockerId: string | null = null;
+let httpbinUrl = 'http://httpbin';
+beforeAll(() => {
+  if (!process.env.RUNNING_IN_DOCKER) {
+    const proc = execSync('docker run -d -p 8083:80 kennethreitz/httpbin');
+    httpbinUrl = 'http://localhost:8083';
+    dockerId = proc.toString().trim();
+  }
+  execSync('sleep 3');
+});
+
+afterAll(() => {
+  if (dockerId) {
+    execSync(`docker kill ${dockerId}`);
+    execSync(`docker rm ${dockerId}`);
+  }
+});
 
 describe('renderToStream', () => {
   it('render', async () => {
@@ -13,7 +32,7 @@ describe('renderToStream', () => {
       objectMode: true,
     });
     await renderToStream(
-      { name: 'chromium', url: 'https://httpbin.org/robots.txt' },
+      { name: 'chromium', url: `${httpbinUrl}/robots.txt` },
       writable
     );
     expect(texts).toMatchSnapshot();
@@ -39,7 +58,7 @@ describe('main', () => {
   it('main', async () => {
     expect(called).toBe(false);
     expect(outputs).toStrictEqual([]);
-    await main({ url: 'https://httpbin.org/robots.txt', name: 'chromium' });
+    await main({ url: `${httpbinUrl}/robots.txt`, name: 'chromium' });
     expect(called).toBe(true);
     expect(outputs).toMatchSnapshot();
   });
