@@ -1,3 +1,4 @@
+import { execSync } from 'child_process';
 import http, { IncomingMessage } from 'http';
 
 import { runWithDefer } from 'with-defer';
@@ -5,6 +6,24 @@ import { runWithDefer } from 'with-defer';
 import { getBrowser } from '../browser';
 
 import { createServer, terminateRequestWithEmpty } from './index';
+
+let dockerId: string | null = null;
+let httpbinUrl = 'http://httpbin';
+beforeAll(() => {
+  if (!process.env.RUNNING_IN_DOCKER) {
+    const proc = execSync('docker run -d -p 8082:80 kennethreitz/httpbin');
+    httpbinUrl = 'http://localhost:8082';
+    dockerId = proc.toString().trim();
+  }
+  execSync('sleep 3');
+});
+
+afterAll(() => {
+  if (dockerId) {
+    execSync(`docker kill ${dockerId}`);
+    execSync(`docker rm ${dockerId}`);
+  }
+});
 
 describe('terminateRequestWithEmpty', () => {
   it('responses nothing', async () => {
@@ -34,7 +53,7 @@ describe('withServer', () => {
 
       const res: IncomingMessage = await new Promise((resolve) => {
         return http.get(
-          `http://localhost:${port}/https://httpbin.org/json`,
+          `http://localhost:${port}/${httpbinUrl}/json`,
           (res) => {
             return resolve(res);
           }

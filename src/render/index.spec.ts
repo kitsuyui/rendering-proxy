@@ -1,4 +1,4 @@
-import { type ChildProcess, spawn } from 'child_process';
+import { type ChildProcess, execSync, spawn } from 'child_process';
 import { createHash } from 'crypto';
 
 import { load as cheerioLoad } from 'cheerio';
@@ -52,13 +52,30 @@ declare global {
 
 expect.extend({ toBeResult });
 
+let dockerId: string | null = null;
+let httpbinUrl = 'http://httpbin';
+beforeAll(() => {
+  if (!process.env.RUNNING_IN_DOCKER) {
+    const proc = execSync('docker run -d -p 8081:80 kennethreitz/httpbin');
+    httpbinUrl = 'http://localhost:8081';
+    dockerId = proc.toString().trim();
+  }
+  execSync('sleep 3');
+});
+
+afterAll(() => {
+  if (dockerId) {
+    execSync(`docker kill ${dockerId}`);
+    execSync(`docker rm ${dockerId}`);
+  }
+});
+
 describe('getRenderedContent', () => {
   jest.setTimeout(30000);
   let browser: Browser;
   let reactServer: ChildProcess;
   let vueServer: ChildProcess;
   let imageServer: ChildProcess;
-  const httpbin_url = 'https://httpbin.org';
 
   beforeAll(async () => {
     browser = await getBrowser();
@@ -96,7 +113,7 @@ describe('getRenderedContent', () => {
 
   it('can handle empty response', async () => {
     const result = await getRenderedContent(browser, {
-      url: `${httpbin_url}/status/204`,
+      url: `${httpbinUrl}/status/204`,
     });
     expect(result.status).toEqual(204);
     expect(result.body.byteLength).toBe(0);
