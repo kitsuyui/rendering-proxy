@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/playwright:v1.34.2-focal
+FROM mcr.microsoft.com/playwright:v1.34.3-focal
 RUN apt update && apt install libgudev-1.0-0 && apt clean && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 RUN mkdir -p /app
