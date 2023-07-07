@@ -53,7 +53,10 @@ describe('main', () => {
     str: string | Uint8Array
   ) => {
     outputs.push(str.toString());
-  }) as (str: string | Uint8Array, encoding?: BufferEncoding | undefined) => never);
+  }) as (
+    str: string | Uint8Array,
+    encoding?: BufferEncoding | undefined
+  ) => never);
 
   it('main', async () => {
     expect(called).toBe(false);
