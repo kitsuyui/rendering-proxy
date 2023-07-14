@@ -64,14 +64,27 @@ export async function createServer({
   return server;
 }
 
+/**
+ * Terminate request with empty response.
+ * @param req {http.IncomingMessage} request object
+ * @param res {http.ServerResponse} response object
+ */
 export function terminateRequestWithEmpty(
   req: http.IncomingMessage,
   res: http.ServerResponse
 ) {
+  // 204 No Content
   res.writeHead(204);
   res.end();
 }
 
+/**
+ * Start rendering proxy server.
+ * @param port {number} port number
+ * @param name {string} browser name
+ * @param headless {boolean} headless mode
+ * @returns {Promise<void>}
+ */
 export async function main({
   port = 8080,
   name = 'chromium',
