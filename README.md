@@ -28,6 +28,10 @@ $ npm install rendering-proxy
 $ yarn add rendering-proxy
 ```
 
+```sh
+$ pnpm add rendering-proxy
+```
+
 # Usage
 
 ```console

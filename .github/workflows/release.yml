@@ -13,17 +13,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: pnpm/action-setup@v2.4.0
+        with:
+          version: 8
+
       - uses: actions/setup-node@v3
         with:
           node-version: '20.x'
           registry-url: 'https://registry.npmjs.org'
-          cache: yarn
-          cache-dependency-path: yarn.lock
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
 
       - name: install and build
         run: |
-          yarn install
-          yarn build
+          pnpm install
+          pnpm build
 
       - name: update version
         if: github.event_name == 'release'
@@ -42,8 +46,8 @@ jobs:
           built_dir=$(pwd)
           tempdir=$(mktemp -d)
           cd $tempdir
-          yarn add $built_dir/*.tgz
-          yarn run rendering-proxy --help
+          pnpm add $built_dir/*.tgz
+          pnpm exec -- rendering-proxy --help
           cd $built_dir
           rm -rf $tempdir
 
