@@ -14,5 +14,5 @@ jobs:
       - name: Test server mode
         run: |
           docker-compose -f docker/docker-compose.yml up -d
-          docker-compose -f docker/docker-compose.yml exec -T rendering-proxy-chromium yarn test
-          docker-compose -f docker/docker-compose.yml exec -T rendering-proxy-firefox yarn test
+          docker-compose -f docker/docker-compose.yml exec -T rendering-proxy-chromium pnpm test
+          docker-compose -f docker/docker-compose.yml exec -T rendering-proxy-firefox pnpm test

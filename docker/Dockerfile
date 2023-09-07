@@ -2,12 +2,16 @@ FROM mcr.microsoft.com/playwright:v1.37.1-focal
 RUN apt update && apt install libgudev-1.0-0 && apt clean && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 RUN mkdir -p /app
-ADD yarn.lock /app/
+ADD pnpm-lock.yaml /app/
 ADD package.json /app/
-RUN yarn install
-RUN npx playwright install --with-deps
+
+FROM node:20-slim AS base
+RUN corepack enable && corepack prepare pnpm@latest --activate
 ADD . /app
-RUN yarn build
+WORKDIR /app
+RUN pnpm install
+RUN pnpm dlx playwright install --with-deps
+RUN pnpm build
 ENTRYPOINT ["node", "dist/main.js"]
 CMD ["server"]
 EXPOSE 8080
