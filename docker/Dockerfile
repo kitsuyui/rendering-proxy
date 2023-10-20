@@ -5,7 +5,7 @@ RUN mkdir -p /app
 ADD pnpm-lock.yaml /app/
 ADD package.json /app/
 
-FROM node:20-slim AS base
+FROM node:21-slim AS base
 RUN apt update && apt install -y libgudev-1.0-0 libsoup2.4-1 libsoup2.4-dev && apt clean && rm -rf /var/lib/apt/lists/*
 RUN corepack enable && corepack prepare pnpm@latest --activate
 ADD . /app
