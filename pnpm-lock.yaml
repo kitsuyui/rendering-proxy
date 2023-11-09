@@ -35,8 +35,8 @@ devDependencies:
     specifier: 20.9.0
     version: 20.9.0
   '@types/yargs':
-    specifier: 17.0.29
-    version: 17.0.29
+    specifier: 17.0.31
+    version: 17.0.31
   '@typescript-eslint/eslint-plugin':
     specifier: 6.10.0
     version: 6.10.0(@typescript-eslint/parser@6.10.0)(eslint@8.53.0)(typescript@5.2.2)
@@ -732,7 +732,7 @@ packages:
       '@types/istanbul-lib-coverage': 2.0.5
       '@types/istanbul-reports': 3.0.3
       '@types/node': 20.9.0
-      '@types/yargs': 17.0.29
+      '@types/yargs': 17.0.31
       chalk: 4.1.2
     dev: true
 
@@ -1056,8 +1056,8 @@ packages:
       '@types/yargs-parser': 21.0.2
     dev: true
 
-  /@types/yargs@17.0.29:
-    resolution: {integrity: sha512-nacjqA3ee9zRF/++a3FUY1suHTFKZeHba2n8WeDw9cCVdmzmHpIxyzOJBcpHvvEmS8E9KqWlSnWHUkOrkhWcvA==}
+  /@types/yargs@17.0.31:
+    resolution: {integrity: sha512-bocYSx4DI8TmdlvxqGpVNXOgCNR1Jj0gNPhhAY+iz1rgKDAaYrAYdFYnhDV1IFuiuVc9HkOwyDcFxaTElF3/wg==}
     dependencies:
       '@types/yargs-parser': 21.0.2
     dev: true
