@@ -26,8 +26,8 @@ devDependencies:
     specifier: 0.2.29
     version: 0.2.29(@swc/core@1.3.99)
   '@types/cheerio':
-    specifier: 0.22.34
-    version: 0.22.34
+    specifier: 0.22.35
+    version: 0.22.35
   '@types/jest':
     specifier: 29.5.10
     version: 29.5.10
@@ -979,8 +979,8 @@ packages:
       '@babel/types': 7.23.3
     dev: true
 
-  /@types/cheerio@0.22.34:
-    resolution: {integrity: sha512-uoi5gQGpH5vdNrGOexnNm+19YZLdIRMF/IW8V6w1kIeoXaO1m2mVUMV4dl76tvRRKoIp9d/Z97ZYeIE4lacEsA==}
+  /@types/cheerio@0.22.35:
+    resolution: {integrity: sha512-yD57BchKRvTV+JD53UZ6PD8KWY5g5rvvMLRnZR3EQBCZXiDT/HR+pKpMzFGlWNhFrXlo7VPZXtKvIEwZkAWOIA==}
     dependencies:
       '@types/node': 20.9.4
     dev: true
