@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/playwright:v1.39.0-focal
+FROM mcr.microsoft.com/playwright:v1.40.1-focal
 RUN apt update && apt install -y libgudev-1.0-0 libsoup2.4-1 libsoup2.4-dev && apt clean && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 RUN mkdir -p /app
