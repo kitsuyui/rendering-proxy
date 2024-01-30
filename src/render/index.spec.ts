@@ -26,12 +26,11 @@ function toBeResult(result: RenderResult, tobe: ToBe) {
       message: () => `expected result not to be ${tobe}`,
       pass: true,
     };
-  } else {
-    return {
-      message: () => `expected result to be ${tobe}`,
-      pass: false,
-    };
   }
+  return {
+    message: () => `expected result to be ${tobe}`,
+    pass: false,
+  };
 }
 
 export interface CustomMatchers<R = unknown> {
