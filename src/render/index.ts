@@ -1,5 +1,6 @@
 import { type Browser } from 'playwright';
 import { runWithDefer } from 'with-defer';
+import { Response as PlaywrightResponse } from 'playwright';
 
 export const lifeCycleEvents = [
   'load',
@@ -56,7 +57,7 @@ export async function getRenderedContent(
     const page = await browser.newPage();
     defer(() => page.close());
 
-    let response;
+    let response: PlaywrightResponse | null = null;
     const evaluateResults = [];
     try {
       response = await page.goto(url, { waitUntil });
@@ -80,7 +81,7 @@ export async function getRenderedContent(
 
     if (!response) return emptyRenderResult();
     const headers = { ...response.headers() };
-    let body;
+    let body: Buffer;
     if (isRenderableContentType(headers['content-type'] || '')) {
       body = Buffer.from(await page.content());
     } else {
