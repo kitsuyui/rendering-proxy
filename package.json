@@ -28,7 +28,7 @@
     "@swc/jest": "0.2.36",
     "@types/cheerio": "0.22.35",
     "@types/jest": "29.5.12",
-    "@types/node": "20.11.22",
+    "@types/node": "20.11.24",
     "@types/yargs": "17.0.32",
     "cheerio": "1.0.0-rc.12",
     "http-server": "14.1.1",
