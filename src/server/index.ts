@@ -1,9 +1,9 @@
-import http from 'http';
+import http from 'node:http';
 
-import { type Browser } from 'playwright';
+import type { Browser } from 'playwright';
 import { runWithDefer } from 'with-defer';
 
-import { getBrowser, SelectableBrowsers } from '../browser';
+import { getBrowser, type SelectableBrowsers } from '../browser';
 import { excludeUnusedHeaders } from '../lib/headers';
 import { isAbsoluteURL } from '../lib/url';
 import { waitForProcessExit } from '../lib/wait_for_exit';

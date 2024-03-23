@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 import yargs from 'yargs';
 
-import { SelectableBrowsers, selectableBrowsers } from './browser';
-import { LifecycleEvent, lifeCycleEvents } from './render';
+import { type SelectableBrowsers, selectableBrowsers } from './browser';
+import { type LifecycleEvent, lifeCycleEvents } from './render';
 
 import { cli, server } from './';
 

@@ -1,5 +1,5 @@
-import { execSync } from 'child_process';
-import http, { IncomingMessage } from 'http';
+import { execSync } from 'node:child_process';
+import http, { type IncomingMessage } from 'node:http';
 
 import { runWithDefer } from 'with-defer';
 

@@ -1,4 +1,4 @@
-import { parse as urlParse } from 'url';
+import { parse as urlParse } from 'node:url';
 
 export function isAbsoluteURL(url: string): boolean {
   if (url.startsWith('http://') || url.startsWith('https://')) {

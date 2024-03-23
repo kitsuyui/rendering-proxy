@@ -1,13 +1,13 @@
-import { type ChildProcess, execSync, spawn } from 'child_process';
-import { createHash } from 'crypto';
+import { type ChildProcess, execSync, spawn } from 'node:child_process';
+import { createHash } from 'node:crypto';
 
 import { load as cheerioLoad } from 'cheerio';
-import { type Browser } from 'playwright';
+import type { Browser } from 'playwright';
 import sleep from 'sleep-promise';
 
 import { getBrowser } from '../browser';
 
-import { getRenderedContent, RenderResult } from './index';
+import { getRenderedContent, type RenderResult } from './index';
 
 interface ToBe {
   status: number;

@@ -1,4 +1,4 @@
-import { Browser } from 'playwright';
+import type { Browser } from 'playwright';
 import { runWithDefer } from 'with-defer';
 
 import {
