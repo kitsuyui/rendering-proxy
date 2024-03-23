@@ -1,4 +1,4 @@
-import { LifecycleEvent, lifeCycleEvents } from '../render';
+import { type LifecycleEvent, lifeCycleEvents } from '../render';
 
 interface RequestOption {
   waitUntil: LifecycleEvent;

@@ -1,8 +1,8 @@
-import { Writable } from 'stream';
+import type { Writable } from 'node:stream';
 
 import { runWithDefer } from 'with-defer';
 
-import { getBrowser, SelectableBrowsers } from '../browser';
+import { getBrowser, type SelectableBrowsers } from '../browser';
 import { ensureURLStartsWithProtocolScheme } from '../lib/url';
 import { getRenderedContent, type RenderRequest } from '../render';
 
