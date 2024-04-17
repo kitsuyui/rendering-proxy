@@ -33,7 +33,7 @@ function toBeResult(result: RenderResult, tobe: ToBe) {
   };
 }
 
-export interface CustomMatchers<R = unknown> {
+interface CustomMatchers<R = unknown> {
   toBeResult(tobe: ToBe): R;
 }
 
