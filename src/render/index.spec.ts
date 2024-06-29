@@ -81,7 +81,7 @@ describe('getRenderedContent', () => {
     reactServer = spawn('http-server', ['-p', '8001', 'tests/fixtures/react']);
     vueServer = spawn('http-server', ['-p', '8002', 'tests/fixtures/vue']);
     imageServer = spawn('http-server', ['-p', '8003', 'tests/fixtures/images']);
-    await sleep(1000);
+    await sleep(3000);
   });
   afterAll(async () => {
     await browser.close();
