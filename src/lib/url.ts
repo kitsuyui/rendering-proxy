@@ -1,18 +1,18 @@
-import { parse as urlParse } from 'node:url';
+import { parse as urlParse } from 'node:url'
 
 export function isAbsoluteURL(url: string): boolean {
   if (url.startsWith('http://') || url.startsWith('https://')) {
-    return true;
+    return true
   }
-  return false;
+  return false
 }
 
 export function ensureURLStartsWithProtocolScheme(
   url: string,
-  scheme = 'https://'
+  scheme = 'https://',
 ): string {
   if (urlParse(url).protocol) {
-    return url;
+    return url
   }
-  return scheme + url;
+  return scheme + url
 }

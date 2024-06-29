@@ -1,10 +1,10 @@
 #!/usr/bin/env node
-import yargs from 'yargs';
+import yargs from 'yargs'
 
-import { type SelectableBrowsers, selectableBrowsers } from './browser';
-import { type LifecycleEvent, lifeCycleEvents } from './render';
+import { type SelectableBrowsers, selectableBrowsers } from './browser'
+import { type LifecycleEvent, lifeCycleEvents } from './render'
 
-import { cli, server } from './';
+import { cli, server } from './'
 
 export async function main(): Promise<void> {
   yargs
@@ -38,7 +38,7 @@ export async function main(): Promise<void> {
             type: 'array',
             description: 'Evaluate JavaScript in the page',
             default: [],
-          });
+          })
       },
       async (argv) => {
         await cli.main({
@@ -46,8 +46,8 @@ export async function main(): Promise<void> {
           waitUntil: argv.waitUntil as LifecycleEvent,
           name: argv.browser as SelectableBrowsers,
           evaluates: argv.evaluate as string[],
-        });
-      }
+        })
+      },
     )
     .command(
       'server',
@@ -66,19 +66,19 @@ export async function main(): Promise<void> {
             description: 'Browser to use',
             choices: selectableBrowsers,
             default: 'chromium',
-          });
+          })
       },
       async (argv) => {
         await server.main({
           port: argv.port,
           name: argv.browser as SelectableBrowsers,
-        });
-      }
+        })
+      },
     )
     .demandCommand(1, 'You need at least one command before moving on')
-    .help().argv;
+    .help().argv
 }
 
 if (require.main === module) {
-  main();
+  main()
 }

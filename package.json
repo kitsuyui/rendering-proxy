@@ -8,8 +8,8 @@
   "scripts": {
     "build": "tsc",
     "test": "jest",
-    "lint": "biome lint .",
-    "format": "biome lint --apply ."
+    "lint": "biome check .",
+    "format": "biome check --write ."
   },
   "bin": {
     "rendering-proxy": "./dist/main.js"
@@ -19,9 +19,7 @@
   "version": "0.1.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "devDependencies": {
     "@biomejs/biome": "^1.8.3",
     "@swc/core": "1.6.5",
@@ -33,19 +31,15 @@
     "cheerio": "1.0.0-rc.12",
     "http-server": "14.1.1",
     "jest": "29.7.0",
-    "ts-jest": "29.1.4",
+    "ts-jest": "29.1.5",
     "ts-node": "10.9.2",
-    "typescript": "5.4.5"
+    "typescript": "5.5.2"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kitsuyui/rendering-proxy.git"
   },
-  "keywords": [
-    "rendering",
-    "chromium",
-    "proxy"
-  ],
+  "keywords": ["rendering", "chromium", "proxy"],
   "author": "Yui Kitsu <kitsuyui@kitsuyui.com>",
   "license": "BSD-3-Clause",
   "bugs": {

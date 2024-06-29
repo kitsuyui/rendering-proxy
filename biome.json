@@ -20,7 +20,7 @@
       "enabled": true,
       "semicolons": "asNeeded",
       "quoteStyle": "single",
-      "trailingComma": "all"
+      "trailingCommas": "all"
     }
   },
   "files": {
