@@ -11,7 +11,7 @@ RUN corepack enable && corepack prepare pnpm@latest --activate
 ADD . /app
 WORKDIR /app
 RUN pnpm install
-RUN pnpm dlx playwright install --with-deps
+RUN pnpm exec playwright install --with-deps
 RUN pnpm build
 ENTRYPOINT ["node", "dist/main.js"]
 CMD ["server"]
