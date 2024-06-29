@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "playwright": "^1.43.1",
+    "playwright": "^1.45.0",
     "sleep-promise": "^9.1.0",
     "with-defer": "^1.0.0",
     "yargs": "^17.7.2"
@@ -23,7 +23,7 @@
     "dist"
   ],
   "devDependencies": {
-    "@biomejs/biome": "^1.7.0",
+    "@biomejs/biome": "^1.8.3",
     "@swc/core": "1.6.5",
     "@swc/jest": "0.2.36",
     "@types/cheerio": "0.22.35",
@@ -51,5 +51,6 @@
   "bugs": {
     "url": "https://github.com/kitsuyui/rendering-proxy/issues"
   },
-  "homepage": "https://github.com/kitsuyui/rendering-proxy#readme"
+  "homepage": "https://github.com/kitsuyui/rendering-proxy#readme",
+  "packageManager": "pnpm@9.4.0"
 }
