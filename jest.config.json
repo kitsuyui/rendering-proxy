@@ -1,21 +1,10 @@
 {
-  "testMatch": [
-    "**/*.test.js",
-    "**/*.test.ts",
-    "**/*.spec.js",
-    "**/*.spec.ts"
-  ],
-  "testPathIgnorePatterns": [
-    "<rootDir>/node_modules/",
-    "<rootDir>/dist/"
-  ],
+  "testMatch": ["**/*.test.js", "**/*.test.ts", "**/*.spec.js", "**/*.spec.ts"],
+  "testPathIgnorePatterns": ["<rootDir>/node_modules/", "<rootDir>/dist/"],
   "collectCoverageFrom": ["src/**/*.ts"],
   "transform": {
     "^.+.(t|j)s?$": ["@swc/jest"]
   },
   "collectCoverage": true,
-  "coverageReporters": [
-    "text",
-    "cobertura"
-  ]
+  "coverageReporters": ["text", "cobertura"]
 }

@@ -8,13 +8,13 @@ const hopByHopHeaders = [
   'trailer',
   'transfer-encoding',
   'upgrade',
-];
+]
 
-const contentDependentHeaders = ['content-encoding', 'content-length'];
+const contentDependentHeaders = ['content-encoding', 'content-length']
 
 type Headers = {
-  [key: string]: string;
-};
+  [key: string]: string
+}
 
 /**
  * Note: Hop-by-hop headers are meaningful only for a single transport-level connection, and are not stored by caches or forwarded by proxies.
@@ -29,14 +29,14 @@ type Headers = {
  * @returns headers {Headers}
  */
 export function excludeHopByHopHeaders(headers: Headers): Headers {
-  const result: Headers = {};
+  const result: Headers = {}
   for (const key in headers) {
     if (hopByHopHeaders.includes(key)) {
-      continue;
+      continue
     }
-    result[key] = headers[key];
+    result[key] = headers[key]
   }
-  return result;
+  return result
 }
 
 /**
@@ -45,14 +45,14 @@ export function excludeHopByHopHeaders(headers: Headers): Headers {
  * @returns headers {Headers}
  */
 export function excludeContentDependentHeaders(headers: Headers): Headers {
-  const result: Headers = {};
+  const result: Headers = {}
   for (const key in headers) {
     if (contentDependentHeaders.includes(key)) {
-      continue;
+      continue
     }
-    result[key] = headers[key];
+    result[key] = headers[key]
   }
-  return result;
+  return result
 }
 
 /**
@@ -65,5 +65,5 @@ export function excludeUnusedHeaders(headers: Headers): Headers {
     ...excludeContentDependentHeaders({
       ...excludeHopByHopHeaders(headers),
     }),
-  };
+  }
 }

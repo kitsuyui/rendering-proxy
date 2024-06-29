@@ -1,34 +1,34 @@
-import type { Writable } from 'node:stream';
+import type { Writable } from 'node:stream'
 
-import { runWithDefer } from 'with-defer';
+import { runWithDefer } from 'with-defer'
 
-import { getBrowser, type SelectableBrowsers } from '../browser';
-import { ensureURLStartsWithProtocolScheme } from '../lib/url';
-import { getRenderedContent, type RenderRequest } from '../render';
+import { type SelectableBrowsers, getBrowser } from '../browser'
+import { ensureURLStartsWithProtocolScheme } from '../lib/url'
+import { type RenderRequest, getRenderedContent } from '../render'
 
 interface CLiRequest extends RenderRequest {
-  name: SelectableBrowsers;
+  name: SelectableBrowsers
 }
 
 export async function main(request: CLiRequest): Promise<void> {
-  await renderToStream(request, process.stdout);
-  process.exit();
+  await renderToStream(request, process.stdout)
+  process.exit()
 }
 
 export async function renderToStream(
   request: CLiRequest,
-  writable: Writable
+  writable: Writable,
 ): Promise<void> {
   await runWithDefer(async (defer) => {
-    const browser = await getBrowser({ name: request.name });
-    defer(() => browser.close());
+    const browser = await getBrowser({ name: request.name })
+    defer(() => browser.close())
 
-    const url_ = ensureURLStartsWithProtocolScheme(request.url);
+    const url_ = ensureURLStartsWithProtocolScheme(request.url)
     const result = await getRenderedContent(browser, {
       url: url_,
       waitUntil: request.waitUntil,
       evaluates: request.evaluates,
-    });
-    writable.write(result.body, 'binary');
-  });
+    })
+    writable.write(result.body, 'binary')
+  })
 }
