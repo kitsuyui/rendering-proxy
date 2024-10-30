@@ -23,7 +23,7 @@
   "devDependencies": {
     "@biomejs/biome": "^1.8.3",
     "@swc/core": "1.7.40",
-    "@swc/jest": "0.2.36",
+    "@swc/jest": "0.2.37",
     "@types/cheerio": "0.22.35",
     "@types/jest": "29.5.14",
     "@types/node": "22.8.4",
