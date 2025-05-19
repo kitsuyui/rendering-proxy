@@ -9,7 +9,7 @@ importers:
   .:
     dependencies:
       playwright:
-        specifier: ^1.50.1
+        specifier: ^1.52.0
         version: 1.52.0
       sleep-promise:
         specifier: ^9.1.0

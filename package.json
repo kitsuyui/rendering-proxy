@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "playwright": "^1.50.1",
+    "playwright": "^1.52.0",
     "sleep-promise": "^9.1.0",
     "with-defer": "^1.0.0",
     "yargs": "^17.7.2"
