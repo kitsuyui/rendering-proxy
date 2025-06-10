@@ -7,7 +7,7 @@ import { type LifecycleEvent, lifeCycleEvents } from './render'
 import { cli, server } from './'
 
 export async function main(): Promise<void> {
-  yargs
+  yargs(process.argv.slice(2))
     .command(
       'cli',
       'Render a page from the command line',
