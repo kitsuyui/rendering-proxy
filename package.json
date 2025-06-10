@@ -9,7 +9,8 @@
     "build": "tsc",
     "test": "jest",
     "lint": "biome check .",
-    "format": "biome check --write ."
+    "format": "biome check --write .",
+    "typecheck": "tsc --noEmit"
   },
   "bin": {
     "rendering-proxy": "./dist/main.js"
