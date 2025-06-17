@@ -22,7 +22,7 @@
   "types": "dist/index.d.ts",
   "files": ["dist"],
   "devDependencies": {
-    "@biomejs/biome": "^1.9.4",
+    "@biomejs/biome": "^2.0.0",
     "@swc/core": "1.12.1",
     "@swc/jest": "0.2.38",
     "@types/cheerio": "1.0.0",
