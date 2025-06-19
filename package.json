@@ -32,7 +32,7 @@
     "cheerio": "1.1.0",
     "http-server": "14.1.1",
     "jest": "30.0.1",
-    "ts-jest": "29.3.4",
+    "ts-jest": "29.4.0",
     "ts-node": "10.9.2",
     "typescript": "5.8.3"
   },
