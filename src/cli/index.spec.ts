@@ -25,7 +25,7 @@ describe('renderToStream', () => {
   it('render', async () => {
     const texts: string[] = []
     const writable = new Writable({
-      write(chunk, encoding, callback) {
+      write(chunk, _encoding, callback) {
         texts.push(chunk.toString())
         callback(null)
       },

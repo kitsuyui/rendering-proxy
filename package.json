@@ -20,9 +20,11 @@
   "version": "0.1.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "devDependencies": {
-    "@biomejs/biome": "^1.9.4",
+    "@biomejs/biome": "^2.0.0",
     "@swc/core": "1.12.1",
     "@swc/jest": "0.2.38",
     "@types/cheerio": "1.0.0",
@@ -40,7 +42,11 @@
     "type": "git",
     "url": "git+https://github.com/kitsuyui/rendering-proxy.git"
   },
-  "keywords": ["rendering", "chromium", "proxy"],
+  "keywords": [
+    "rendering",
+    "chromium",
+    "proxy"
+  ],
   "author": "Yui Kitsu <kitsuyui@kitsuyui.com>",
   "license": "BSD-3-Clause",
   "bugs": {

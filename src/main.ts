@@ -1,10 +1,8 @@
 #!/usr/bin/env node
 import yargs from 'yargs'
-
+import { cli, server } from './'
 import { type SelectableBrowsers, selectableBrowsers } from './browser'
 import { type LifecycleEvent, lifeCycleEvents } from './render'
-
-import { cli, server } from './'
 
 export async function main(): Promise<void> {
   yargs(process.argv.slice(2))

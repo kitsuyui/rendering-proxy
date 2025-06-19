@@ -3,7 +3,7 @@ import http from 'node:http'
 import type { Browser } from 'playwright'
 import { runWithDefer } from 'with-defer'
 
-import { type SelectableBrowsers, getBrowser } from '../browser'
+import { getBrowser, type SelectableBrowsers } from '../browser'
 import { excludeUnusedHeaders } from '../lib/headers'
 import { isAbsoluteURL } from '../lib/url'
 import { waitForProcessExit } from '../lib/wait_for_exit'
@@ -70,7 +70,7 @@ export async function createServer({
  * @param res {http.ServerResponse} response object
  */
 export function terminateRequestWithEmpty(
-  req: http.IncomingMessage,
+  _req: http.IncomingMessage,
   res: http.ServerResponse,
 ) {
   // 204 No Content
