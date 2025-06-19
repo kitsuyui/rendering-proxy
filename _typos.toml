@@ -1,0 +1,5 @@
+# typos is a Source code spell checker
+# https://github.com/crate-ci/typos
+[default.extend-words]
+# biome.json uses noInferrableTypes
+inferrable = "inferrable"
