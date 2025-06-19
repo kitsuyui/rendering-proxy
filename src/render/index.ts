@@ -1,5 +1,4 @@
-import type { Browser } from 'playwright'
-import type { Response as PlaywrightResponse } from 'playwright'
+import type { Browser, Response as PlaywrightResponse } from 'playwright'
 import { runWithDefer } from 'with-defer'
 
 export const lifeCycleEvents = [
@@ -75,7 +74,7 @@ export async function getRenderedContent(
           }
         }
       }
-    } catch (error) {
+    } catch (_error) {
       return emptyRenderResult()
     }
 

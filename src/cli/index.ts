@@ -2,9 +2,9 @@ import type { Writable } from 'node:stream'
 
 import { runWithDefer } from 'with-defer'
 
-import { type SelectableBrowsers, getBrowser } from '../browser'
+import { getBrowser, type SelectableBrowsers } from '../browser'
 import { ensureURLStartsWithProtocolScheme } from '../lib/url'
-import { type RenderRequest, getRenderedContent } from '../render'
+import { getRenderedContent, type RenderRequest } from '../render'
 
 interface CLiRequest extends RenderRequest {
   name: SelectableBrowsers

@@ -24,7 +24,7 @@ function parseOptions(text: string): RequestOption {
   }
   try {
     baseParsed = JSON.parse(text)
-  } catch (e) {
+  } catch (_e) {
     // ignore
   }
   let waitUntil: LifecycleEvent = 'networkidle'

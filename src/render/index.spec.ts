@@ -7,7 +7,7 @@ import sleep from 'sleep-promise'
 
 import { getBrowser } from '../browser'
 
-import { type RenderResult, getRenderedContent } from './index'
+import { getRenderedContent, type RenderResult } from './index'
 
 interface ToBe {
   status: number
