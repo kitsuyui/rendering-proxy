@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/playwright:v1.54.0-noble
+FROM mcr.microsoft.com/playwright:v1.54.1-noble
 RUN apt update && apt install -y libgudev-1.0-0 libsoup2.4-1 libsoup2.4-dev && apt clean && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 RUN mkdir -p /app
