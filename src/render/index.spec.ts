@@ -176,22 +176,28 @@ describe('getRenderedContent', () => {
 })
 
 describe('getRenderedContent with evaluates', () => {
+  jest.setTimeout(30000)
   let browser: Browser
+  let htmlServer: ChildProcess
 
   beforeAll(async () => {
     browser = await getBrowser()
+    htmlServer = spawn('http-server', ['-p', '8004', 'tests/fixtures/html'])
+    await sleep(3000)
   })
   afterAll(async () => {
     await browser.close()
+    htmlServer.kill()
   })
 
   it('works', async () => {
     const result = await getRenderedContent(browser, {
-      url: 'http://example.com/',
+      url: 'http://localhost:8004/test.html',
       evaluates: ['document.title', 'navigator.userAgent', '1 + 1'],
     })
+    console.log(result)
     expect(result.evaluateResults[0].script).toBe('document.title')
-    expect(result.evaluateResults[0].result).toBe('Example Domain')
+    expect(result.evaluateResults[0].result).toBe('Example Title')
     expect(result.evaluateResults[1].script).toBe('navigator.userAgent')
     expect(result.evaluateResults[1].result).toContain('Mozilla/5.0')
     expect(result.evaluateResults[2].script).toBe('1 + 1')
@@ -200,7 +206,7 @@ describe('getRenderedContent with evaluates', () => {
 
   it('works with errors', async () => {
     const result = await getRenderedContent(browser, {
-      url: 'http://example.com/',
+      url: 'http://localhost:8004/test.html',
       evaluates: [
         'document.title',
         'throw new Error("error")',
@@ -208,7 +214,7 @@ describe('getRenderedContent with evaluates', () => {
       ],
     })
     expect(result.evaluateResults[0].script).toBe('document.title')
-    expect(result.evaluateResults[0].result).toBe('Example Domain')
+    expect(result.evaluateResults[0].result).toBe('Example Title')
     expect(result.evaluateResults[1].script).toBe('throw new Error("error")')
     expect(result.evaluateResults[1].result).toContain('Error')
     expect(result.evaluateResults[1].success).toBe(false)
@@ -218,7 +224,7 @@ describe('getRenderedContent with evaluates', () => {
 
   it('can update content body', async () => {
     const result = await getRenderedContent(browser, {
-      url: 'http://example.com/',
+      url: 'http://localhost:8004/test.html',
       evaluates: ['document.title = "Updated Title"'],
     })
     expect(result.evaluateResults[0].script).toBe(
