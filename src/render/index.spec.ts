@@ -1,9 +1,9 @@
 import { type ChildProcess, execSync, spawn } from 'node:child_process'
 import { createHash } from 'node:crypto'
-
 import { load as cheerioLoad } from 'cheerio'
 import type { Browser } from 'playwright'
 import sleep from 'sleep-promise'
+import { afterAll, beforeAll, describe, expect, it, test } from 'vitest'
 
 import { getBrowser } from '../browser'
 
@@ -33,22 +33,6 @@ function toBeResult(result: RenderResult, tobe: ToBe) {
   }
 }
 
-interface CustomMatchers<R = unknown> {
-  toBeResult(tobe: ToBe): R
-}
-
-declare global {
-  // eslint-disable-next-line @typescript-eslint/no-namespace
-  namespace jest {
-    // eslint-disable-next-line @typescript-eslint/no-empty-interface
-    interface Expect extends CustomMatchers {}
-    // eslint-disable-next-line @typescript-eslint/no-empty-interface
-    interface Matchers<R> extends CustomMatchers<R> {}
-    // eslint-disable-next-line @typescript-eslint/no-empty-interface
-    interface InverseAsymmetricMatchers extends CustomMatchers {}
-  }
-}
-
 expect.extend({ toBeResult })
 
 let dockerId: string | null = null
@@ -70,7 +54,6 @@ afterAll(() => {
 })
 
 describe('getRenderedContent', () => {
-  jest.setTimeout(30000)
   let browser: Browser
   let reactServer: ChildProcess
   let vueServer: ChildProcess
@@ -176,7 +159,6 @@ describe('getRenderedContent', () => {
 })
 
 describe('getRenderedContent with evaluates', () => {
-  jest.setTimeout(30000)
   let browser: Browser
   let htmlServer: ChildProcess
 

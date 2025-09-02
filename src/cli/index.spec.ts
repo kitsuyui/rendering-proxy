@@ -1,5 +1,6 @@
 import { execSync } from 'node:child_process'
 import { Writable } from 'node:stream'
+import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest'
 
 import { main, renderToStream } from './index'
 
@@ -42,14 +43,15 @@ describe('renderToStream', () => {
 describe('main', () => {
   let called = false
   const outputs: string[] = []
-  jest.spyOn(process, 'exit').mockImplementation(((
-    code?: number | undefined,
+  type MockType = (code?: number | string | null | undefined) => never
+  vi.spyOn(process, 'exit').mockImplementation(((
+    code?: number | string | null | undefined,
   ): void => {
     called = true
     process.emit('exit', code ?? 0)
-  }) as (code?: number | undefined) => never)
+  }) as MockType)
 
-  jest.spyOn(process.stdout, 'write').mockImplementation(((
+  const spy = vi.spyOn(process.stdout, 'write').mockImplementation(((
     str: string | Uint8Array,
   ) => {
     outputs.push(str.toString())
@@ -64,5 +66,6 @@ describe('main', () => {
     await main({ url: `${httpbinUrl}/robots.txt`, name: 'chromium' })
     expect(called).toBe(true)
     expect(outputs).toMatchSnapshot()
+    spy.mockClear()
   })
 })
