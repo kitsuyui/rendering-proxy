@@ -1,4 +1,5 @@
 import type { Browser } from 'playwright'
+import { describe, expect, it } from 'vitest'
 import { runWithDefer } from 'with-defer'
 
 import {
@@ -8,8 +9,6 @@ import {
   selectableBrowsers,
 } from './index'
 
-jest.setTimeout(30000)
-
 describe('getBrowserByName()', () => {
   it('returns the browserType with the given name', () => {
     expect(getBrowserTypeByName('chromium').name()).toBe('chromium')
@@ -17,7 +16,7 @@ describe('getBrowserByName()', () => {
     expect(getBrowserTypeByName('webkit').name()).toBe('webkit')
     expect(() => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error
       getBrowserTypeByName('foobar')
     }).toThrow()
   })
@@ -61,10 +60,10 @@ describe('getBrowserOptionsByName', () => {
 
   it('returns empty array for unknown browsers', () => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error
     expect(Array.isArray(getBrowserOptionsByName(''))).toBe(true)
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error
     expect(Array.isArray(getBrowserOptionsByName('foobar'))).toBe(true)
   })
 })
