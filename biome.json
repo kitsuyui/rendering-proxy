@@ -36,11 +36,12 @@
   "files": {
     "includes": [
       "**",
-      "!**/node_modules/**",
-      "!**/typedocs/**",
-      "!**/build/**",
-      "!**/dist/**",
-      "!**/.venv/**",
+      "!**/node_modules",
+      "!**/typedocs",
+      "!**/build",
+      "!**/dist",
+      "!**/.venv",
+      "!**/coverage",
       "!**/pnpm-lock.yaml"
     ]
   }
