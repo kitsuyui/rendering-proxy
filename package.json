@@ -53,5 +53,5 @@
     "url": "https://github.com/kitsuyui/rendering-proxy/issues"
   },
   "homepage": "https://github.com/kitsuyui/rendering-proxy#readme",
-  "packageManager": "pnpm@10.17.1"
+  "packageManager": "pnpm@10.18.0"
 }
