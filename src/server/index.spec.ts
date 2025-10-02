@@ -1,5 +1,6 @@
 import { execSync } from 'node:child_process'
 import http, { type IncomingMessage } from 'node:http'
+import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 
 import { runWithDefer } from 'with-defer'
 

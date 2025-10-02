@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest'
+
 import { parseRenderingProxyHeader } from './request_options'
 
 describe('parseRenderingProxyHeader', () => {
