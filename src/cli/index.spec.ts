@@ -6,13 +6,14 @@ import { main, renderToStream } from './index'
 
 let dockerId: string | null = null
 let httpbinUrl = 'http://httpbin'
+
 beforeAll(() => {
   if (!process.env.RUNNING_IN_DOCKER) {
     const proc = execSync('docker run -d -p 8083:80 kennethreitz/httpbin')
     httpbinUrl = 'http://localhost:8083'
     dockerId = proc.toString().trim()
   }
-  execSync('sleep 3')
+  execSync('sleep 5')
 })
 
 afterAll(() => {
