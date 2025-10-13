@@ -6,7 +6,7 @@
     "yargs": "^18.0.0"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsup --clean",
     "test": "vitest run --coverage",
     "lint": "biome check .",
     "format": "biome check --write .",
@@ -26,17 +26,13 @@
   "devDependencies": {
     "@biomejs/biome": "^2.2.5",
     "@swc/core": "1.13.20",
-    "@swc/jest": "0.2.39",
     "@types/cheerio": "1.0.0",
-    "@types/jest": "30.0.0",
     "@types/node": "24.7.2",
     "@types/yargs": "17.0.33",
     "@vitest/coverage-v8": "3.2.4",
     "cheerio": "1.1.2",
     "http-server": "14.1.1",
-    "jest": "30.2.0",
-    "ts-jest": "29.4.5",
-    "ts-node": "10.9.2",
+    "tsup": "^8.5.0",
     "typescript": "5.9.3",
     "vitest": "^3.2.4"
   },
