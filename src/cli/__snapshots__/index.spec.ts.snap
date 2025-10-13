@@ -1,6 +1,22 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`main > main 1`] = `
+[
+  "User-agent: *
+Disallow: /deny
+",
+]
+`;
 
 exports[`main main 1`] = `
+[
+  "User-agent: *
+Disallow: /deny
+",
+]
+`;
+
+exports[`renderToStream > render 1`] = `
 [
   "User-agent: *
 Disallow: /deny

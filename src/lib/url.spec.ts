@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest'
+
 import { ensureURLStartsWithProtocolScheme, isAbsoluteURL } from './url'
 
 describe('isAbsoluteURL', () => {
