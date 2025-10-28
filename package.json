@@ -27,7 +27,7 @@
     "@biomejs/biome": "^2.2.5",
     "@swc/core": "1.13.21",
     "@types/cheerio": "1.0.0",
-    "@types/node": "24.9.1",
+    "@types/node": "24.9.2",
     "@types/yargs": "17.0.33",
     "@vitest/coverage-v8": "3.2.4",
     "cheerio": "1.1.2",
