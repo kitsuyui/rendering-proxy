@@ -2,11 +2,11 @@ import http from 'node:http'
 import sleep from 'sleep-promise'
 
 /**
- * Waits until the server on the specified port is ready.
- * @param port - The port number to check.
+ * Waits until the server on the specified URL is ready.
+ * @param url - The URL to check.
  * @returns void
  */
-export const waitServerReady = async (port: number): Promise<void> => {
+export const waitServerReady = async (url: string): Promise<void> => {
   const maxRetries = 20
   const delay = 1000
   for (let i = 0; i < maxRetries; i++) {
@@ -14,8 +14,8 @@ export const waitServerReady = async (port: number): Promise<void> => {
       // curl is not installed in some environments
       const req = http.request({
         method: 'HEAD',
-        host: 'localhost',
-        port: port,
+        host: new URL(url).hostname,
+        port: new URL(url).port || '80',
         timeout: 1000,
       })
       await new Promise<void>((resolve, reject) => {
@@ -35,5 +35,5 @@ export const waitServerReady = async (port: number): Promise<void> => {
       await sleep(delay)
     }
   }
-  throw new Error(`Server on port ${port} did not become ready in time`)
+  throw new Error(`Server on port ${url} did not become ready in time`)
 }

@@ -42,7 +42,7 @@ beforeAll(async () => {
     httpbinUrl = 'http://localhost:8088'
     dockerId = proc.toString().trim()
   }
-  await waitServerReady(8088)
+  await waitServerReady(httpbinUrl)
 })
 
 afterAll(() => {
@@ -63,9 +63,9 @@ describe('getRenderedContent', () => {
     reactServer = spawn('http-server', ['-p', '8001', 'tests/fixtures/react'])
     vueServer = spawn('http-server', ['-p', '8002', 'tests/fixtures/vue'])
     imageServer = spawn('http-server', ['-p', '8003', 'tests/fixtures/images'])
-    await waitServerReady(8001)
-    await waitServerReady(8002)
-    await waitServerReady(8003)
+    await waitServerReady('http://localhost:8001/')
+    await waitServerReady('http://localhost:8001/')
+    await waitServerReady('http://localhost:8001/')
   })
 
   afterAll(async () => {
@@ -169,7 +169,7 @@ describe('getRenderedContent with evaluates', () => {
   beforeAll(async () => {
     browser = await getBrowser()
     htmlServer = spawn('http-server', ['-p', '8004', 'tests/fixtures/html'])
-    await waitServerReady(8004)
+    await waitServerReady('http://localhost:8004/')
   })
   afterAll(async () => {
     await browser.close()

@@ -13,7 +13,7 @@ beforeAll(async () => {
     httpbinUrl = 'http://localhost:8085'
     dockerId = proc.toString().trim()
   }
-  await waitServerReady(8085)
+  await waitServerReady(httpbinUrl)
 })
 
 afterAll(() => {
