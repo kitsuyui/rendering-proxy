@@ -5,18 +5,19 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { runWithDefer } from 'with-defer'
 
 import { getBrowser } from '../browser'
-
+import { waitServerReady } from '../lib/utils'
 import { createServer, terminateRequestWithEmpty } from './index'
 
 let dockerId: string | null = null
 let httpbinUrl = 'http://httpbin'
-beforeAll(() => {
+
+beforeAll(async () => {
   if (!process.env.RUNNING_IN_DOCKER) {
     const proc = execSync('docker run -d -p 8082:80 kennethreitz/httpbin')
     httpbinUrl = 'http://localhost:8082'
     dockerId = proc.toString().trim()
   }
-  execSync('sleep 3')
+  await waitServerReady(httpbinUrl)
 })
 
 afterAll(() => {

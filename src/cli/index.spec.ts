@@ -1,19 +1,19 @@
 import { execSync } from 'node:child_process'
 import { Writable } from 'node:stream'
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest'
-
+import { waitServerReady } from '../lib/utils'
 import { main, renderToStream } from './index'
 
 let dockerId: string | null = null
 let httpbinUrl = 'http://httpbin'
 
-beforeAll(() => {
+beforeAll(async () => {
   if (!process.env.RUNNING_IN_DOCKER) {
-    const proc = execSync('docker run -d -p 8083:80 kennethreitz/httpbin')
-    httpbinUrl = 'http://localhost:8083'
+    const proc = execSync('docker run -d -p 8085:80 kennethreitz/httpbin')
+    httpbinUrl = 'http://localhost:8085'
     dockerId = proc.toString().trim()
   }
-  execSync('sleep 5')
+  await waitServerReady(httpbinUrl)
 })
 
 afterAll(() => {

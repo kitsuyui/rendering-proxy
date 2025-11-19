@@ -50,7 +50,7 @@ export async function getRenderedContent(
   request: RenderRequest,
 ): Promise<RenderResult> {
   const { url } = request
-  const waitUntil = request.waitUntil || 'networkidle'
+  const waitUntil = request.waitUntil || 'load'
 
   return await runWithDefer(async (defer) => {
     const page = await browser.newPage()
