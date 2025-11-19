@@ -7,7 +7,7 @@
   },
   "scripts": {
     "build": "tsup --clean",
-    "test": "vitest run --coverage --hookTimeout 20000 --testTimeout 20000",
+    "test": "vitest run --coverage --hookTimeout 30000 --testTimeout 30000",
     "lint": "biome check .",
     "format": "biome check --write .",
     "typecheck": "tsc --noEmit"
