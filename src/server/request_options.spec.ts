@@ -5,48 +5,48 @@ import { parseRenderingProxyHeader } from './request_options'
 describe('parseRenderingProxyHeader', () => {
   it('returns default when empty or invalid header value', async () => {
     expect(parseRenderingProxyHeader(undefined)).toStrictEqual({
-      waitUntil: 'networkidle',
+      waitUntil: 'load',
       evaluates: [],
     })
     expect(parseRenderingProxyHeader('')).toStrictEqual({
-      waitUntil: 'networkidle',
+      waitUntil: 'load',
       evaluates: [],
     })
     expect(parseRenderingProxyHeader([])).toStrictEqual({
-      waitUntil: 'networkidle',
+      waitUntil: 'load',
       evaluates: [],
     })
     expect(parseRenderingProxyHeader('1234')).toStrictEqual({
-      waitUntil: 'networkidle',
+      waitUntil: 'load',
       evaluates: [],
     })
     expect(parseRenderingProxyHeader('{')).toStrictEqual({
-      waitUntil: 'networkidle',
+      waitUntil: 'load',
       evaluates: [],
     })
     expect(
       parseRenderingProxyHeader('{"evaluates": 1234, "waitUntil": 3456}'),
     ).toStrictEqual({
-      waitUntil: 'networkidle',
+      waitUntil: 'load',
       evaluates: [],
     })
   })
 
   it('parses evaluates', async () => {
     expect(parseRenderingProxyHeader('{"evaluates": []}')).toStrictEqual({
-      waitUntil: 'networkidle',
+      waitUntil: 'load',
       evaluates: [],
     })
     expect(parseRenderingProxyHeader('{"evaluates": ["1 + 1"]}')).toStrictEqual(
       {
-        waitUntil: 'networkidle',
+        waitUntil: 'load',
         evaluates: ['1 + 1'],
       },
     )
     expect(
       parseRenderingProxyHeader('{"evaluates": ["1 + 1", "document.title"]}'),
     ).toStrictEqual({
-      waitUntil: 'networkidle',
+      waitUntil: 'load',
       evaluates: ['1 + 1', 'document.title'],
     })
   })

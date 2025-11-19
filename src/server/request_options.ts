@@ -19,7 +19,7 @@ export function parseRenderingProxyHeader(
 
 function parseOptions(text: string): RequestOption {
   let baseParsed: RequestOption = {
-    waitUntil: 'networkidle',
+    waitUntil: 'load',
     evaluates: [],
   }
   try {
@@ -27,7 +27,7 @@ function parseOptions(text: string): RequestOption {
   } catch (_e) {
     // ignore
   }
-  let waitUntil: LifecycleEvent = 'networkidle'
+  let waitUntil: LifecycleEvent = 'load'
   if (lifeCycleEvents.indexOf(baseParsed.waitUntil) > -1) {
     waitUntil = baseParsed.waitUntil as LifecycleEvent
   }
