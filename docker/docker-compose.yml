@@ -35,3 +35,8 @@ services:
 
   httpbin:
     image: kennethreitz/httpbin
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://127.0.0.1:80/"]
+      interval: 1s
+      timeout: 3s
+      retries: 10
