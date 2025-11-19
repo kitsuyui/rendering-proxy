@@ -8,23 +8,7 @@ Disallow: /deny
 ]
 `;
 
-exports[`main main 1`] = `
-[
-  "User-agent: *
-Disallow: /deny
-",
-]
-`;
-
 exports[`renderToStream > render 1`] = `
-[
-  "User-agent: *
-Disallow: /deny
-",
-]
-`;
-
-exports[`renderToStream render 1`] = `
 [
   "User-agent: *
 Disallow: /deny

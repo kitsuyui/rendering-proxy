@@ -2,10 +2,9 @@ import { type ChildProcess, execSync, spawn } from 'node:child_process'
 import { createHash } from 'node:crypto'
 import { load as cheerioLoad } from 'cheerio'
 import type { Browser } from 'playwright'
-import sleep from 'sleep-promise'
 import { afterAll, beforeAll, describe, expect, it, test } from 'vitest'
-
 import { getBrowser } from '../browser'
+import { waitServerReady } from '../lib/utils'
 
 import { getRenderedContent, type RenderResult } from './index'
 
@@ -37,13 +36,13 @@ expect.extend({ toBeResult })
 
 let dockerId: string | null = null
 let httpbinUrl = 'http://httpbin'
-beforeAll(() => {
+beforeAll(async () => {
   if (!process.env.RUNNING_IN_DOCKER) {
-    const proc = execSync('docker run -d -p 8081:80 kennethreitz/httpbin')
-    httpbinUrl = 'http://localhost:8081'
+    const proc = execSync('docker run -d -p 8088:80 kennethreitz/httpbin')
+    httpbinUrl = 'http://localhost:8088'
     dockerId = proc.toString().trim()
   }
-  execSync('sleep 3')
+  await waitServerReady(8088)
 })
 
 afterAll(() => {
@@ -64,8 +63,11 @@ describe('getRenderedContent', () => {
     reactServer = spawn('http-server', ['-p', '8001', 'tests/fixtures/react'])
     vueServer = spawn('http-server', ['-p', '8002', 'tests/fixtures/vue'])
     imageServer = spawn('http-server', ['-p', '8003', 'tests/fixtures/images'])
-    await sleep(3000)
+    await waitServerReady(8001)
+    await waitServerReady(8002)
+    await waitServerReady(8003)
   })
+
   afterAll(async () => {
     await browser.close()
     reactServer.kill()
@@ -76,6 +78,7 @@ describe('getRenderedContent', () => {
   it('responses rendered React', async () => {
     const result = await getRenderedContent(browser, {
       url: 'http://localhost:8001/',
+      waitUntil: 'load',
     })
     const dom = cheerioLoad(result.body.toString('utf8'))
     expect(dom('h1.title').text()).toEqual('Hello, rendering-proxy!')
@@ -86,6 +89,7 @@ describe('getRenderedContent', () => {
   it('responses rendered Vue', async () => {
     const result = await getRenderedContent(browser, {
       url: 'http://localhost:8002/',
+      waitUntil: 'load',
     })
     const dom = cheerioLoad(result.body.toString('utf8'))
     expect(dom('h1.title').text()).toEqual('Hello, rendering-proxy!')
@@ -165,7 +169,7 @@ describe('getRenderedContent with evaluates', () => {
   beforeAll(async () => {
     browser = await getBrowser()
     htmlServer = spawn('http-server', ['-p', '8004', 'tests/fixtures/html'])
-    await sleep(3000)
+    await waitServerReady(8004)
   })
   afterAll(async () => {
     await browser.close()
@@ -177,7 +181,6 @@ describe('getRenderedContent with evaluates', () => {
       url: 'http://localhost:8004/test.html',
       evaluates: ['document.title', 'navigator.userAgent', '1 + 1'],
     })
-    console.log(result)
     expect(result.evaluateResults[0].script).toBe('document.title')
     expect(result.evaluateResults[0].result).toBe('Example Title')
     expect(result.evaluateResults[1].script).toBe('navigator.userAgent')
