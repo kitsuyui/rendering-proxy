@@ -1,7 +1,7 @@
 # rendering-proxy
 
 [![npm version](https://badge.fury.io/js/rendering-proxy.svg)](https://badge.fury.io/js/rendering-proxy)
-[![codecov](https://codecov.io/gh/kitsuyui/rendering-proxy/branch/main/graph/badge.svg?token=zX1IVwqQab)](https://codecov.io/gh/kitsuyui/rendering-proxy)
+![Coverage](https://raw.githubusercontent.com/kitsuyui/octocov-central/main/badges/kitsuyui/rendering-proxy/coverage.svg)
 [![test](https://github.com/kitsuyui/rendering-proxy/actions/workflows/test.yml/badge.svg)](https://github.com/kitsuyui/rendering-proxy/actions/workflows/test.yml)
 [![Docker Pulls](https://img.shields.io/docker/pulls/kitsuyui/rendering-proxy.svg)](https://hub.docker.com/r/kitsuyui/rendering-proxy/)
 
