@@ -13,9 +13,6 @@ permissions:
 jobs:
   octocov:
     runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.58.2-noble
-      options: --user 1001
     strategy:
       fail-fast: false
       matrix:
@@ -33,9 +30,18 @@ jobs:
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
 
+      - name: cache playwright
+        uses: actions/cache@v5
+        id: playwright-cache
+        with:
+          path: |
+            ~/.cache/ms-playwright
+          key: cache-playwright-${{ runner.os }}-${{ matrix.node-version }}-${{ hashFiles('pnpm-lock.yaml') }}
+
       - name: Install dependencies
         run: |
           pnpm install
+          pnpm exec playwright install
 
       - name: Lint
         run: pnpm lint
