@@ -2,11 +2,13 @@
 
 [![npm version](https://badge.fury.io/js/rendering-proxy.svg)](https://badge.fury.io/js/rendering-proxy)
 ![Coverage](https://raw.githubusercontent.com/kitsuyui/octocov-central/main/badges/kitsuyui/rendering-proxy/coverage.svg)
+[![TODO/expect-error](https://raw.githubusercontent.com/kitsuyui/rendering-proxy/gh-counter-assets/badges/maintenance-comments.svg)](https://github.com/kitsuyui/rendering-proxy/search?q=%28TODO+OR+%22%40ts-expect-error%22%29+path%3Asrc&type=code)
 [![test](https://github.com/kitsuyui/rendering-proxy/actions/workflows/test.yml/badge.svg)](https://github.com/kitsuyui/rendering-proxy/actions/workflows/test.yml)
 [![Docker Pulls](https://img.shields.io/docker/pulls/kitsuyui/rendering-proxy.svg)](https://hub.docker.com/r/kitsuyui/rendering-proxy/)
 
 Fetching rendered DOM easily and simply. Like cURL.
 Using [Headless Chromium](https://chromium.googlesource.com/chromium/src/+/lkgr/headless/README.md).
+The repository tracks `TODO` and `@ts-expect-error` markers with [`gh-counter`](https://github.com/kitsuyui/gh-counter).
 
 ![rendering-proxy](https://user-images.githubusercontent.com/2596972/43354885-7dad9750-928e-11e8-9220-821348efca5e.png)
 
