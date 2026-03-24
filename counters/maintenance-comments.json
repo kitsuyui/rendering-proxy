@@ -1,0 +1,27 @@
+{
+  "id": "maintenance-comments",
+  "label": "TODO/expect-error",
+  "count": 4,
+  "matches": [
+    {
+      "path": "src/browser/index.spec.ts",
+      "line": 19,
+      "text": "// @ts-expect-error"
+    },
+    {
+      "path": "src/browser/index.spec.ts",
+      "line": 63,
+      "text": "// @ts-expect-error"
+    },
+    {
+      "path": "src/browser/index.spec.ts",
+      "line": 66,
+      "text": "// @ts-expect-error"
+    },
+    {
+      "path": "src/render/index.ts",
+      "line": 41,
+      "text": "// TODO: support more content types"
+    }
+  ]
+}
