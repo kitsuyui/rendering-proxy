@@ -1,0 +1,31 @@
+name: gh-counter
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  gh-counter:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Count maintenance comments
+        uses: kitsuyui/gh-counter@v1.2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload gh-counter output
+        uses: actions/upload-artifact@v4
+        with:
+          name: gh-counter-output
+          path: .gh-counter
+          include-hidden-files: true

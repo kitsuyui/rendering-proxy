@@ -1,0 +1,20 @@
+version: 1
+publish:
+  enabled: true
+  branch: gh-counter-assets
+comment:
+  key: maintenance-comments
+counters:
+  - id: maintenance-comments
+    label: TODO/expect-error
+    badge:
+      label: TODO/expect-error
+    matchers:
+      - files:
+          - src/**/*.ts
+        type: contains
+        pattern: "TODO"
+      - files:
+          - src/**/*.ts
+        type: contains
+        pattern: "@ts-expect-error"
