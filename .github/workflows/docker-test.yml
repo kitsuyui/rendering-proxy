@@ -17,5 +17,5 @@ jobs:
           docker compose -f docker/docker-compose.yml ps -a
           sleep 5
           docker compose -f docker/docker-compose.yml ps -a
-          docker compose -f docker/docker-compose.yml exec rendering-proxy-chromium pnpm test
-          docker compose -f docker/docker-compose.yml exec rendering-proxy-firefox pnpm test
+          docker compose -f docker/docker-compose.yml exec rendering-proxy-chromium bun run test
+          docker compose -f docker/docker-compose.yml exec rendering-proxy-firefox bun run test
