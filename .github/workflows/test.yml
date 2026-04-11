@@ -17,6 +17,7 @@ jobs:
       httpbin:
         image: kennethreitz/httpbin
     env:
+      HOME: /root
       RUNNING_IN_DOCKER: "1"
 
     continue-on-error: true
