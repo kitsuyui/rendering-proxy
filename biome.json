@@ -42,7 +42,7 @@
       "!**/dist",
       "!**/.venv",
       "!**/coverage",
-      "!**/pnpm-lock.yaml",
+      "!**/bun.lock",
       "!tests/fixtures/react/index.html"
     ]
   }

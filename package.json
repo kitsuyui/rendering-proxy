@@ -29,12 +29,12 @@
     "@types/cheerio": "1.0.0",
     "@types/node": "24.10.13",
     "@types/yargs": "17.0.35",
-    "@vitest/coverage-v8": "4.0.18",
+    "@vitest/coverage-v8": "^4.1.2",
     "cheerio": "1.2.0",
     "http-server": "14.1.1",
     "tsup": "^8.5.0",
     "typescript": "5.9.3",
-    "vitest": "^4.0.0"
+    "vitest": "^4.1.4"
   },
   "repository": {
     "type": "git",
@@ -51,5 +51,5 @@
     "url": "https://github.com/kitsuyui/rendering-proxy/issues"
   },
   "homepage": "https://github.com/kitsuyui/rendering-proxy#readme",
-  "packageManager": "pnpm@10.30.1"
+  "packageManager": "bun@1.3.11"
 }

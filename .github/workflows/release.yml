@@ -13,19 +13,19 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - uses: pnpm/action-setup@v4.2.0
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.11
 
       - uses: actions/setup-node@v6
         with:
           node-version: '24.x'
           registry-url: 'https://registry.npmjs.org'
-          cache: pnpm
-          cache-dependency-path: pnpm-lock.yaml
 
       - name: install and build
         run: |
-          pnpm install
-          pnpm build
+          bun install --frozen-lockfile
+          bun run build
 
       - name: update version
         if: github.event_name == 'release'
@@ -44,8 +44,9 @@ jobs:
           built_dir=$(pwd)
           tempdir=$(mktemp -d)
           cd $tempdir
-          pnpm add $built_dir/*.tgz
-          pnpm exec -- rendering-proxy --help
+          printf '{"name":"tmp","private":true}\n' > package.json
+          bun add file:$built_dir/*.tgz
+          bunx --bun rendering-proxy --help
           cd $built_dir
           rm -rf $tempdir
 

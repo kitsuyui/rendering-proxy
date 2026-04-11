@@ -1,7 +1,0 @@
-# Source of truth:
-# https://github.com/kitsuyui/kitsuyui/wiki/Official-Information-for-Dependency-Update-Policies
-# 3 days = 4320 minutes
-minimumReleaseAge: 4320
-onlyBuiltDependencies:
-  - '@swc/core'
-  - esbuild

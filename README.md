@@ -31,7 +31,7 @@ $ yarn add rendering-proxy
 ```
 
 ```sh
-$ pnpm add rendering-proxy
+$ bun add rendering-proxy
 ```
 
 # Usage
