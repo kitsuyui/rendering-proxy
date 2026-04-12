@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="245" height="20" role="img" aria-label="Type declarations (raw): 12,335 B">
+<title>Type declarations (raw): 12,335 B</title>
+<linearGradient id="smooth" x2="0" y2="100%">
+<stop offset="0" stop-color="#fff" stop-opacity=".7"/>
+<stop offset=".1" stop-color="#aaa" stop-opacity=".1"/>
+<stop offset=".9" stop-opacity=".3"/>
+<stop offset="1" stop-opacity=".5"/>
+</linearGradient>
+<clipPath id="round"><rect width="245" height="20" rx="3" fill="#fff"/></clipPath>
+<g clip-path="url(#round)">
+<rect width="175" height="20" fill="#555"/>
+<rect x="175" width="70" height="20" fill="#2ea44f"/>
+<rect width="245" height="20" fill="url(#smooth)"/>
+</g>
+<g fill="#fff" text-anchor="middle" font-family="Verdana,Geneva,DejaVu Sans,sans-serif" font-size="11">
+<text x="87.5" y="15" fill="#010101" fill-opacity=".3">Type declarations (raw)</text>
+<text x="87.5" y="14">Type declarations (raw)</text>
+<text x="210" y="15" fill="#010101" fill-opacity=".3">12,335 B</text>
+<text x="210" y="14">12,335 B</text>
+</g>
+</svg>
