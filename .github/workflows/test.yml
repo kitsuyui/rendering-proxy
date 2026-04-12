@@ -59,6 +59,10 @@ jobs:
       - name: Build
         run: bun run build
 
+      - name: Mark workspace as a safe Git directory
+        if: matrix.node-version == '24.x'
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
       - name: Measure build size
         if: matrix.node-version == '24.x'
         uses: kitsuyui/gh-build-size@v0.1.2
