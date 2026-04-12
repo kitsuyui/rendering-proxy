@@ -9,6 +9,7 @@
 Fetching rendered DOM easily and simply. Like cURL.
 Using [Headless Chromium](https://chromium.googlesource.com/chromium/src/+/lkgr/headless/README.md).
 The repository tracks `TODO` and `@ts-expect-error` markers with [`gh-counter`](https://github.com/kitsuyui/gh-counter).
+It also tracks built `dist/` artifact size with [`gh-build-size`](https://github.com/kitsuyui/gh-build-size).
 
 ![rendering-proxy](https://user-images.githubusercontent.com/2596972/43354885-7dad9750-928e-11e8-9220-821348efca5e.png)
 
