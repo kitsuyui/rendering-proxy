@@ -1,0 +1,33 @@
+version: 1
+publish:
+  enabled: true
+  branch: gh-build-size-assets
+comment:
+  key: dist-build-size
+targets:
+  - id: total
+    label: Total dist artifacts
+    files:
+      - dist/**
+    compressions: [raw, gzip, brotli]
+    badge:
+      compression: gzip
+      label: dist artifacts (gzip)
+  - id: runtime
+    label: Runtime bundles
+    files:
+      - dist/**/*.js
+      - dist/**/*.mjs
+    compressions: [raw, gzip, brotli]
+  - id: sourcemaps
+    label: Source maps
+    files:
+      - dist/**/*.map
+    compressions: [raw, gzip, brotli]
+  - id: types
+    label: Type declarations
+    files:
+      - dist/**/*.d.ts
+      - dist/**/*.d.mts
+      - dist/**/*.d.cts
+    compressions: [raw, gzip, brotli]
