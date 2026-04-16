@@ -51,19 +51,19 @@
       }
     },
     {
+      "path": "dist/chunk-5KYCC4YS.mjs.map",
+      "sizes": {
+        "raw": 5249,
+        "gzip": 1864,
+        "brotli": 1696
+      }
+    },
+    {
       "path": "dist/chunk-65Q6GXMT.mjs.map",
       "sizes": {
         "raw": 2105,
         "gzip": 867,
         "brotli": 754
-      }
-    },
-    {
-      "path": "dist/chunk-7T4NEWHW.mjs.map",
-      "sizes": {
-        "raw": 1991,
-        "gzip": 840,
-        "brotli": 748
       }
     },
     {
@@ -83,27 +83,27 @@
       }
     },
     {
+      "path": "dist/chunk-FEKTDIEA.js.map",
+      "sizes": {
+        "raw": 5258,
+        "gzip": 1863,
+        "brotli": 1684
+      }
+    },
+    {
+      "path": "dist/chunk-FTKIKLZZ.js.map",
+      "sizes": {
+        "raw": 1995,
+        "gzip": 844,
+        "brotli": 755
+      }
+    },
+    {
       "path": "dist/chunk-IER2BISL.mjs.map",
       "sizes": {
         "raw": 2837,
         "gzip": 977,
         "brotli": 880
-      }
-    },
-    {
-      "path": "dist/chunk-LFJ2ZMC2.mjs.map",
-      "sizes": {
-        "raw": 5249,
-        "gzip": 1864,
-        "brotli": 1694
-      }
-    },
-    {
-      "path": "dist/chunk-N2RG2O4N.js.map",
-      "sizes": {
-        "raw": 5258,
-        "gzip": 1865,
-        "brotli": 1682
       }
     },
     {
@@ -123,14 +123,6 @@
       }
     },
     {
-      "path": "dist/chunk-QDWDZTSK.js.map",
-      "sizes": {
-        "raw": 1995,
-        "gzip": 843,
-        "brotli": 755
-      }
-    },
-    {
       "path": "dist/chunk-TNVMIP3B.js.map",
       "sizes": {
         "raw": 2836,
@@ -144,6 +136,14 @@
         "raw": 843,
         "gzip": 445,
         "brotli": 381
+      }
+    },
+    {
+      "path": "dist/chunk-VXQCY22M.mjs.map",
+      "sizes": {
+        "raw": 1991,
+        "gzip": 841,
+        "brotli": 749
       }
     },
     {
@@ -342,6 +342,6 @@
   "totals": {
     "raw": 55436,
     "gzip": 22357,
-    "brotli": 19723
+    "brotli": 19728
   }
 }
