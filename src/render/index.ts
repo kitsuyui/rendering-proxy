@@ -45,53 +45,93 @@ function isRenderableContentType(contentType: string): boolean {
   return false
 }
 
+async function evaluateScript(
+  page: Awaited<ReturnType<Browser['newPage']>>,
+  script: string,
+  waitUntil: LifecycleEvent,
+): Promise<EvaluateResult> {
+  try {
+    const result = await page.evaluate(script, { waitUntil })
+    return { success: true, result, script }
+  } catch (error) {
+    return {
+      success: false,
+      result: String(error),
+      script,
+    }
+  }
+}
+
+async function collectEvaluateResults(
+  page: Awaited<ReturnType<Browser['newPage']>>,
+  evaluates: string[] | undefined,
+  waitUntil: LifecycleEvent,
+): Promise<EvaluateResult[]> {
+  return Promise.all(
+    (evaluates ?? []).map((script) => evaluateScript(page, script, waitUntil)),
+  )
+}
+
+async function navigatePage(
+  page: Awaited<ReturnType<Browser['newPage']>>,
+  request: Required<Pick<RenderRequest, 'url' | 'waitUntil'>> & RenderRequest,
+): Promise<{
+  response: PlaywrightResponse | null
+  evaluateResults: EvaluateResult[]
+} | null> {
+  try {
+    const response = await page.goto(request.url, {
+      waitUntil: request.waitUntil,
+    })
+    const evaluateResults = await collectEvaluateResults(
+      page,
+      request.evaluates,
+      request.waitUntil,
+    )
+    return {
+      response,
+      evaluateResults,
+    }
+  } catch {
+    return null
+  }
+}
+
+async function readRenderedBody(
+  page: Awaited<ReturnType<Browser['newPage']>>,
+  response: PlaywrightResponse,
+): Promise<Buffer> {
+  const headers = { ...response.headers() }
+  if (isRenderableContentType(headers['content-type'] || '')) {
+    return Buffer.from(await page.content())
+  }
+  return response.body()
+}
+
 export async function getRenderedContent(
   browser: Browser,
   request: RenderRequest,
 ): Promise<RenderResult> {
-  const { url } = request
-  const waitUntil = request.waitUntil || 'load'
+  const normalizedRequest = {
+    ...request,
+    waitUntil: request.waitUntil ?? 'load',
+  }
 
   return await runWithDefer(async (defer) => {
     const page = await browser.newPage()
     defer(() => page.close())
 
-    let response: PlaywrightResponse | null = null
-    const evaluateResults = []
-    try {
-      response = await page.goto(url, { waitUntil })
-      if (request.evaluates) {
-        for (const evaluate of request.evaluates) {
-          try {
-            const result = await page.evaluate(evaluate, { waitUntil })
-            evaluateResults.push({ success: true, result, script: evaluate })
-          } catch (error) {
-            evaluateResults.push({
-              success: false,
-              result: String(error),
-              script: evaluate,
-            })
-          }
-        }
-      }
-    } catch (_error) {
+    const navigationResult = await navigatePage(page, normalizedRequest)
+    if (!navigationResult?.response) {
       return emptyRenderResult()
     }
 
-    if (!response) return emptyRenderResult()
-    const headers = { ...response.headers() }
-    let body: Buffer
-    if (isRenderableContentType(headers['content-type'] || '')) {
-      body = Buffer.from(await page.content())
-    } else {
-      body = await response.body()
-    }
-    const status = response.status()
+    const headers = { ...navigationResult.response.headers() }
     return {
-      status,
+      status: navigationResult.response.status(),
       headers,
-      body,
-      evaluateResults,
+      body: await readRenderedBody(page, navigationResult.response),
+      evaluateResults: navigationResult.evaluateResults,
     }
   })
 }

@@ -17,31 +17,31 @@ export function parseRenderingProxyHeader(
   return parseOptions('')
 }
 
-function parseOptions(text: string): RequestOption {
-  let baseParsed: RequestOption = {
-    waitUntil: 'load',
-    evaluates: [],
-  }
+function tryParseOptions(text: string): unknown {
   try {
-    baseParsed = JSON.parse(text)
-  } catch (_e) {
-    // ignore
+    return JSON.parse(text)
+  } catch {
+    return null
   }
-  let waitUntil: LifecycleEvent = 'load'
-  if (lifeCycleEvents.indexOf(baseParsed.waitUntil) > -1) {
-    waitUntil = baseParsed.waitUntil as LifecycleEvent
-  }
-  let evaluates: string[] = []
-  if (
-    baseParsed.evaluates &&
-    Array.isArray(baseParsed.evaluates) &&
-    baseParsed.evaluates.every((e: unknown) => typeof e === 'string')
-  ) {
-    evaluates = baseParsed.evaluates
-  }
+}
+
+function normalizeWaitUntil(value: unknown): LifecycleEvent {
+  return lifeCycleEvents.includes(value as LifecycleEvent)
+    ? (value as LifecycleEvent)
+    : 'load'
+}
+
+function normalizeEvaluates(value: unknown): string[] {
+  return Array.isArray(value) && value.every((item) => typeof item === 'string')
+    ? value
+    : []
+}
+
+function parseOptions(text: string): RequestOption {
+  const baseParsed = tryParseOptions(text) as Partial<RequestOption> | null
 
   return {
-    waitUntil,
-    evaluates,
+    waitUntil: normalizeWaitUntil(baseParsed?.waitUntil),
+    evaluates: normalizeEvaluates(baseParsed?.evaluates),
   }
 }
