@@ -17,34 +17,86 @@ interface ServerArgument {
   headless?: boolean
 }
 
+type IncomingRenderRequest =
+  | { type: 'health' }
+  | { type: 'invalid' }
+  | { type: 'render'; request: Parameters<typeof getRenderedContent>[1] }
+
+function resolveOriginUrl(requestUrl: string | undefined): string | null {
+  if (!requestUrl) {
+    return null
+  }
+
+  const originUrl = requestUrl.slice(1)
+  return originUrl && isAbsoluteURL(originUrl) ? originUrl : null
+}
+
+function parseIncomingRenderRequest(
+  request: http.IncomingMessage,
+): IncomingRenderRequest {
+  if (request.url === '/health/') {
+    return { type: 'health' }
+  }
+
+  const originUrl = resolveOriginUrl(request.url)
+  if (!originUrl) {
+    return { type: 'invalid' }
+  }
+
+  return {
+    type: 'render',
+    request: {
+      url: originUrl,
+      ...parseRenderingProxyHeader(request.headers['x-rendering-proxy']),
+    },
+  }
+}
+
+async function renderToResponse(
+  browser: Browser,
+  res: http.ServerResponse,
+  request: Parameters<typeof getRenderedContent>[1],
+): Promise<void> {
+  const renderedContent = await getRenderedContent(browser, request)
+  const headers = {
+    ...excludeUnusedHeaders(renderedContent.headers),
+    'x-rendering-proxy': JSON.stringify(renderedContent.evaluateResults),
+  }
+  res.writeHead(renderedContent.status, headers)
+  res.end(renderedContent.body, 'binary')
+}
+
+async function respondToIncomingRequest(
+  browser: Browser,
+  req: http.IncomingMessage,
+  res: http.ServerResponse,
+): Promise<void> {
+  const parsedRequest = parseIncomingRenderRequest(req)
+  const handlers: Record<IncomingRenderRequest['type'], () => Promise<void>> = {
+    health: async () => {
+      res.writeHead(200)
+      res.end('OK')
+    },
+    invalid: async () => {
+      terminateRequestWithEmpty(req, res)
+    },
+    render: async () => {
+      if (parsedRequest.type !== 'render') {
+        return
+      }
+      await renderToResponse(browser, res, parsedRequest.request)
+    },
+  }
+
+  await handlers[parsedRequest.type]()
+}
+
 export function createHandler(browser: Browser) {
   return async function renderHandler(
     req: http.IncomingMessage,
     res: http.ServerResponse,
   ) {
-    if (!req.url) return terminateRequestWithEmpty(req, res)
-    if (req.url === '/health/') {
-      res.writeHead(200)
-      res.end('OK')
-      return
-    }
-    const originUrl = req.url.slice(1)
-    if (!originUrl) return terminateRequestWithEmpty(req, res)
-    if (!isAbsoluteURL(originUrl)) return terminateRequestWithEmpty(req, res)
-
-    const options = parseRenderingProxyHeader(req.headers['x-rendering-proxy'])
-    const renderedContent = await getRenderedContent(browser, {
-      url: originUrl,
-      ...options,
-    })
-
-    const headers = {
-      ...excludeUnusedHeaders(renderedContent.headers),
-      'x-rendering-proxy': JSON.stringify(renderedContent.evaluateResults),
-    }
-    const status = renderedContent.status
-    res.writeHead(status, headers)
-    res.end(renderedContent.body, 'binary')
+    await respondToIncomingRequest(browser, req, res)
   }
 }
 

@@ -5,6 +5,14 @@
     "enabled": true,
     "rules": {
       "recommended": true,
+      "complexity": {
+        "noExcessiveCognitiveComplexity": {
+          "level": "error",
+          "options": {
+            "maxAllowedComplexity": 3
+          }
+        }
+      },
       "style": {
         "noParameterAssign": "error",
         "useAsConstAssertion": "error",
