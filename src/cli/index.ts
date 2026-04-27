@@ -12,7 +12,21 @@ interface CLiRequest extends RenderRequest {
 
 export async function main(request: CLiRequest): Promise<void> {
   await renderToStream(request, process.stdout)
-  process.exit()
+}
+
+async function writeToStream(
+  writable: Writable,
+  body: string | Buffer,
+): Promise<void> {
+  await new Promise<void>((resolve, reject) => {
+    writable.write(body, 'binary', (error: Error | null | undefined) => {
+      if (error) {
+        reject(error)
+        return
+      }
+      resolve()
+    })
+  })
 }
 
 export async function renderToStream(
@@ -29,6 +43,6 @@ export async function renderToStream(
       waitUntil: request.waitUntil,
       evaluates: request.evaluates,
     })
-    writable.write(result.body, 'binary')
+    await writeToStream(writable, result.body)
   })
 }
