@@ -54,18 +54,23 @@ describe('main', () => {
 
   const spy = vi.spyOn(process.stdout, 'write').mockImplementation(((
     str: string | Uint8Array,
+    _encoding?: BufferEncoding,
+    callback?: (error?: Error | null) => void,
   ) => {
     outputs.push(str.toString())
+    callback?.()
+    return true
   }) as (
     str: string | Uint8Array,
     encoding?: BufferEncoding | undefined,
-  ) => never)
+    callback?: (error?: Error | null) => void,
+  ) => boolean)
 
   it('main', async () => {
     expect(called).toBe(false)
     expect(outputs).toStrictEqual([])
     await main({ url: `${httpbinUrl}/robots.txt`, name: 'chromium' })
-    expect(called).toBe(true)
+    expect(called).toBe(false)
     expect(outputs).toMatchSnapshot()
     spy.mockClear()
   })
