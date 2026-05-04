@@ -64,8 +64,8 @@ describe('getRenderedContent', () => {
     vueServer = spawn('http-server', ['-p', '8002', 'tests/fixtures/vue'])
     imageServer = spawn('http-server', ['-p', '8003', 'tests/fixtures/images'])
     await waitServerReady('http://localhost:8001/')
-    await waitServerReady('http://localhost:8001/')
-    await waitServerReady('http://localhost:8001/')
+    await waitServerReady('http://localhost:8002/')
+    await waitServerReady('http://localhost:8003/')
   })
 
   afterAll(async () => {
