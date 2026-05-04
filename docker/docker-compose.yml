@@ -24,7 +24,7 @@ services:
     ports:
       - "8081:8080"
     healthcheck:
-      test: ["CMD", "curl", "http://127.0.0.1:8080/heatlh/"]
+      test: ["CMD", "curl", "http://127.0.0.1:8080/health/"]
       interval: 1s
       timeout: 3s
       retries: 10
