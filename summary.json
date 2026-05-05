@@ -1,12 +1,15 @@
 {
-  "generated_at": "2026-05-05T02:16:38.761Z",
+  "generated_at": "2026-05-05T09:29:06.098Z",
   "repository": "kitsuyui/rendering-proxy",
   "default_branch": "main",
   "publish_branch": "gh-counter-assets",
   "event_name": "push",
-  "base_reference": "2bb2e439796ac3f6fb87ba30aad5f0ceb05465a9",
-  "head_reference": "290090fbfb5ce622e17439bde87c939f84152613",
+  "base_label": "main",
+  "base_reference": "290090fbfb5ce622e17439bde87c939f84152613",
+  "head_label": "main",
+  "head_reference": "0d06b563e675e68332b45fd40b3a27d9511b7ce2",
   "bootstrap_message": null,
+  "base_only_paths": [],
   "counters": [
     {
       "id": "maintenance-comments",
@@ -14,8 +17,26 @@
       "current": 4,
       "base": 4,
       "delta": 0,
+      "dashboard_current": 4,
+      "dashboard_base": 4,
+      "dashboard_delta": 0,
       "commentable": true,
       "touched_files": [],
+      "file_deltas": [
+        {
+          "path": "src/browser/index.spec.ts",
+          "current": 3,
+          "base": 0,
+          "delta": 3
+        },
+        {
+          "path": "src/render/index.ts",
+          "current": 1,
+          "base": 0,
+          "delta": 1
+        }
+      ],
+      "patch_file_deltas": [],
       "violations": [],
       "badge_path": ".gh-counter/badges/maintenance-comments.svg",
       "counter_path": ".gh-counter/counters/maintenance-comments.json"
