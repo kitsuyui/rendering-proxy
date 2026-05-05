@@ -11,21 +11,4 @@ permissions:
 
 jobs:
   gh-counter:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-
-      - name: Count maintenance comments
-        uses: kitsuyui/gh-counter@v1.2
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload gh-counter output
-        uses: actions/upload-artifact@v4
-        with:
-          name: gh-counter-output
-          path: .gh-counter
-          include-hidden-files: true
+    uses: kitsuyui/gh-actions-workflows/.github/workflows/gh-counter.yml@main
