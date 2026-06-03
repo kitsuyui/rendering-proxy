@@ -92,7 +92,8 @@ async function navigatePage(
       response,
       evaluateResults,
     }
-  } catch {
+  } catch (error) {
+    console.error(`navigate failed: ${request.url}`, error)
     return null
   }
 }
