@@ -16,6 +16,54 @@ type Headers = {
   [key: string]: string
 }
 
+function findHeaderKey(headers: Headers, name: string): string | undefined {
+  return Object.keys(headers).find((key) => key.toLowerCase() === name)
+}
+
+function varyHeaderKey(headers: Headers): string {
+  return findHeaderKey(headers, 'vary') ?? 'vary'
+}
+
+function parseVaryValues(headers: Headers, varyKey: string): string[] {
+  return (headers[varyKey] ?? '')
+    .split(',')
+    .map((value) => value.trim())
+    .filter((value) => value.length > 0)
+}
+
+function hasVaryValue(varyValues: string[], fieldName: string): boolean {
+  return varyValues.some(
+    (value) => value.toLowerCase() === fieldName.toLowerCase(),
+  )
+}
+
+function shouldKeepExistingVary(
+  varyValues: string[],
+  fieldName: string,
+): boolean {
+  return varyValues.includes('*') || hasVaryValue(varyValues, fieldName)
+}
+
+/**
+ * Append a request header name to Vary without dropping origin-provided Vary values.
+ * @param headers {Headers}
+ * @param fieldName {string}
+ * @returns headers {Headers}
+ */
+export function appendVaryHeader(headers: Headers, fieldName: string): Headers {
+  const varyKey = varyHeaderKey(headers)
+  const varyValues = parseVaryValues(headers, varyKey)
+
+  if (shouldKeepExistingVary(varyValues, fieldName)) {
+    return { ...headers }
+  }
+
+  return {
+    ...headers,
+    [varyKey]: [...varyValues, fieldName].join(', '),
+  }
+}
+
 /**
  * Note: Hop-by-hop headers are meaningful only for a single transport-level connection, and are not stored by caches or forwarded by proxies.
  * See also: https://developer.mozilla.org/en-US/docs/Web/HTTP/Compression#hop-by-hop_compression

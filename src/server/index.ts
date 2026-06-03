@@ -4,7 +4,7 @@ import type { Browser } from 'playwright'
 import { runWithDefer } from 'with-defer'
 
 import { getBrowser, type SelectableBrowsers } from '../browser'
-import { excludeUnusedHeaders } from '../lib/headers'
+import { appendVaryHeader, excludeUnusedHeaders } from '../lib/headers'
 import { isAbsoluteURL } from '../lib/url'
 import { waitForProcessExit } from '../lib/wait_for_exit'
 import { getRenderedContent } from '../render'
@@ -58,10 +58,13 @@ async function renderToResponse(
   request: Parameters<typeof getRenderedContent>[1],
 ): Promise<void> {
   const renderedContent = await getRenderedContent(browser, request)
-  const headers = {
-    ...excludeUnusedHeaders(renderedContent.headers),
-    'x-rendering-proxy': JSON.stringify(renderedContent.evaluateResults),
-  }
+  const headers = appendVaryHeader(
+    {
+      ...excludeUnusedHeaders(renderedContent.headers),
+      'x-rendering-proxy': JSON.stringify(renderedContent.evaluateResults),
+    },
+    'x-rendering-proxy',
+  )
   res.writeHead(renderedContent.status, headers)
   res.end(renderedContent.body, 'binary')
 }
