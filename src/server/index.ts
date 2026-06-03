@@ -15,6 +15,7 @@ interface ServerArgument {
   port?: number
   name?: SelectableBrowsers
   headless?: boolean
+  maxConcurrentRenders?: number
 }
 
 type IncomingRenderRequest =
@@ -108,25 +109,63 @@ function replyWithBadGateway(res: http.ServerResponse): void {
   }
 }
 
-export function createHandler(browser: Browser) {
+async function renderWithConcurrencyLimit(
+  browser: Browser,
+  req: http.IncomingMessage,
+  res: http.ServerResponse,
+  counter: { value: number },
+  limit: number,
+): Promise<void> {
+  if (counter.value >= limit) {
+    res.writeHead(503, { 'retry-after': '1' })
+    res.end()
+    return
+  }
+  counter.value++
+  try {
+    await respondToIncomingRequest(browser, req, res)
+  } finally {
+    counter.value--
+  }
+}
+
+export function createHandler(
+  browser: Browser,
+  { maxConcurrentRenders = 10 }: { maxConcurrentRenders?: number } = {},
+) {
+  const counter = { value: 0 }
+
   return function renderHandler(
     req: http.IncomingMessage,
     res: http.ServerResponse,
   ) {
-    respondToIncomingRequest(browser, req, res).catch(() =>
-      replyWithBadGateway(res),
-    )
+    const parsedRequest = parseIncomingRenderRequest(req)
+    const task =
+      parsedRequest.type === 'render'
+        ? renderWithConcurrencyLimit(
+            browser,
+            req,
+            res,
+            counter,
+            maxConcurrentRenders,
+          )
+        : respondToIncomingRequest(browser, req, res)
+    task.catch(() => replyWithBadGateway(res))
   }
 }
 
 export async function createServer({
   browser,
   port = 8080,
+  maxConcurrentRenders = 10,
 }: {
   browser: Browser
   port: number
+  maxConcurrentRenders?: number
 }): Promise<http.Server> {
-  const server = http.createServer(createHandler(browser))
+  const server = http.createServer(
+    createHandler(browser, { maxConcurrentRenders }),
+  )
   await new Promise((resolve) => {
     server.listen(port, () => {
       resolve(undefined)
@@ -167,12 +206,13 @@ export async function main({
   port = 8080,
   name = 'chromium',
   headless = true,
+  maxConcurrentRenders = 10,
 }: ServerArgument = {}): Promise<void> {
   await runWithDefer(async (defer) => {
     const browser = await getBrowser({ name, headless })
     defer(() => browser.close())
 
-    const server = await createServer({ browser, port })
+    const server = await createServer({ browser, port, maxConcurrentRenders })
     defer(() => closeServerGracefully(server))
 
     await waitForProcessExit()
