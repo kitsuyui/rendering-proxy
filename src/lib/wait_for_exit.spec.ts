@@ -1,25 +1,19 @@
-import { describe, expect, it, vi } from 'vitest'
-// waitForProcessExit
+import { describe, it } from 'vitest'
+
 import { waitForProcessExit } from './wait_for_exit'
 
 describe('waitForProcessExit', () => {
-  let called = false
-
-  type MockType = (code?: string | number | null | undefined) => never
-  const spy = vi.spyOn(process, 'exit').mockImplementation(((
-    code?: string | number | null | undefined,
-  ) => {
-    called = true
-    process.emit('exit', code ?? 0)
-  }) as MockType)
-
-  it('wait for process.exit', async () => {
+  it('resolves when SIGTERM is received', async () => {
     setTimeout(() => {
-      process.exit(0)
-    }, 200)
-    expect(called).toBe(false)
+      process.emit('SIGTERM')
+    }, 50)
     await waitForProcessExit()
-    expect(called).toBe(true)
-    spy.mockClear()
+  })
+
+  it('resolves when SIGINT is received', async () => {
+    setTimeout(() => {
+      process.emit('SIGINT')
+    }, 50)
+    await waitForProcessExit()
   })
 })
