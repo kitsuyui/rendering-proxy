@@ -265,4 +265,17 @@ describe('getRenderedContent with evaluates', () => {
       null,
     ])
   })
+
+  it('does not inject unexpected arguments into function-form scripts', async () => {
+    // Regression guard: page.evaluate must not receive a second argument.
+    // Before the fix, { waitUntil } was passed as arg, so '(arg) => typeof arg'
+    // would return 'object'. Without an injected arg, Playwright returns undefined
+    // because the function expression is not invocable without an arg.
+    const result = await getRenderedContent(browser, {
+      url: 'http://localhost:8004/test.html',
+      evaluates: ['(arg) => typeof arg'],
+    })
+    expect(result.evaluateResults[0].success).toBe(true)
+    expect(result.evaluateResults[0].result).toBeUndefined()
+  })
 })
