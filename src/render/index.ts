@@ -1,4 +1,5 @@
 import type { Browser, Page, Response as PlaywrightResponse } from 'playwright'
+import { errors as PlaywrightErrors } from 'playwright'
 import { runWithDefer } from 'with-defer'
 
 export const lifeCycleEvents = [
@@ -27,9 +28,9 @@ export interface RenderResult {
   evaluateResults: EvaluateResult[]
 }
 
-function emptyRenderResult(): RenderResult {
+function errorRenderResult(status: 502 | 504): RenderResult {
   return {
-    status: 204,
+    status,
     headers: {},
     body: Buffer.from(''),
     evaluateResults: [],
@@ -71,13 +72,40 @@ async function collectEvaluateResults(
   )
 }
 
-async function navigatePage(
+type NavigationResult =
+  | {
+      ok: true
+      response: PlaywrightResponse | null
+      evaluateResults: EvaluateResult[]
+    }
+  | { ok: false; status: 502 | 504 }
+
+function classifyNavigationError(error: unknown): 502 | 504 {
+  return error instanceof PlaywrightErrors.TimeoutError ? 504 : 502
+}
+
+function captureNavigationResponse(page: Page): {
+  get: () => PlaywrightResponse | null
+  detach: () => void
+} {
+  let captured: PlaywrightResponse | null = null
+  const handler = (response: PlaywrightResponse) => {
+    if (response.request().isNavigationRequest()) {
+      captured = response
+    }
+  }
+  page.on('response', handler)
+  return {
+    get: () => captured,
+    detach: () => page.off('response', handler),
+  }
+}
+
+async function tryGoto(
   page: Page,
   request: Required<Pick<RenderRequest, 'url' | 'waitUntil'>> & RenderRequest,
-): Promise<{
-  response: PlaywrightResponse | null
-  evaluateResults: EvaluateResult[]
-} | null> {
+  capture: ReturnType<typeof captureNavigationResponse>,
+): Promise<NavigationResult> {
   try {
     const response = await page.goto(request.url, {
       waitUntil: request.waitUntil,
@@ -88,25 +116,70 @@ async function navigatePage(
       request.evaluates,
       request.waitUntil,
     )
-    return {
-      response,
-      evaluateResults,
-    }
+    return { ok: true, response: response ?? capture.get(), evaluateResults }
   } catch (error) {
-    console.error(`navigate failed: ${request.url}`, error)
-    return null
+    return { ok: false, status: classifyNavigationError(error) }
   }
+}
+
+async function navigatePage(
+  page: Page,
+  request: Required<Pick<RenderRequest, 'url' | 'waitUntil'>> & RenderRequest,
+): Promise<NavigationResult> {
+  // Track the main-frame response so we can detect server replies even when
+  // page.goto() throws (e.g. 204 No Content aborts the document load).
+  const capture = captureNavigationResponse(page)
+  const result = await tryGoto(page, request, capture)
+  capture.detach()
+  const serverResponse = capture.get()
+  if (!result.ok && serverResponse) {
+    return { ok: true, response: serverResponse, evaluateResults: [] }
+  }
+  return result
+}
+
+function hasNoBody(status: number): boolean {
+  return status === 204 || status === 304 || (status >= 100 && status < 200)
 }
 
 async function readRenderedBody(
   page: Page,
   response: PlaywrightResponse,
 ): Promise<Buffer> {
+  if (hasNoBody(response.status())) {
+    return Buffer.from('')
+  }
   const headers = { ...response.headers() }
   if (isRenderableContentType(headers['content-type'] || '')) {
     return Buffer.from(await page.content())
   }
   return response.body()
+}
+
+async function buildRenderResult(
+  page: Page,
+  navigationResult: NavigationResult,
+): Promise<RenderResult> {
+  if (!navigationResult.ok) {
+    return errorRenderResult(navigationResult.status)
+  }
+  if (!navigationResult.response) {
+    // page.goto() returned null without an exception (e.g. origin sent 204 No Content).
+    // This is a valid upstream response, not a gateway error.
+    return {
+      status: 204,
+      headers: {},
+      body: Buffer.from(''),
+      evaluateResults: [],
+    }
+  }
+  const headers = { ...navigationResult.response.headers() }
+  return {
+    status: navigationResult.response.status(),
+    headers,
+    body: await readRenderedBody(page, navigationResult.response),
+    evaluateResults: navigationResult.evaluateResults,
+  }
 }
 
 export async function getRenderedContent(
@@ -124,16 +197,6 @@ export async function getRenderedContent(
     const page = await context.newPage()
 
     const navigationResult = await navigatePage(page, normalizedRequest)
-    if (!navigationResult?.response) {
-      return emptyRenderResult()
-    }
-
-    const headers = { ...navigationResult.response.headers() }
-    return {
-      status: navigationResult.response.status(),
-      headers,
-      body: await readRenderedBody(page, navigationResult.response),
-      evaluateResults: navigationResult.evaluateResults,
-    }
+    return buildRenderResult(page, navigationResult)
   })
 }
