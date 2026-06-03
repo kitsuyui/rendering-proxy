@@ -1,6 +1,8 @@
 import type { Browser, Page, Response as PlaywrightResponse } from 'playwright'
 import { runWithDefer } from 'with-defer'
 
+import { excludeCacheValidationHeaders } from '../lib/headers'
+
 export const lifeCycleEvents = [
   'load',
   'domcontentloaded',
@@ -98,6 +100,16 @@ async function navigatePage(
   }
 }
 
+function computeResponseHeaders(response: PlaywrightResponse): {
+  [key: string]: string
+} {
+  const headers = { ...response.headers() }
+  if (isRenderableContentType(headers['content-type'] || '')) {
+    return excludeCacheValidationHeaders(headers)
+  }
+  return headers
+}
+
 async function readRenderedBody(
   page: Page,
   response: PlaywrightResponse,
@@ -128,10 +140,9 @@ export async function getRenderedContent(
       return emptyRenderResult()
     }
 
-    const headers = { ...navigationResult.response.headers() }
     return {
       status: navigationResult.response.status(),
-      headers,
+      headers: computeResponseHeaders(navigationResult.response),
       body: await readRenderedBody(page, navigationResult.response),
       evaluateResults: navigationResult.evaluateResults,
     }
