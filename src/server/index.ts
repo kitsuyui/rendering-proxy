@@ -126,7 +126,7 @@ function replyWithBadGateway(res: http.ServerResponse): void {
 }
 
 async function renderWithConcurrencyLimit(
-  browser: Browser,
+  getBrowserFn: () => Browser,
   req: http.IncomingMessage,
   res: http.ServerResponse,
   counter: { value: number },
@@ -139,18 +139,17 @@ async function renderWithConcurrencyLimit(
   }
   counter.value++
   try {
-    await respondToIncomingRequest(browser, req, res)
+    await respondToIncomingRequest(getBrowserFn(), req, res)
   } finally {
     counter.value--
   }
 }
 
 export function createHandler(
-  browser: Browser,
+  getBrowserFn: () => Browser,
   { maxConcurrentRenders = 10 }: { maxConcurrentRenders?: number } = {},
 ) {
   const counter = { value: 0 }
-
   return function renderHandler(
     req: http.IncomingMessage,
     res: http.ServerResponse,
@@ -159,28 +158,28 @@ export function createHandler(
     const task =
       parsedRequest.type === 'render'
         ? renderWithConcurrencyLimit(
-            browser,
+            getBrowserFn,
             req,
             res,
             counter,
             maxConcurrentRenders,
           )
-        : respondToIncomingRequest(browser, req, res)
+        : respondToIncomingRequest(getBrowserFn(), req, res)
     task.catch(() => replyWithBadGateway(res))
   }
 }
 
 export async function createServer({
-  browser,
+  getBrowserFn,
   port = 8080,
   maxConcurrentRenders = 10,
 }: {
-  browser: Browser
+  getBrowserFn: () => Browser
   port: number
   maxConcurrentRenders?: number
 }): Promise<http.Server> {
   const server = http.createServer(
-    createHandler(browser, { maxConcurrentRenders }),
+    createHandler(getBrowserFn, { maxConcurrentRenders }),
   )
   await new Promise((resolve) => {
     server.listen(port, () => {
@@ -225,10 +224,28 @@ export async function main({
   maxConcurrentRenders = 10,
 }: ServerArgument = {}): Promise<void> {
   await runWithDefer(async (defer) => {
-    const browser = await getBrowser({ name, headless })
-    defer(() => browser.close())
+    let activeBrowser = await getBrowser({ name, headless })
 
-    const server = await createServer({ browser, port, maxConcurrentRenders })
+    const onDisconnected = async () => {
+      try {
+        activeBrowser = await getBrowser({ name, headless })
+        activeBrowser.on('disconnected', onDisconnected)
+      } catch {
+        // Restart failed; subsequent requests will error naturally
+      }
+    }
+    activeBrowser.on('disconnected', onDisconnected)
+
+    defer(async () => {
+      activeBrowser.removeListener('disconnected', onDisconnected)
+      await activeBrowser.close()
+    })
+
+    const server = await createServer({
+      getBrowserFn: () => activeBrowser,
+      port,
+      maxConcurrentRenders,
+    })
     defer(() => closeServerGracefully(server))
 
     await waitForProcessExit()
