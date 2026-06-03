@@ -127,6 +127,16 @@ describe('getRenderedContent', () => {
     expect(browser.contexts().length).toBe(0)
   })
 
+  it('returns 502 when navigation fails (connection refused)', async () => {
+    const result = await getRenderedContent(browser, {
+      url: 'http://127.0.0.1:19999/',
+    })
+    expect(result.status).toEqual(502)
+    expect(result.body.byteLength).toBe(0)
+    expect(result.evaluateResults).toHaveLength(0)
+    expect(browser.contexts.length).toBe(0)
+  })
+
   test('image/png', async () => {
     const result = await getRenderedContent(browser, {
       url: 'http://localhost:8003/test.png',
