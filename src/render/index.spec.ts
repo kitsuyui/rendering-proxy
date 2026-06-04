@@ -60,9 +60,9 @@ describe('getRenderedContent', () => {
 
   beforeAll(async () => {
     browser = await getBrowser()
-    reactServer = spawn('http-server', ['-p', '8001', 'tests/fixtures/react'])
-    vueServer = spawn('http-server', ['-p', '8002', 'tests/fixtures/vue'])
-    imageServer = spawn('http-server', ['-p', '8003', 'tests/fixtures/images'])
+    reactServer = spawn('http-server', ['-p', '8001', 'fixtures/react'])
+    vueServer = spawn('http-server', ['-p', '8002', 'fixtures/vue'])
+    imageServer = spawn('http-server', ['-p', '8003', 'fixtures/images'])
     await waitServerReady('http://localhost:8001/')
     await waitServerReady('http://localhost:8002/')
     await waitServerReady('http://localhost:8003/')
@@ -168,7 +168,7 @@ describe('getRenderedContent with evaluates', () => {
 
   beforeAll(async () => {
     browser = await getBrowser()
-    htmlServer = spawn('http-server', ['-p', '8004', 'tests/fixtures/html'])
+    htmlServer = spawn('http-server', ['-p', '8004', 'fixtures/html'])
     await waitServerReady('http://localhost:8004/')
   })
   afterAll(async () => {
