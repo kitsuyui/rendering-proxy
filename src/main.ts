@@ -2,10 +2,78 @@
 import yargs from 'yargs'
 import { cli, server } from './'
 import { type SelectableBrowsers, selectableBrowsers } from './browser'
+import { ensureURLStartsWithProtocolScheme } from './lib/url'
 import { type LifecycleEvent, lifeCycleEvents } from './render'
 
-export async function main(): Promise<void> {
-  yargs(process.argv.slice(2))
+const usageErrorExitCode = 2
+const runtimeErrorExitCode = 1
+
+export class CliUsageError extends Error {
+  readonly exitCode = usageErrorExitCode
+
+  constructor(message: string) {
+    super(message)
+    this.name = 'CliUsageError'
+  }
+}
+
+export function validateURLArgument(url: string): string {
+  const normalizedURL = ensureURLStartsWithProtocolScheme(url)
+  try {
+    new URL(normalizedURL)
+  } catch {
+    throw new CliUsageError(`Invalid URL: ${url}`)
+  }
+  return url
+}
+
+function handleYargsFailure(
+  message: string | null,
+  error: Error | null,
+): never {
+  throw yargsFailureError(message, error)
+}
+
+function yargsFailureError(message: string | null, error: Error | null): Error {
+  if (error instanceof CliUsageError) {
+    return error
+  }
+  if (!message) {
+    return error ?? new CliUsageError('Invalid CLI arguments')
+  }
+  return new CliUsageError(message)
+}
+
+export function getCliExitCode(error: unknown): number {
+  if (error instanceof CliUsageError) {
+    return error.exitCode
+  }
+  return runtimeErrorExitCode
+}
+
+function errorMessage(error: unknown): string {
+  if (error instanceof Error) {
+    return error.message
+  }
+  return String(error)
+}
+
+export function formatCliError(error: unknown): string {
+  const label = error instanceof CliUsageError ? 'Usage error' : 'Error'
+  return `rendering-proxy: ${label}: ${errorMessage(error)}`
+}
+
+export function handleMainError(error: unknown): never {
+  console.error(formatCliError(error))
+  process.exit(getCliExitCode(error))
+}
+
+export async function main(args = process.argv.slice(2)): Promise<void> {
+  await yargs(args)
+    .scriptName('rendering-proxy')
+    .version()
+    .exitProcess(false)
+    .fail(handleYargsFailure)
     .command(
       'cli',
       'Render a page from the command line',
@@ -16,6 +84,7 @@ export async function main(): Promise<void> {
             type: 'string',
             description: 'URL to render',
             demandOption: true,
+            coerce: validateURLArgument,
           })
           .option('waitUntil', {
             alias: 'w',
@@ -74,9 +143,11 @@ export async function main(): Promise<void> {
       },
     )
     .demandCommand(1, 'You need at least one command before moving on')
-    .help().argv
+    .strictCommands()
+    .help()
+    .parseAsync()
 }
 
 if (require.main === module) {
-  main()
+  main().catch(handleMainError)
 }
