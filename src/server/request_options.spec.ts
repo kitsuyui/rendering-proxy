@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest'
 import { parseRenderingProxyHeader } from './request_options'
 
 describe('parseRenderingProxyHeader', () => {
-  it('returns default when empty or invalid header value', async () => {
+  it('returns default when header is absent, empty, or contains valid JSON with wrong types', async () => {
     expect(parseRenderingProxyHeader(undefined)).toStrictEqual({
       waitUntil: 'load',
       evaluates: [],
@@ -16,20 +16,27 @@ describe('parseRenderingProxyHeader', () => {
       waitUntil: 'load',
       evaluates: [],
     })
+    // Valid JSON but not an object — unknown fields normalize to defaults
     expect(parseRenderingProxyHeader('1234')).toStrictEqual({
       waitUntil: 'load',
       evaluates: [],
     })
-    expect(parseRenderingProxyHeader('{')).toStrictEqual({
-      waitUntil: 'load',
-      evaluates: [],
-    })
+    // Valid JSON with wrong field types — normalize to defaults
     expect(
       parseRenderingProxyHeader('{"evaluates": 1234, "waitUntil": 3456}'),
     ).toStrictEqual({
       waitUntil: 'load',
       evaluates: [],
     })
+  })
+
+  it('throws SyntaxError for syntactically invalid JSON in a non-empty header', async () => {
+    // Callers (e.g. the HTTP server) must catch and return 400 Bad Request
+    expect(() => parseRenderingProxyHeader('{')).toThrow(SyntaxError)
+    expect(() => parseRenderingProxyHeader('[unclosed')).toThrow(SyntaxError)
+    expect(() => parseRenderingProxyHeader('{waitUntil: "load"}')).toThrow(
+      SyntaxError,
+    )
   })
 
   it('parses evaluates', async () => {
