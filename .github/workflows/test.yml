@@ -23,7 +23,6 @@ jobs:
       HOME: /root
       RUNNING_IN_DOCKER: "1"
 
-    continue-on-error: true
     strategy:
       fail-fast: false
       matrix:
