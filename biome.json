@@ -51,7 +51,7 @@
       "!**/.venv",
       "!**/coverage",
       "!**/bun.lock",
-      "!tests/fixtures/react/index.html"
+      "!fixtures/react/index.html"
     ]
   }
 }
