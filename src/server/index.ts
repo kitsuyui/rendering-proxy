@@ -72,6 +72,7 @@ async function respondToIncomingRequest(
   res: http.ServerResponse,
 ): Promise<void> {
   const parsedRequest = parseIncomingRenderRequest(req)
+  const startMs = Date.now()
   const handlers: Record<IncomingRenderRequest['type'], () => Promise<void>> = {
     health: async () => {
       res.writeHead(200)
@@ -89,6 +90,12 @@ async function respondToIncomingRequest(
   }
 
   await handlers[parsedRequest.type]()
+
+  if (parsedRequest.type === 'render') {
+    console.log(
+      `render ${parsedRequest.request.url} ${res.statusCode} ${Date.now() - startMs}ms`,
+    )
+  }
 }
 
 export function createHandler(browser: Browser) {
