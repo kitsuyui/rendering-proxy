@@ -13,6 +13,7 @@ export interface RenderRequest {
   url: string
   waitUntil?: LifecycleEvent
   evaluates?: string[]
+  timeout?: number
 }
 
 export interface EvaluateResult {
@@ -82,6 +83,7 @@ async function navigatePage(
   try {
     const response = await page.goto(request.url, {
       waitUntil: request.waitUntil,
+      timeout: request.timeout,
     })
     const evaluateResults = await collectEvaluateResults(
       page,
