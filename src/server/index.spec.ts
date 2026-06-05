@@ -5,7 +5,7 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { runWithDefer } from 'with-defer'
 
 import { getBrowser } from '../browser'
-import { waitServerReady } from '../lib/utils'
+import { waitServerReady } from '../test-helpers/server'
 import { createServer, terminateRequestWithEmpty } from './index'
 
 let dockerId: string | null = null
