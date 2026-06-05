@@ -149,17 +149,17 @@
     {
       "path": "dist/render/index.d.mts",
       "sizes": {
-        "raw": 774,
-        "gzip": 377,
-        "brotli": 300
+        "raw": 796,
+        "gzip": 389,
+        "brotli": 315
       }
     },
     {
       "path": "dist/render/index.d.ts",
       "sizes": {
-        "raw": 774,
-        "gzip": 377,
-        "brotli": 300
+        "raw": 796,
+        "gzip": 389,
+        "brotli": 315
       }
     },
     {
@@ -181,23 +181,23 @@
     {
       "path": "dist/server/request_options.d.mts",
       "sizes": {
-        "raw": 302,
-        "gzip": 214,
-        "brotli": 164
+        "raw": 335,
+        "gzip": 229,
+        "brotli": 182
       }
     },
     {
       "path": "dist/server/request_options.d.ts",
       "sizes": {
-        "raw": 301,
-        "gzip": 214,
-        "brotli": 161
+        "raw": 334,
+        "gzip": 229,
+        "brotli": 181
       }
     }
   ],
   "totals": {
-    "raw": 13057,
-    "gzip": 6115,
-    "brotli": 4943
+    "raw": 13167,
+    "gzip": 6169,
+    "brotli": 5011
   }
 }
