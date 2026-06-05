@@ -149,17 +149,17 @@
     {
       "path": "dist/render/index.d.mts",
       "sizes": {
-        "raw": 796,
-        "gzip": 389,
-        "brotli": 315
+        "raw": 857,
+        "gzip": 399,
+        "brotli": 318
       }
     },
     {
       "path": "dist/render/index.d.ts",
       "sizes": {
-        "raw": 796,
-        "gzip": 389,
-        "brotli": 315
+        "raw": 857,
+        "gzip": 399,
+        "brotli": 318
       }
     },
     {
@@ -196,8 +196,8 @@
     }
   ],
   "totals": {
-    "raw": 13727,
-    "gzip": 6335,
-    "brotli": 5127
+    "raw": 13849,
+    "gzip": 6355,
+    "brotli": 5133
   }
 }
