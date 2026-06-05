@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-06-05T14:43:00.410Z",
+  "generated_at": "2026-06-05T14:43:28.520Z",
   "repository": "kitsuyui/rendering-proxy",
   "default_branch": "main",
   "publish_branch": "gh-counter-assets",
   "event_name": "push",
   "base_label": "main",
-  "base_reference": "e2fab397855ae6190ff5fbcb5dda9b92c12e0121",
+  "base_reference": "2f6948fe7f829efc8912a825dbc75b5f143b9368",
   "head_label": "main",
-  "head_reference": "2f6948fe7f829efc8912a825dbc75b5f143b9368",
+  "head_reference": "d1afc0350790d68627cc5c1ab78e7c5c00007338",
   "bootstrap_message": null,
   "base_only_paths": [],
   "counters": [
