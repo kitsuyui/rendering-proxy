@@ -16,11 +16,9 @@ export interface RenderRequest {
   timeout?: number
 }
 
-export interface EvaluateResult {
-  success: boolean
-  script: string
-  result: unknown
-}
+export type EvaluateResult =
+  | { success: true; script: string; result: unknown }
+  | { success: false; script: string; result: string }
 
 export interface RenderResult {
   status: number
