@@ -35,14 +35,6 @@
       }
     },
     {
-      "path": "dist/chunk-3MFIF7CO.mjs",
-      "sizes": {
-        "raw": 1854,
-        "gzip": 913,
-        "brotli": 828
-      }
-    },
-    {
       "path": "dist/chunk-3UJUTDOL.mjs",
       "sizes": {
         "raw": 343,
@@ -56,6 +48,14 @@
         "raw": 87,
         "gzip": 67,
         "brotli": 52
+      }
+    },
+    {
+      "path": "dist/chunk-6OW5UTDX.js",
+      "sizes": {
+        "raw": 2238,
+        "gzip": 1028,
+        "brotli": 921
       }
     },
     {
@@ -139,19 +139,19 @@
       }
     },
     {
-      "path": "dist/chunk-SRZJXNRC.js",
-      "sizes": {
-        "raw": 2177,
-        "gzip": 998,
-        "brotli": 891
-      }
-    },
-    {
       "path": "dist/chunk-V2Q7APDQ.js",
       "sizes": {
         "raw": 272,
         "gzip": 188,
         "brotli": 152
+      }
+    },
+    {
+      "path": "dist/chunk-VA2TGVN2.mjs",
+      "sizes": {
+        "raw": 1913,
+        "gzip": 940,
+        "brotli": 856
       }
     },
     {
@@ -198,7 +198,7 @@
       "path": "dist/index.js",
       "sizes": {
         "raw": 629,
-        "gzip": 292,
+        "gzip": 291,
         "brotli": 237
       }
     },
@@ -206,7 +206,7 @@
       "path": "dist/index.mjs",
       "sizes": {
         "raw": 390,
-        "gzip": 204,
+        "gzip": 205,
         "brotli": 176
       }
     },
@@ -263,7 +263,7 @@
       "sizes": {
         "raw": 1768,
         "gzip": 760,
-        "brotli": 647
+        "brotli": 646
       }
     },
     {
@@ -271,7 +271,7 @@
       "sizes": {
         "raw": 1480,
         "gzip": 679,
-        "brotli": 570
+        "brotli": 567
       }
     },
     {
@@ -294,8 +294,8 @@
       "path": "dist/server/index.js",
       "sizes": {
         "raw": 787,
-        "gzip": 300,
-        "brotli": 245
+        "gzip": 299,
+        "brotli": 242
       }
     },
     {
@@ -324,8 +324,8 @@
     }
   ],
   "totals": {
-    "raw": 27842,
-    "gzip": 14333,
-    "brotli": 12096
+    "raw": 27962,
+    "gzip": 14389,
+    "brotli": 12147
   }
 }
