@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-06-04T15:54:10.698Z",
+  "generated_at": "2026-06-05T14:39:53.539Z",
   "repository": "kitsuyui/rendering-proxy",
   "default_branch": "main",
   "publish_branch": "gh-build-size-assets",
   "event_name": "push",
   "base_label": "main",
-  "base_reference": "f754d4f52c7f8d5dadf367abe73d9556665d9040",
+  "base_reference": "29b12fbf924c7b88cb0791af25fe0c2e5ba62db0",
   "head_label": "main",
-  "head_reference": "29b12fbf924c7b88cb0791af25fe0c2e5ba62db0",
+  "head_reference": "66929b5266300627bb14a1a60db1dda03d30adf5",
   "targets": [
     {
       "id": "total",
@@ -31,20 +31,20 @@
         "dist/chunk-A2KM6Z5V.js.map",
         "dist/chunk-AE5LUNXE.js",
         "dist/chunk-AE5LUNXE.js.map",
-        "dist/chunk-EEIHAD7F.js",
-        "dist/chunk-EEIHAD7F.js.map",
         "dist/chunk-ETHEVVRU.js",
         "dist/chunk-ETHEVVRU.js.map",
         "dist/chunk-IER2BISL.mjs",
         "dist/chunk-IER2BISL.mjs.map",
         "dist/chunk-J5GDQSGM.mjs",
         "dist/chunk-J5GDQSGM.mjs.map",
+        "dist/chunk-NVITPEQ5.mjs",
+        "dist/chunk-NVITPEQ5.mjs.map",
         "dist/chunk-ORTJ6CBA.mjs",
         "dist/chunk-ORTJ6CBA.mjs.map",
         "dist/chunk-Q2J75HN2.mjs",
         "dist/chunk-Q2J75HN2.mjs.map",
-        "dist/chunk-QOCXNBO4.mjs",
-        "dist/chunk-QOCXNBO4.mjs.map",
+        "dist/chunk-RCJS734H.js",
+        "dist/chunk-RCJS734H.js.map",
         "dist/chunk-TNVMIP3B.js",
         "dist/chunk-TNVMIP3B.js.map",
         "dist/chunk-UIB26HWJ.mjs",
@@ -129,19 +129,19 @@
       "commentable": true,
       "sizes": {
         "raw": {
-          "current": 102719,
+          "current": 103759,
           "base": 102719,
-          "delta": 0
+          "delta": 1040
         },
         "gzip": {
-          "current": 44504,
-          "base": 44502,
-          "delta": 2
+          "current": 44904,
+          "base": 44504,
+          "delta": 400
         },
         "brotli": {
-          "current": 38338,
-          "base": 38352,
-          "delta": -14
+          "current": 38751,
+          "base": 38338,
+          "delta": 413
         }
       },
       "violations": [],
@@ -160,13 +160,13 @@
         "dist/chunk-4VD5RPR4.mjs",
         "dist/chunk-A2KM6Z5V.js",
         "dist/chunk-AE5LUNXE.js",
-        "dist/chunk-EEIHAD7F.js",
         "dist/chunk-ETHEVVRU.js",
         "dist/chunk-IER2BISL.mjs",
         "dist/chunk-J5GDQSGM.mjs",
+        "dist/chunk-NVITPEQ5.mjs",
         "dist/chunk-ORTJ6CBA.mjs",
         "dist/chunk-Q2J75HN2.mjs",
-        "dist/chunk-QOCXNBO4.mjs",
+        "dist/chunk-RCJS734H.js",
         "dist/chunk-TNVMIP3B.js",
         "dist/chunk-UIB26HWJ.mjs",
         "dist/chunk-XCR32XPZ.js",
@@ -200,19 +200,19 @@
       "commentable": true,
       "sizes": {
         "raw": {
-          "current": 25444,
+          "current": 25618,
           "base": 25444,
-          "delta": 0
+          "delta": 174
         },
         "gzip": {
-          "current": 13705,
-          "base": 13699,
-          "delta": 6
+          "current": 13782,
+          "base": 13705,
+          "delta": 77
         },
         "brotli": {
-          "current": 11525,
-          "base": 11530,
-          "delta": -5
+          "current": 11610,
+          "base": 11525,
+          "delta": 85
         }
       },
       "violations": [],
@@ -231,13 +231,13 @@
         "dist/chunk-4VD5RPR4.mjs.map",
         "dist/chunk-A2KM6Z5V.js.map",
         "dist/chunk-AE5LUNXE.js.map",
-        "dist/chunk-EEIHAD7F.js.map",
         "dist/chunk-ETHEVVRU.js.map",
         "dist/chunk-IER2BISL.mjs.map",
         "dist/chunk-J5GDQSGM.mjs.map",
+        "dist/chunk-NVITPEQ5.mjs.map",
         "dist/chunk-ORTJ6CBA.mjs.map",
         "dist/chunk-Q2J75HN2.mjs.map",
-        "dist/chunk-QOCXNBO4.mjs.map",
+        "dist/chunk-RCJS734H.js.map",
         "dist/chunk-TNVMIP3B.js.map",
         "dist/chunk-UIB26HWJ.mjs.map",
         "dist/chunk-XCR32XPZ.js.map",
@@ -271,19 +271,19 @@
       "commentable": true,
       "sizes": {
         "raw": {
-          "current": 64940,
+          "current": 65806,
           "base": 64940,
-          "delta": 0
+          "delta": 866
         },
         "gzip": {
-          "current": 24678,
-          "base": 24682,
-          "delta": -4
+          "current": 25001,
+          "base": 24678,
+          "delta": 323
         },
         "brotli": {
-          "current": 21860,
-          "base": 21869,
-          "delta": -9
+          "current": 22188,
+          "base": 21860,
+          "delta": 328
         }
       },
       "violations": [],
