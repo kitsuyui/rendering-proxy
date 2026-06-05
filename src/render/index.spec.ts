@@ -4,7 +4,7 @@ import { load as cheerioLoad } from 'cheerio'
 import type { Browser } from 'playwright'
 import { afterAll, beforeAll, describe, expect, it, test } from 'vitest'
 import { getBrowser } from '../browser'
-import { waitServerReady } from '../lib/utils'
+import { waitServerReady } from '../test-helpers/server'
 
 import { getRenderedContent, type RenderResult } from './index'
 

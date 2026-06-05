@@ -1,7 +1,7 @@
 import { execSync } from 'node:child_process'
 import { Writable } from 'node:stream'
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest'
-import { waitServerReady } from '../lib/utils'
+import { waitServerReady } from '../test-helpers/server'
 import { main, renderToStream } from './index'
 
 let dockerId: string | null = null
