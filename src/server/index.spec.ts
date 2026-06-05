@@ -64,6 +64,7 @@ describe('withServer', () => {
       return res
     })
     expect(res.statusCode).toBe(200)
+    expect(res.headers.vary).toBe('x-rendering-proxy')
     expect(JSON.parse(res.read().toString('utf8'))).toStrictEqual({
       slideshow: {
         author: 'Yours Truly',
