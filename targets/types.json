@@ -115,22 +115,6 @@
       }
     },
     {
-      "path": "dist/lib/utils.d.mts",
-      "sizes": {
-        "raw": 208,
-        "gzip": 170,
-        "brotli": 137
-      }
-    },
-    {
-      "path": "dist/lib/utils.d.ts",
-      "sizes": {
-        "raw": 208,
-        "gzip": 170,
-        "brotli": 137
-      }
-    },
-    {
       "path": "dist/lib/wait_for_exit.d.mts",
       "sizes": {
         "raw": 86,
@@ -212,8 +196,8 @@
     }
   ],
   "totals": {
-    "raw": 12335,
-    "gzip": 6121,
-    "brotli": 4953
+    "raw": 11919,
+    "gzip": 5781,
+    "brotli": 4679
   }
 }
