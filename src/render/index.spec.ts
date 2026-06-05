@@ -83,7 +83,7 @@ describe('getRenderedContent', () => {
     const dom = cheerioLoad(result.body.toString('utf8'))
     expect(dom('h1.title').text()).toEqual('Hello, rendering-proxy!')
     expect(dom('.factorial').text()).toEqual('factorial(5) = 120')
-    expect(browser.contexts.length).toBe(0)
+    expect(browser.contexts().length).toBe(0)
   })
 
   it('responses rendered Vue', async () => {
@@ -94,7 +94,7 @@ describe('getRenderedContent', () => {
     const dom = cheerioLoad(result.body.toString('utf8'))
     expect(dom('h1.title').text()).toEqual('Hello, rendering-proxy!')
     expect(dom('.fibonacci').text()).toEqual('fibonacci(10) = 55')
-    expect(browser.contexts.length).toBe(0)
+    expect(browser.contexts().length).toBe(0)
   })
 
   it('can handle empty response', async () => {
@@ -103,7 +103,7 @@ describe('getRenderedContent', () => {
     })
     expect(result.status).toEqual(204)
     expect(result.body.byteLength).toBe(0)
-    expect(browser.contexts.length).toBe(0)
+    expect(browser.contexts().length).toBe(0)
   })
 
   test('image/png', async () => {
@@ -216,5 +216,32 @@ describe('getRenderedContent with evaluates', () => {
       'document.title = "Updated Title"',
     )
     expect(result.evaluateResults[0].result).toBe('Updated Title')
+  })
+
+  it('isolates browser storage between render requests', async () => {
+    const setterResult = await getRenderedContent(browser, {
+      url: 'http://localhost:8004/test.html',
+      evaluates: [
+        'document.cookie = "render_proxy_test=leaked; path=/"',
+        'localStorage.setItem("render_proxy_test", "leaked")',
+        'sessionStorage.setItem("render_proxy_test", "leaked")',
+      ],
+    })
+    expect(setterResult.status).toBe(200)
+
+    const result = await getRenderedContent(browser, {
+      url: 'http://localhost:8004/test.html',
+      evaluates: [
+        'document.cookie',
+        'localStorage.getItem("render_proxy_test")',
+        'sessionStorage.getItem("render_proxy_test")',
+      ],
+    })
+
+    expect(result.evaluateResults.map(({ result }) => result)).toEqual([
+      '',
+      null,
+      null,
+    ])
   })
 })
