@@ -3,6 +3,7 @@ import { type LifecycleEvent, lifeCycleEvents } from '../render'
 interface RequestOption {
   waitUntil: LifecycleEvent
   evaluates: string[]
+  timeout: number | undefined
 }
 
 export function parseRenderingProxyHeader(
@@ -37,11 +38,16 @@ function normalizeEvaluates(value: unknown): string[] {
     : []
 }
 
+function normalizeTimeout(value: unknown): number | undefined {
+  return typeof value === 'number' && value > 0 ? value : undefined
+}
+
 function parseOptions(text: string): RequestOption {
   const baseParsed = tryParseOptions(text) as Partial<RequestOption> | null
 
   return {
     waitUntil: normalizeWaitUntil(baseParsed?.waitUntil),
     evaluates: normalizeEvaluates(baseParsed?.evaluates),
+    timeout: normalizeTimeout(baseParsed?.timeout),
   }
 }
