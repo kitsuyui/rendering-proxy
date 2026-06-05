@@ -107,6 +107,28 @@ describe('withServer', () => {
     })
   })
 
+  it('returns 502 when browser becomes unavailable', async () => {
+    const port = 8093
+    const browser = await getBrowser()
+    const server = await createServer({ browser, port })
+
+    try {
+      await browser.close()
+
+      const res: IncomingMessage = await new Promise((resolve) => {
+        return http.get(
+          `http://localhost:${port}/${httpbinUrl}/json`,
+          (res) => {
+            return resolve(res)
+          },
+        )
+      })
+      expect(res.statusCode).toBe(502)
+    } finally {
+      server.close()
+    }
+  })
+
   it('responses health', async () => {
     const port = 8092
     const res = await runWithDefer(async (defer) => {

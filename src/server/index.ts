@@ -101,12 +101,21 @@ async function respondToIncomingRequest(
   }
 }
 
+function replyWithBadGateway(res: http.ServerResponse): void {
+  if (!res.headersSent) {
+    res.writeHead(502)
+    res.end()
+  }
+}
+
 export function createHandler(browser: Browser) {
-  return async function renderHandler(
+  return function renderHandler(
     req: http.IncomingMessage,
     res: http.ServerResponse,
   ) {
-    await respondToIncomingRequest(browser, req, res)
+    respondToIncomingRequest(browser, req, res).catch(() =>
+      replyWithBadGateway(res),
+    )
   }
 }
 
