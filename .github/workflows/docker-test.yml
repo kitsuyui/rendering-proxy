@@ -2,6 +2,10 @@ name: test with docker
 on:
   - pull_request
 
+concurrency:
+  group: docker-test-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 

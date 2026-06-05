@@ -5,7 +5,7 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { runWithDefer } from 'with-defer'
 
 import { getBrowser } from '../browser'
-import { waitServerReady } from '../lib/utils'
+import { waitServerReady } from '../test-helpers/server'
 import {
   createServer,
   parseIncomingRenderRequest,
@@ -107,6 +107,7 @@ describe('withServer', () => {
       return res
     })
     expect(res.statusCode).toBe(200)
+    expect(res.headers.vary).toBe('x-rendering-proxy')
     expect(JSON.parse(res.read().toString('utf8'))).toStrictEqual({
       slideshow: {
         author: 'Yours Truly',
@@ -147,6 +148,28 @@ describe('withServer', () => {
       expect(res.statusCode).toBe(204)
       expect(res.read()).toBe(null)
     })
+  })
+
+  it('returns 502 when browser becomes unavailable', async () => {
+    const port = 8093
+    const browser = await getBrowser()
+    const server = await createServer({ browser, port })
+
+    try {
+      await browser.close()
+
+      const res: IncomingMessage = await new Promise((resolve) => {
+        return http.get(
+          `http://localhost:${port}/${httpbinUrl}/json`,
+          (res) => {
+            return resolve(res)
+          },
+        )
+      })
+      expect(res.statusCode).toBe(502)
+    } finally {
+      server.close()
+    }
   })
 
   it('responses health', async () => {

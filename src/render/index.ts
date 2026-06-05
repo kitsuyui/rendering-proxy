@@ -1,4 +1,4 @@
-import type { Browser, Response as PlaywrightResponse } from 'playwright'
+import type { Browser, Page, Response as PlaywrightResponse } from 'playwright'
 import { runWithDefer } from 'with-defer'
 
 export const lifeCycleEvents = [
@@ -13,13 +13,12 @@ export interface RenderRequest {
   url: string
   waitUntil?: LifecycleEvent
   evaluates?: string[]
+  timeout?: number
 }
 
-export interface EvaluateResult {
-  success: boolean
-  script: string
-  result: unknown
-}
+export type EvaluateResult =
+  | { success: true; script: string; result: unknown }
+  | { success: false; script: string; result: string }
 
 export interface RenderResult {
   status: number
@@ -46,7 +45,7 @@ function isRenderableContentType(contentType: string): boolean {
 }
 
 async function evaluateScript(
-  page: Awaited<ReturnType<Browser['newPage']>>,
+  page: Page,
   script: string,
   waitUntil: LifecycleEvent,
 ): Promise<EvaluateResult> {
@@ -63,7 +62,7 @@ async function evaluateScript(
 }
 
 async function collectEvaluateResults(
-  page: Awaited<ReturnType<Browser['newPage']>>,
+  page: Page,
   evaluates: string[] | undefined,
   waitUntil: LifecycleEvent,
 ): Promise<EvaluateResult[]> {
@@ -73,7 +72,7 @@ async function collectEvaluateResults(
 }
 
 async function navigatePage(
-  page: Awaited<ReturnType<Browser['newPage']>>,
+  page: Page,
   request: Required<Pick<RenderRequest, 'url' | 'waitUntil'>> & RenderRequest,
 ): Promise<{
   response: PlaywrightResponse | null
@@ -82,6 +81,7 @@ async function navigatePage(
   try {
     const response = await page.goto(request.url, {
       waitUntil: request.waitUntil,
+      timeout: request.timeout,
     })
     const evaluateResults = await collectEvaluateResults(
       page,
@@ -92,13 +92,14 @@ async function navigatePage(
       response,
       evaluateResults,
     }
-  } catch {
+  } catch (error) {
+    console.error(`navigate failed: ${request.url}`, error)
     return null
   }
 }
 
 async function readRenderedBody(
-  page: Awaited<ReturnType<Browser['newPage']>>,
+  page: Page,
   response: PlaywrightResponse,
 ): Promise<Buffer> {
   const headers = { ...response.headers() }
@@ -118,8 +119,9 @@ export async function getRenderedContent(
   }
 
   return await runWithDefer(async (defer) => {
-    const page = await browser.newPage()
-    defer(() => page.close())
+    const context = await browser.newContext()
+    defer(() => context.close())
+    const page = await context.newPage()
 
     const navigationResult = await navigatePage(page, normalizedRequest)
     if (!navigationResult?.response) {

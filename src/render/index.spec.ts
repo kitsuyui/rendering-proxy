@@ -4,7 +4,7 @@ import { load as cheerioLoad } from 'cheerio'
 import type { Browser } from 'playwright'
 import { afterAll, beforeAll, describe, expect, it, test } from 'vitest'
 import { getBrowser } from '../browser'
-import { waitServerReady } from '../lib/utils'
+import { waitServerReady } from '../test-helpers/server'
 
 import { getRenderedContent, type RenderResult } from './index'
 
@@ -34,6 +34,27 @@ function toBeResult(result: RenderResult, tobe: ToBe) {
 
 expect.extend({ toBeResult })
 
+function resolveNodeBinary(): string {
+  const command = process.platform === 'win32' ? 'where node' : 'which -a node'
+  return (
+    execSync(command)
+      .toString()
+      .split(/\r?\n/)
+      .find((path) => path && !path.includes('bun-node')) ?? 'node'
+  )
+}
+
+const nodeBinary = resolveNodeBinary()
+
+function spawnHttpServer(port: number, root: string): ChildProcess {
+  return spawn(nodeBinary, [
+    'node_modules/http-server/bin/http-server',
+    '-p',
+    String(port),
+    root,
+  ])
+}
+
 let dockerId: string | null = null
 let httpbinUrl = 'http://httpbin'
 beforeAll(async () => {
@@ -60,9 +81,9 @@ describe('getRenderedContent', () => {
 
   beforeAll(async () => {
     browser = await getBrowser()
-    reactServer = spawn('http-server', ['-p', '8001', 'tests/fixtures/react'])
-    vueServer = spawn('http-server', ['-p', '8002', 'tests/fixtures/vue'])
-    imageServer = spawn('http-server', ['-p', '8003', 'tests/fixtures/images'])
+    reactServer = spawnHttpServer(8001, 'fixtures/react')
+    vueServer = spawnHttpServer(8002, 'fixtures/vue')
+    imageServer = spawnHttpServer(8003, 'fixtures/images')
     await waitServerReady('http://localhost:8001/')
     await waitServerReady('http://localhost:8002/')
     await waitServerReady('http://localhost:8003/')
@@ -83,7 +104,7 @@ describe('getRenderedContent', () => {
     const dom = cheerioLoad(result.body.toString('utf8'))
     expect(dom('h1.title').text()).toEqual('Hello, rendering-proxy!')
     expect(dom('.factorial').text()).toEqual('factorial(5) = 120')
-    expect(browser.contexts.length).toBe(0)
+    expect(browser.contexts().length).toBe(0)
   })
 
   it('responses rendered Vue', async () => {
@@ -94,7 +115,7 @@ describe('getRenderedContent', () => {
     const dom = cheerioLoad(result.body.toString('utf8'))
     expect(dom('h1.title').text()).toEqual('Hello, rendering-proxy!')
     expect(dom('.fibonacci').text()).toEqual('fibonacci(10) = 55')
-    expect(browser.contexts.length).toBe(0)
+    expect(browser.contexts().length).toBe(0)
   })
 
   it('can handle empty response', async () => {
@@ -103,7 +124,7 @@ describe('getRenderedContent', () => {
     })
     expect(result.status).toEqual(204)
     expect(result.body.byteLength).toBe(0)
-    expect(browser.contexts.length).toBe(0)
+    expect(browser.contexts().length).toBe(0)
   })
 
   test('image/png', async () => {
@@ -168,7 +189,7 @@ describe('getRenderedContent with evaluates', () => {
 
   beforeAll(async () => {
     browser = await getBrowser()
-    htmlServer = spawn('http-server', ['-p', '8004', 'tests/fixtures/html'])
+    htmlServer = spawnHttpServer(8004, 'fixtures/html')
     await waitServerReady('http://localhost:8004/')
   })
   afterAll(async () => {
@@ -216,5 +237,32 @@ describe('getRenderedContent with evaluates', () => {
       'document.title = "Updated Title"',
     )
     expect(result.evaluateResults[0].result).toBe('Updated Title')
+  })
+
+  it('isolates browser storage between render requests', async () => {
+    const setterResult = await getRenderedContent(browser, {
+      url: 'http://localhost:8004/test.html',
+      evaluates: [
+        'document.cookie = "render_proxy_test=leaked; path=/"',
+        'localStorage.setItem("render_proxy_test", "leaked")',
+        'sessionStorage.setItem("render_proxy_test", "leaked")',
+      ],
+    })
+    expect(setterResult.status).toBe(200)
+
+    const result = await getRenderedContent(browser, {
+      url: 'http://localhost:8004/test.html',
+      evaluates: [
+        'document.cookie',
+        'localStorage.getItem("render_proxy_test")',
+        'sessionStorage.getItem("render_proxy_test")',
+      ],
+    })
+
+    expect(result.evaluateResults.map(({ result }) => result)).toEqual([
+      '',
+      null,
+      null,
+    ])
   })
 })

@@ -1,7 +1,6 @@
 {
   "dependencies": {
     "playwright": "^1.56.0",
-    "sleep-promise": "^9.1.0",
     "with-defer": "^1.0.0",
     "yargs": "^18.0.0"
   },
@@ -32,6 +31,7 @@
     "@vitest/coverage-v8": "^4.1.2",
     "cheerio": "1.2.0",
     "http-server": "14.1.1",
+    "sleep-promise": "^9.1.0",
     "tsup": "^8.5.0",
     "typescript": "5.9.3",
     "vitest": "^4.1.4"

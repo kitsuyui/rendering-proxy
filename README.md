@@ -89,7 +89,7 @@ $ yarn run rendering-proxy cli https://example.com/ -e 'document.title = "update
 ### Server mode
 
 Send the options via request header `X-Rendering-Proxy` (case-insensitive).
-Receive the results via request header `X-Rendering-Proxy` (case-insensitive).
+Receive the results via response header `X-Rendering-Proxy` (case-insensitive).
 
 ```console
 curl -H 'X-Rendering-Proxy: {"evaluates": ["1 + 1"], "waitUntil": "load"}' --include http://localhost:8080/https://example.com/

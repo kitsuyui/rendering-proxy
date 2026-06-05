@@ -11,7 +11,11 @@ export function ensureURLStartsWithProtocolScheme(
   url: string,
   scheme = 'https://',
 ): string {
-  if (urlParse(url).protocol) {
+  const protocol = urlParse(url).protocol
+  if (protocol) {
+    if (!isAbsoluteURL(url)) {
+      throw new Error(`Unsupported URL scheme: ${protocol}`)
+    }
     return url
   }
   return scheme + url

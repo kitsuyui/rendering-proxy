@@ -36,6 +36,9 @@ const firefoxOptions = ['-wait-for-browser']
 
 const webkitOptions: string[] = []
 
+const BROWSER_CONNECT_TIMEOUT_MS = 30_000
+const BROWSER_CONNECT_POLL_INTERVAL_MS = 100
+
 export function getBrowserTypeByName(name: SelectableBrowsers): BrowserType {
   switch (name) {
     case 'chromium':
@@ -74,9 +77,15 @@ export async function getBrowser({
     headless,
     args: getBrowserOptionsByName(name),
   })
-  // Wait for the browser to be ready.
+  const deadline = Date.now() + BROWSER_CONNECT_TIMEOUT_MS
   while (!browser.isConnected()) {
-    await sleep(100)
+    if (Date.now() >= deadline) {
+      await browser.close().catch(() => {})
+      throw new Error(
+        `Browser did not connect within ${BROWSER_CONNECT_TIMEOUT_MS}ms`,
+      )
+    }
+    await sleep(BROWSER_CONNECT_POLL_INTERVAL_MS)
   }
   return browser
 }

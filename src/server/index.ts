@@ -4,7 +4,7 @@ import type { Browser } from 'playwright'
 import { runWithDefer } from 'with-defer'
 
 import { getBrowser, type SelectableBrowsers } from '../browser'
-import { excludeUnusedHeaders } from '../lib/headers'
+import { appendVaryHeader, excludeUnusedHeaders } from '../lib/headers'
 import { isAbsoluteURL } from '../lib/url'
 import { waitForProcessExit } from '../lib/wait_for_exit'
 import { getRenderedContent } from '../render'
@@ -63,10 +63,13 @@ async function renderToResponse(
   request: Parameters<typeof getRenderedContent>[1],
 ): Promise<void> {
   const renderedContent = await getRenderedContent(browser, request)
-  const headers = {
-    ...excludeUnusedHeaders(renderedContent.headers),
-    'x-rendering-proxy': JSON.stringify(renderedContent.evaluateResults),
-  }
+  const headers = appendVaryHeader(
+    {
+      ...excludeUnusedHeaders(renderedContent.headers),
+      'x-rendering-proxy': JSON.stringify(renderedContent.evaluateResults),
+    },
+    'x-rendering-proxy',
+  )
   res.writeHead(renderedContent.status, headers)
   res.end(renderedContent.body, 'binary')
 }
@@ -77,6 +80,7 @@ async function respondToIncomingRequest(
   res: http.ServerResponse,
 ): Promise<void> {
   const parsedRequest = parseIncomingRenderRequest(req)
+  const startMs = Date.now()
   const handlers: Record<IncomingRenderRequest['type'], () => Promise<void>> = {
     health: async () => {
       res.writeHead(200)
@@ -98,14 +102,29 @@ async function respondToIncomingRequest(
   }
 
   await handlers[parsedRequest.type]()
+
+  if (parsedRequest.type === 'render') {
+    console.log(
+      `render ${parsedRequest.request.url} ${res.statusCode} ${Date.now() - startMs}ms`,
+    )
+  }
+}
+
+function replyWithBadGateway(res: http.ServerResponse): void {
+  if (!res.headersSent) {
+    res.writeHead(502)
+    res.end()
+  }
 }
 
 export function createHandler(browser: Browser) {
-  return async function renderHandler(
+  return function renderHandler(
     req: http.IncomingMessage,
     res: http.ServerResponse,
   ) {
-    await respondToIncomingRequest(browser, req, res)
+    respondToIncomingRequest(browser, req, res).catch(() =>
+      replyWithBadGateway(res),
+    )
   }
 }
 
@@ -139,6 +158,13 @@ export function terminateRequestWithEmpty(
   res.end()
 }
 
+function closeServerGracefully(server: http.Server): Promise<void> {
+  server.closeIdleConnections()
+  return new Promise<void>((resolve, reject) => {
+    server.close((err) => (err ? reject(err) : resolve()))
+  })
+}
+
 /**
  * Start rendering proxy server.
  * @param port {number} port number
@@ -156,7 +182,7 @@ export async function main({
     defer(() => browser.close())
 
     const server = await createServer({ browser, port })
-    defer(() => server.close())
+    defer(() => closeServerGracefully(server))
 
     await waitForProcessExit()
   })

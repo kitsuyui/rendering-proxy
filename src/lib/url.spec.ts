@@ -30,4 +30,16 @@ describe('ensureURLStartsWithProtocolScheme', () => {
       'https://example.com',
     )
   })
+
+  it('throws when given URL with non-http/https scheme', () => {
+    expect(() =>
+      ensureURLStartsWithProtocolScheme('file:///etc/passwd'),
+    ).toThrow('Unsupported URL scheme: file:')
+    expect(() =>
+      ensureURLStartsWithProtocolScheme('data:text/html,hello'),
+    ).toThrow('Unsupported URL scheme: data:')
+    expect(() =>
+      ensureURLStartsWithProtocolScheme('ftp://example.com'),
+    ).toThrow('Unsupported URL scheme: ftp:')
+  })
 })
