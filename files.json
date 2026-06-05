@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-06-05T14:43:43.450Z",
+  "generated_at": "2026-06-05T14:43:58.500Z",
   "repository": "kitsuyui/rendering-proxy",
   "default_branch": "main",
   "publish_branch": "gh-build-size-assets",
   "event_name": "push",
-  "head_reference": "e2fab397855ae6190ff5fbcb5dda9b92c12e0121",
+  "head_reference": "2f6948fe7f829efc8912a825dbc75b5f143b9368",
   "files": [
     {
       "path": "dist/browser/index.d.mts",
