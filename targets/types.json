@@ -85,17 +85,17 @@
     {
       "path": "dist/lib/headers.d.mts",
       "sizes": {
-        "raw": 1170,
-        "gzip": 428,
-        "brotli": 351
+        "raw": 1739,
+        "gzip": 595,
+        "brotli": 483
       }
     },
     {
       "path": "dist/lib/headers.d.ts",
       "sizes": {
-        "raw": 1170,
-        "gzip": 428,
-        "brotli": 351
+        "raw": 1739,
+        "gzip": 595,
+        "brotli": 483
       }
     },
     {
@@ -196,8 +196,8 @@
     }
   ],
   "totals": {
-    "raw": 11919,
-    "gzip": 5781,
-    "brotli": 4679
+    "raw": 13057,
+    "gzip": 6115,
+    "brotli": 4943
   }
 }
