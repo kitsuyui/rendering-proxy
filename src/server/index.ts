@@ -108,25 +108,25 @@ function replyWithBadGateway(res: http.ServerResponse): void {
   }
 }
 
-export function createHandler(browser: Browser) {
+export function createHandler(getBrowserFn: () => Browser) {
   return function renderHandler(
     req: http.IncomingMessage,
     res: http.ServerResponse,
   ) {
-    respondToIncomingRequest(browser, req, res).catch(() =>
+    respondToIncomingRequest(getBrowserFn(), req, res).catch(() =>
       replyWithBadGateway(res),
     )
   }
 }
 
 export async function createServer({
-  browser,
+  getBrowserFn,
   port = 8080,
 }: {
-  browser: Browser
+  getBrowserFn: () => Browser
   port: number
 }): Promise<http.Server> {
-  const server = http.createServer(createHandler(browser))
+  const server = http.createServer(createHandler(getBrowserFn))
   await new Promise((resolve) => {
     server.listen(port, () => {
       resolve(undefined)
@@ -169,10 +169,27 @@ export async function main({
   headless = true,
 }: ServerArgument = {}): Promise<void> {
   await runWithDefer(async (defer) => {
-    const browser = await getBrowser({ name, headless })
-    defer(() => browser.close())
+    let activeBrowser = await getBrowser({ name, headless })
 
-    const server = await createServer({ browser, port })
+    const onDisconnected = async () => {
+      try {
+        activeBrowser = await getBrowser({ name, headless })
+        activeBrowser.on('disconnected', onDisconnected)
+      } catch {
+        // Restart failed; subsequent requests will error naturally
+      }
+    }
+    activeBrowser.on('disconnected', onDisconnected)
+
+    defer(async () => {
+      activeBrowser.removeListener('disconnected', onDisconnected)
+      await activeBrowser.close()
+    })
+
+    const server = await createServer({
+      getBrowserFn: () => activeBrowser,
+      port,
+    })
     defer(() => closeServerGracefully(server))
 
     await waitForProcessExit()
