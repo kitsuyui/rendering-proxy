@@ -130,6 +130,13 @@ export function terminateRequestWithEmpty(
   res.end()
 }
 
+function closeServerGracefully(server: http.Server): Promise<void> {
+  server.closeIdleConnections()
+  return new Promise<void>((resolve, reject) => {
+    server.close((err) => (err ? reject(err) : resolve()))
+  })
+}
+
 /**
  * Start rendering proxy server.
  * @param port {number} port number
@@ -147,7 +154,7 @@ export async function main({
     defer(() => browser.close())
 
     const server = await createServer({ browser, port })
-    defer(() => server.close())
+    defer(() => closeServerGracefully(server))
 
     await waitForProcessExit()
   })
