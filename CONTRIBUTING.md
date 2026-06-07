@@ -42,6 +42,13 @@ Build the package when changing package metadata, exports, or runtime entrypoint
 bun run build
 ```
 
+## Releases
+
+The npm package version is tracked in `package.json`. Before creating a release
+tag, bump `package.json` in a pull request and tag the merged commit as
+`vX.Y.Z`. The release workflow checks that the tag and package version match
+before publishing.
+
 ## Pull requests
 
 Before opening a pull request, please make sure that:
