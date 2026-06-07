@@ -96,11 +96,33 @@ curl -H 'X-Rendering-Proxy: {"evaluates": ["1 + 1"], "waitUntil": "load"}' --inc
 HTTP/1.1 200 OK
 ...
 x-rendering-proxy: [{"success":true,"result":2,"script":"1 + 1"}]
+x-rendering-proxy-version: 1
 ...
 
 <!DOCTYPE html><html><head>
     <title>Example Domain</title>
 ```
+
+#### Protocol schema (v1)
+
+**Request header** `X-Rendering-Proxy` — JSON object:
+
+| field | type | default | description |
+| --- | --- | --- | --- |
+| `waitUntil` | `"load"` \| `"domcontentloaded"` \| `"networkidle"` \| `"commit"` | `"load"` | Playwright lifecycle event to wait for. Unknown values fall back to `"load"` with a server-side warning. |
+| `evaluates` | `string[]` | `[]` | JavaScript snippets to evaluate before capturing the DOM. |
+| `timeout` | `number` (ms) | none | Navigation timeout in milliseconds. |
+
+**Response header** `X-Rendering-Proxy` — JSON array of `EvaluateResult`:
+
+```ts
+type EvaluateResult =
+  | { success: true;  script: string; result: unknown }
+  | { success: false; script: string; result: string  }
+```
+
+**Response header** `X-Rendering-Proxy-Version` — integer string (e.g. `"1"`).
+Clients can use this to detect schema changes across server upgrades.
 
 ## LICENSE
 
