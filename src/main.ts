@@ -4,6 +4,16 @@ import { cli, server } from './'
 import { type SelectableBrowsers, selectableBrowsers } from './browser'
 import { type LifecycleEvent, lifeCycleEvents } from './render'
 
+function validateMaxConcurrentRenders(argv: {
+  'max-concurrent-renders': unknown
+}): true {
+  const m = argv['max-concurrent-renders'] as number
+  if (!Number.isInteger(m) || m < 0) {
+    throw new Error('--max-concurrent-renders must be a non-negative integer')
+  }
+  return true
+}
+
 export async function main(): Promise<void> {
   yargs(process.argv.slice(2))
     .command(
@@ -65,11 +75,19 @@ export async function main(): Promise<void> {
             choices: selectableBrowsers,
             default: 'chromium',
           })
+          .option('max-concurrent-renders', {
+            alias: 'm',
+            type: 'number',
+            description: 'Maximum number of concurrent render requests',
+            default: 10,
+          })
+          .check(validateMaxConcurrentRenders)
       },
       async (argv) => {
         await server.main({
           port: argv.port,
           name: argv.browser as SelectableBrowsers,
+          maxConcurrentRenders: argv['max-concurrent-renders'] as number,
         })
       },
     )

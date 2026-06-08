@@ -109,4 +109,13 @@ describe('parseRenderingProxyHeader', () => {
       timeout: undefined,
     })
   })
+
+  it('truncates evaluates to at most 10 entries', async () => {
+    const scripts = Array.from({ length: 20 }, (_, i) => `script${i}`)
+    const result = parseRenderingProxyHeader(
+      JSON.stringify({ evaluates: scripts }),
+    )
+    expect(result.evaluates).toHaveLength(10)
+    expect(result.evaluates).toStrictEqual(scripts.slice(0, 10))
+  })
 })

@@ -32,10 +32,16 @@ function normalizeWaitUntil(value: unknown): LifecycleEvent {
     : 'load'
 }
 
+const MAX_EVALUATES = 10
+
 function normalizeEvaluates(value: unknown): string[] {
-  return Array.isArray(value) && value.every((item) => typeof item === 'string')
-    ? value
-    : []
+  if (
+    !Array.isArray(value) ||
+    !value.every((item) => typeof item === 'string')
+  ) {
+    return []
+  }
+  return value.slice(0, MAX_EVALUATES)
 }
 
 function normalizeTimeout(value: unknown): number | undefined {
