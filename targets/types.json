@@ -35,14 +35,6 @@
       }
     },
     {
-      "path": "dist/index-BJcQdaV4.d.mts",
-      "sizes": {
-        "raw": 1522,
-        "gzip": 563,
-        "brotli": 469
-      }
-    },
-    {
       "path": "dist/index-CWwCQC9e.d.ts",
       "sizes": {
         "raw": 630,
@@ -59,27 +51,35 @@
       }
     },
     {
-      "path": "dist/index-DOwaEoUg.d.ts",
+      "path": "dist/index-DJjE50UO.d.mts",
       "sizes": {
-        "raw": 1521,
-        "gzip": 563,
-        "brotli": 468
+        "raw": 1703,
+        "gzip": 594,
+        "brotli": 487
+      }
+    },
+    {
+      "path": "dist/index-DQk5SzXi.d.ts",
+      "sizes": {
+        "raw": 1702,
+        "gzip": 594,
+        "brotli": 492
       }
     },
     {
       "path": "dist/index.d.mts",
       "sizes": {
         "raw": 223,
-        "gzip": 147,
-        "brotli": 120
+        "gzip": 148,
+        "brotli": 123
       }
     },
     {
       "path": "dist/index.d.ts",
       "sizes": {
         "raw": 219,
-        "gzip": 144,
-        "brotli": 117
+        "gzip": 146,
+        "brotli": 115
       }
     },
     {
@@ -166,16 +166,16 @@
       "path": "dist/server/index.d.mts",
       "sizes": {
         "raw": 194,
-        "gzip": 161,
-        "brotli": 126
+        "gzip": 162,
+        "brotli": 129
       }
     },
     {
       "path": "dist/server/index.d.ts",
       "sizes": {
         "raw": 192,
-        "gzip": 158,
-        "brotli": 138
+        "gzip": 159,
+        "brotli": 128
       }
     },
     {
@@ -196,8 +196,8 @@
     }
   ],
   "totals": {
-    "raw": 13831,
-    "gzip": 6353,
-    "brotli": 5162
+    "raw": 14193,
+    "gzip": 6420,
+    "brotli": 5198
   }
 }

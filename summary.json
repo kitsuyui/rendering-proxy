@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-06-05T14:47:38.915Z",
+  "generated_at": "2026-06-08T20:20:04.068Z",
   "repository": "kitsuyui/rendering-proxy",
   "default_branch": "main",
   "publish_branch": "gh-build-size-assets",
   "event_name": "push",
   "base_label": "main",
-  "base_reference": "1d15882d95f7d3d219491bc18ec1bbc40b410644",
+  "base_reference": "b5aa17116fd3e37c2d16d7982815c9de98047f1c",
   "head_label": "main",
-  "head_reference": "b5aa17116fd3e37c2d16d7982815c9de98047f1c",
+  "head_reference": "393909fa7a3e746cd4c5f211ca4a41db744a648d",
   "targets": [
     {
       "id": "total",
@@ -27,22 +27,24 @@
         "dist/chunk-3UJUTDOL.mjs.map",
         "dist/chunk-4VD5RPR4.mjs",
         "dist/chunk-4VD5RPR4.mjs.map",
-        "dist/chunk-6OW5UTDX.js",
-        "dist/chunk-6OW5UTDX.js.map",
+        "dist/chunk-55XJDSOO.js",
+        "dist/chunk-55XJDSOO.js.map",
         "dist/chunk-ETHEVVRU.js",
         "dist/chunk-ETHEVVRU.js.map",
-        "dist/chunk-EXVBNDDW.js",
-        "dist/chunk-EXVBNDDW.js.map",
         "dist/chunk-F656CL7Q.js",
         "dist/chunk-F656CL7Q.js.map",
+        "dist/chunk-FNPJTB7X.mjs",
+        "dist/chunk-FNPJTB7X.mjs.map",
         "dist/chunk-GWT6FEZY.mjs",
         "dist/chunk-GWT6FEZY.mjs.map",
+        "dist/chunk-HRREESSK.mjs",
+        "dist/chunk-HRREESSK.mjs.map",
         "dist/chunk-HW56MZHA.js",
         "dist/chunk-HW56MZHA.js.map",
         "dist/chunk-J7BPJGZS.mjs",
         "dist/chunk-J7BPJGZS.mjs.map",
-        "dist/chunk-NKFGZXSC.mjs",
-        "dist/chunk-NKFGZXSC.mjs.map",
+        "dist/chunk-LBGBG7IK.js",
+        "dist/chunk-LBGBG7IK.js.map",
         "dist/chunk-Q2J75HN2.mjs",
         "dist/chunk-Q2J75HN2.mjs.map",
         "dist/chunk-QAW6VJWW.js",
@@ -51,8 +53,6 @@
         "dist/chunk-QSLIFMC4.mjs.map",
         "dist/chunk-V2Q7APDQ.js",
         "dist/chunk-V2Q7APDQ.js.map",
-        "dist/chunk-VA2TGVN2.mjs",
-        "dist/chunk-VA2TGVN2.mjs.map",
         "dist/chunk-VVQ3XC5J.js",
         "dist/chunk-VVQ3XC5J.js.map",
         "dist/chunk-XGP2FKZS.mjs",
@@ -65,10 +65,10 @@
         "dist/cli/index.js.map",
         "dist/cli/index.mjs",
         "dist/cli/index.mjs.map",
-        "dist/index-BJcQdaV4.d.mts",
         "dist/index-CWwCQC9e.d.ts",
         "dist/index-D4d86qmQ.d.mts",
-        "dist/index-DOwaEoUg.d.ts",
+        "dist/index-DJjE50UO.d.mts",
+        "dist/index-DQk5SzXi.d.ts",
         "dist/index.d.mts",
         "dist/index.d.ts",
         "dist/index.js",
@@ -123,19 +123,19 @@
       "commentable": true,
       "sizes": {
         "raw": {
-          "current": 119942,
+          "current": 128279,
           "base": 119942,
-          "delta": 0
+          "delta": 8337
         },
         "gzip": {
-          "current": 48727,
+          "current": 51000,
           "base": 48727,
-          "delta": 0
+          "delta": 2273
         },
         "brotli": {
-          "current": 42145,
+          "current": 44131,
           "base": 42145,
-          "delta": 0
+          "delta": 1986
         }
       },
       "violations": [],
@@ -152,19 +152,19 @@
         "dist/chunk-3KDC7MNE.mjs",
         "dist/chunk-3UJUTDOL.mjs",
         "dist/chunk-4VD5RPR4.mjs",
-        "dist/chunk-6OW5UTDX.js",
+        "dist/chunk-55XJDSOO.js",
         "dist/chunk-ETHEVVRU.js",
-        "dist/chunk-EXVBNDDW.js",
         "dist/chunk-F656CL7Q.js",
+        "dist/chunk-FNPJTB7X.mjs",
         "dist/chunk-GWT6FEZY.mjs",
+        "dist/chunk-HRREESSK.mjs",
         "dist/chunk-HW56MZHA.js",
         "dist/chunk-J7BPJGZS.mjs",
-        "dist/chunk-NKFGZXSC.mjs",
+        "dist/chunk-LBGBG7IK.js",
         "dist/chunk-Q2J75HN2.mjs",
         "dist/chunk-QAW6VJWW.js",
         "dist/chunk-QSLIFMC4.mjs",
         "dist/chunk-V2Q7APDQ.js",
-        "dist/chunk-VA2TGVN2.mjs",
         "dist/chunk-VVQ3XC5J.js",
         "dist/chunk-XGP2FKZS.mjs",
         "dist/chunk-Z67MCB7J.js",
@@ -192,19 +192,19 @@
       "commentable": true,
       "sizes": {
         "raw": {
-          "current": 27962,
+          "current": 29381,
           "base": 27962,
-          "delta": 0
+          "delta": 1419
         },
         "gzip": {
-          "current": 14389,
+          "current": 14972,
           "base": 14389,
-          "delta": 0
+          "delta": 583
         },
         "brotli": {
-          "current": 12147,
+          "current": 12646,
           "base": 12147,
-          "delta": 0
+          "delta": 499
         }
       },
       "violations": [],
@@ -221,19 +221,19 @@
         "dist/chunk-3KDC7MNE.mjs.map",
         "dist/chunk-3UJUTDOL.mjs.map",
         "dist/chunk-4VD5RPR4.mjs.map",
-        "dist/chunk-6OW5UTDX.js.map",
+        "dist/chunk-55XJDSOO.js.map",
         "dist/chunk-ETHEVVRU.js.map",
-        "dist/chunk-EXVBNDDW.js.map",
         "dist/chunk-F656CL7Q.js.map",
+        "dist/chunk-FNPJTB7X.mjs.map",
         "dist/chunk-GWT6FEZY.mjs.map",
+        "dist/chunk-HRREESSK.mjs.map",
         "dist/chunk-HW56MZHA.js.map",
         "dist/chunk-J7BPJGZS.mjs.map",
-        "dist/chunk-NKFGZXSC.mjs.map",
+        "dist/chunk-LBGBG7IK.js.map",
         "dist/chunk-Q2J75HN2.mjs.map",
         "dist/chunk-QAW6VJWW.js.map",
         "dist/chunk-QSLIFMC4.mjs.map",
         "dist/chunk-V2Q7APDQ.js.map",
-        "dist/chunk-VA2TGVN2.mjs.map",
         "dist/chunk-VVQ3XC5J.js.map",
         "dist/chunk-XGP2FKZS.mjs.map",
         "dist/chunk-Z67MCB7J.js.map",
@@ -261,19 +261,19 @@
       "commentable": true,
       "sizes": {
         "raw": {
-          "current": 78149,
+          "current": 84705,
           "base": 78149,
-          "delta": 0
+          "delta": 6556
         },
         "gzip": {
-          "current": 27985,
+          "current": 29608,
           "base": 27985,
-          "delta": 0
+          "delta": 1623
         },
         "brotli": {
-          "current": 24836,
+          "current": 26287,
           "base": 24836,
-          "delta": 0
+          "delta": 1451
         }
       },
       "violations": [],
@@ -288,10 +288,10 @@
         "dist/browser/index.d.ts",
         "dist/cli/index.d.mts",
         "dist/cli/index.d.ts",
-        "dist/index-BJcQdaV4.d.mts",
         "dist/index-CWwCQC9e.d.ts",
         "dist/index-D4d86qmQ.d.mts",
-        "dist/index-DOwaEoUg.d.ts",
+        "dist/index-DJjE50UO.d.mts",
+        "dist/index-DQk5SzXi.d.ts",
         "dist/index.d.mts",
         "dist/index.d.ts",
         "dist/lib/headers.d.mts",
@@ -314,19 +314,19 @@
       "commentable": true,
       "sizes": {
         "raw": {
-          "current": 13831,
+          "current": 14193,
           "base": 13831,
-          "delta": 0
+          "delta": 362
         },
         "gzip": {
-          "current": 6353,
+          "current": 6420,
           "base": 6353,
-          "delta": 0
+          "delta": 67
         },
         "brotli": {
-          "current": 5162,
+          "current": 5198,
           "base": 5162,
-          "delta": 0
+          "delta": 36
         }
       },
       "violations": [],
