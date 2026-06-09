@@ -1,0 +1,17 @@
+# Clear Git hook environment variables before running checks so nested or sibling
+# repositories are not affected: https://git-scm.com/docs/githooks
+pre-commit:
+  jobs:
+    - name: lint
+      run: for name in $(env | sed -n 's/^\(GIT_[A-Za-z0-9_]*\)=.*/\1/p'); do unset "$name"; done; bun run lint
+    - name: typecheck
+      run: for name in $(env | sed -n 's/^\(GIT_[A-Za-z0-9_]*\)=.*/\1/p'); do unset "$name"; done; bun run typecheck
+
+pre-push:
+  jobs:
+    - name: lint
+      run: for name in $(env | sed -n 's/^\(GIT_[A-Za-z0-9_]*\)=.*/\1/p'); do unset "$name"; done; bun run lint
+    - name: typecheck
+      run: for name in $(env | sed -n 's/^\(GIT_[A-Za-z0-9_]*\)=.*/\1/p'); do unset "$name"; done; bun run typecheck
+    - name: test
+      run: for name in $(env | sed -n 's/^\(GIT_[A-Za-z0-9_]*\)=.*/\1/p'); do unset "$name"; done; bun run test
