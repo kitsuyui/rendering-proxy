@@ -1,13 +1,15 @@
 import http from 'node:http'
 import sleep from 'sleep-promise'
 
+const REQUEST_TIMEOUT_MS = 1000
+
 async function requestServerHead(url: string): Promise<void> {
   const target = new URL(url)
   const req = http.request({
     method: 'HEAD',
     host: target.hostname,
     port: target.port || '80',
-    timeout: 1000,
+    timeout: REQUEST_TIMEOUT_MS,
   })
 
   await new Promise<void>((resolve, reject) => {
@@ -40,13 +42,13 @@ async function isServerReady(url: string): Promise<boolean> {
  */
 export const waitServerReady = async (url: string): Promise<void> => {
   const maxRetries = 20
-  const delay = 1000
+  const delayMs = 1000
   for (let i = 0; i < maxRetries; i++) {
     if (await isServerReady(url)) {
       return
     }
 
-    await sleep(delay)
+    await sleep(delayMs)
   }
   throw new Error(`Server on port ${url} did not become ready in time`)
 }

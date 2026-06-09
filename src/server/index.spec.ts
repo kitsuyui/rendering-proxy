@@ -148,4 +148,71 @@ describe('withServer', () => {
     expect(res.statusCode).toBe(200)
     expect(res.read().toString('utf8')).toBe('OK')
   })
+
+  it('responses 503 when concurrent render limit is exceeded', async () => {
+    const port = 8093
+    const res = await runWithDefer(async (defer) => {
+      const browser = await getBrowser()
+      defer(() => browser.close())
+
+      const server = await createServer({
+        browser,
+        port,
+        maxConcurrentRenders: 0,
+      })
+      defer(() => server.close())
+
+      const res: IncomingMessage = await new Promise((resolve) => {
+        return http.get(`http://localhost:${port}/${httpbinUrl}/json`, (res) =>
+          resolve(res),
+        )
+      })
+      return res
+    })
+    expect(res.statusCode).toBe(503)
+  })
+
+  it('health check bypasses concurrent render limit', async () => {
+    const port = 8094
+    const res = await runWithDefer(async (defer) => {
+      const browser = await getBrowser()
+      defer(() => browser.close())
+
+      const server = await createServer({
+        browser,
+        port,
+        maxConcurrentRenders: 0,
+      })
+      defer(() => server.close())
+
+      const res: IncomingMessage = await new Promise((resolve) => {
+        return http.get(`http://localhost:${port}/health/`, (res) =>
+          resolve(res),
+        )
+      })
+      return res
+    })
+    expect(res.statusCode).toBe(200)
+  })
+
+  it('invalid URL bypasses concurrent render limit', async () => {
+    const port = 8095
+    const res = await runWithDefer(async (defer) => {
+      const browser = await getBrowser()
+      defer(() => browser.close())
+
+      const server = await createServer({
+        browser,
+        port,
+        maxConcurrentRenders: 0,
+      })
+      defer(() => server.close())
+
+      const res: IncomingMessage = await new Promise((resolve) => {
+        return http.get(`http://localhost:${port}/`, (res) => resolve(res))
+      })
+      return res
+    })
+    expect(res.statusCode).toBe(204)
+  })
 })

@@ -124,6 +124,21 @@ type EvaluateResult =
 **Response header** `X-Rendering-Proxy-Version` — integer string (e.g. `"1"`).
 Clients can use this to detect schema changes across server upgrades.
 
+## Development
+
+Install [lefthook](https://github.com/evilmartians/lefthook) and register the Git hooks:
+
+```sh
+lefthook install
+```
+
+This sets up two hooks that mirror what CI runs:
+
+- **pre-commit**: runs `bun run lint` and `bun run typecheck` on every commit.
+- **pre-push**: runs `bun run lint`, `bun run typecheck`, and `bun run test` before each push.
+
+CI still runs the full suite on every pull request and push to main — the hooks bring that feedback earlier, to your local machine.
+
 ## LICENSE
 
 The 3-Clause BSD License. See also LICENSE file.
