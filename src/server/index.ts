@@ -9,7 +9,7 @@ import { isAbsoluteURL } from '../lib/url'
 import { waitForProcessExit } from '../lib/wait_for_exit'
 import { getRenderedContent } from '../render'
 
-import { parseRenderingProxyHeader } from './request_options'
+import { PROTOCOL_VERSION, parseRenderingProxyHeader } from './request_options'
 
 interface ServerArgument {
   port?: number
@@ -68,6 +68,7 @@ async function renderToResponse(
     {
       ...excludeUnusedHeaders(renderedContent.headers),
       'x-rendering-proxy': JSON.stringify(renderedContent.evaluateResults),
+      'x-rendering-proxy-version': String(PROTOCOL_VERSION),
     },
     'x-rendering-proxy',
   )

@@ -1,5 +1,8 @@
 import { type LifecycleEvent, lifeCycleEvents } from '../render'
 
+// Increment when the request/response JSON schema changes in a backward-incompatible way.
+export const PROTOCOL_VERSION = 1
+
 interface RequestOption {
   waitUntil: LifecycleEvent
   evaluates: string[]
@@ -24,9 +27,13 @@ function tryParseOptions(text: string): unknown {
 }
 
 function normalizeWaitUntil(value: unknown): LifecycleEvent {
-  return lifeCycleEvents.includes(value as LifecycleEvent)
-    ? (value as LifecycleEvent)
-    : 'load'
+  if (lifeCycleEvents.includes(value as LifecycleEvent)) {
+    return value as LifecycleEvent
+  }
+  console.warn(
+    `X-Rendering-Proxy: unknown waitUntil value ${JSON.stringify(value)}, falling back to "load"`,
+  )
+  return 'load'
 }
 
 const MAX_EVALUATES = 10
