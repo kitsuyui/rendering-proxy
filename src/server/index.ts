@@ -21,6 +21,7 @@ interface ServerArgument {
 type IncomingRenderRequest =
   | { type: 'health' }
   | { type: 'invalid' }
+  | { type: 'badRequest' }
   | { type: 'render'; request: Parameters<typeof getRenderedContent>[1] }
 
 function resolveOriginUrl(requestUrl: string | undefined): string | null {
@@ -32,7 +33,7 @@ function resolveOriginUrl(requestUrl: string | undefined): string | null {
   return originUrl && isAbsoluteURL(originUrl) ? originUrl : null
 }
 
-function parseIncomingRenderRequest(
+export function parseIncomingRenderRequest(
   request: http.IncomingMessage,
 ): IncomingRenderRequest {
   if (request.url === '/health/') {
@@ -44,12 +45,16 @@ function parseIncomingRenderRequest(
     return { type: 'invalid' }
   }
 
-  return {
-    type: 'render',
-    request: {
-      url: originUrl,
-      ...parseRenderingProxyHeader(request.headers['x-rendering-proxy']),
-    },
+  try {
+    return {
+      type: 'render',
+      request: {
+        url: originUrl,
+        ...parseRenderingProxyHeader(request.headers['x-rendering-proxy']),
+      },
+    }
+  } catch {
+    return { type: 'badRequest' }
   }
 }
 
@@ -84,6 +89,10 @@ async function respondToIncomingRequest(
     },
     invalid: async () => {
       terminateRequestWithEmpty(req, res)
+    },
+    badRequest: async () => {
+      res.writeHead(400)
+      res.end('Bad Request: x-rendering-proxy header contains invalid JSON')
     },
     render: async () => {
       if (parsedRequest.type !== 'render') {

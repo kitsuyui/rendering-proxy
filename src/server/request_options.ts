@@ -19,11 +19,8 @@ export function parseRenderingProxyHeader(
 }
 
 function tryParseOptions(text: string): unknown {
-  try {
-    return JSON.parse(text)
-  } catch {
-    return null
-  }
+  if (text === '') return null
+  return JSON.parse(text)
 }
 
 function normalizeWaitUntil(value: unknown): LifecycleEvent {

@@ -6,7 +6,11 @@ import { runWithDefer } from 'with-defer'
 
 import { getBrowser } from '../browser'
 import { waitServerReady } from '../test-helpers/server'
-import { createServer, terminateRequestWithEmpty } from './index'
+import {
+  createServer,
+  parseIncomingRenderRequest,
+  terminateRequestWithEmpty,
+} from './index'
 
 let dockerId: string | null = null
 let httpbinUrl = 'http://httpbin'
@@ -25,6 +29,45 @@ afterAll(() => {
     execSync(`docker kill ${dockerId}`)
     execSync(`docker rm ${dockerId}`)
   }
+})
+
+describe('parseIncomingRenderRequest', () => {
+  function makeRequest(
+    url: string,
+    headers: Record<string, string> = {},
+  ): http.IncomingMessage {
+    const req = new http.IncomingMessage(
+      null as unknown as import('node:net').Socket,
+    )
+    req.url = url
+    Object.assign(req.headers, headers)
+    return req
+  }
+
+  it('returns badRequest when x-rendering-proxy header contains invalid JSON', () => {
+    const req = makeRequest('/http://example.com', { 'x-rendering-proxy': '{' })
+    expect(parseIncomingRenderRequest(req)).toStrictEqual({
+      type: 'badRequest',
+    })
+  })
+
+  it('returns render type when x-rendering-proxy header is valid JSON', () => {
+    const req = makeRequest('/http://example.com', {
+      'x-rendering-proxy': '{"waitUntil":"load"}',
+    })
+    const result = parseIncomingRenderRequest(req)
+    expect(result.type).toBe('render')
+  })
+
+  it('returns health for /health/', () => {
+    const req = makeRequest('/health/')
+    expect(parseIncomingRenderRequest(req)).toStrictEqual({ type: 'health' })
+  })
+
+  it('returns invalid for missing URL', () => {
+    const req = makeRequest('/')
+    expect(parseIncomingRenderRequest(req)).toStrictEqual({ type: 'invalid' })
+  })
 })
 
 describe('terminateRequestWithEmpty', () => {
