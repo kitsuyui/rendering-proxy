@@ -35,6 +35,14 @@
       }
     },
     {
+      "path": "dist/index-6ax87p27.d.ts",
+      "sizes": {
+        "raw": 2229,
+        "gzip": 712,
+        "brotli": 597
+      }
+    },
+    {
       "path": "dist/index-CWwCQC9e.d.ts",
       "sizes": {
         "raw": 630,
@@ -51,51 +59,43 @@
       }
     },
     {
-      "path": "dist/index-DJjE50UO.d.mts",
+      "path": "dist/index-ekI4eNLZ.d.mts",
       "sizes": {
-        "raw": 1703,
-        "gzip": 594,
-        "brotli": 487
-      }
-    },
-    {
-      "path": "dist/index-DQk5SzXi.d.ts",
-      "sizes": {
-        "raw": 1702,
-        "gzip": 594,
-        "brotli": 492
+        "raw": 2231,
+        "gzip": 713,
+        "brotli": 595
       }
     },
     {
       "path": "dist/index.d.mts",
       "sizes": {
         "raw": 223,
-        "gzip": 148,
-        "brotli": 123
+        "gzip": 147,
+        "brotli": 119
       }
     },
     {
       "path": "dist/index.d.ts",
       "sizes": {
         "raw": 219,
-        "gzip": 146,
-        "brotli": 115
+        "gzip": 145,
+        "brotli": 118
       }
     },
     {
       "path": "dist/lib/headers.d.mts",
       "sizes": {
-        "raw": 2019,
-        "gzip": 678,
-        "brotli": 541
+        "raw": 2417,
+        "gzip": 784,
+        "brotli": 616
       }
     },
     {
       "path": "dist/lib/headers.d.ts",
       "sizes": {
-        "raw": 2019,
-        "gzip": 678,
-        "brotli": 541
+        "raw": 2417,
+        "gzip": 784,
+        "brotli": 616
       }
     },
     {
@@ -165,39 +165,39 @@
     {
       "path": "dist/server/index.d.mts",
       "sizes": {
-        "raw": 194,
-        "gzip": 162,
-        "brotli": 129
+        "raw": 257,
+        "gzip": 183,
+        "brotli": 150
       }
     },
     {
       "path": "dist/server/index.d.ts",
       "sizes": {
-        "raw": 192,
-        "gzip": 159,
-        "brotli": 128
+        "raw": 254,
+        "gzip": 180,
+        "brotli": 145
       }
     },
     {
       "path": "dist/server/request_options.d.mts",
       "sizes": {
-        "raw": 335,
-        "gzip": 229,
-        "brotli": 182
+        "raw": 389,
+        "gzip": 261,
+        "brotli": 194
       }
     },
     {
       "path": "dist/server/request_options.d.ts",
       "sizes": {
-        "raw": 334,
-        "gzip": 229,
-        "brotli": 181
+        "raw": 388,
+        "gzip": 260,
+        "brotli": 195
       }
     }
   ],
   "totals": {
-    "raw": 14193,
-    "gzip": 6420,
-    "brotli": 5198
+    "raw": 16277,
+    "gzip": 6972,
+    "brotli": 5624
   }
 }
