@@ -49,10 +49,9 @@ function isRenderableContentType(contentType: string): boolean {
 async function evaluateScript(
   page: Page,
   script: string,
-  waitUntil: LifecycleEvent,
 ): Promise<EvaluateResult> {
   try {
-    const result = await page.evaluate(script, { waitUntil })
+    const result = await page.evaluate(script)
     return { success: true, result, script }
   } catch (error) {
     return {
@@ -66,10 +65,9 @@ async function evaluateScript(
 async function collectEvaluateResults(
   page: Page,
   evaluates: string[] | undefined,
-  waitUntil: LifecycleEvent,
 ): Promise<EvaluateResult[]> {
   return Promise.all(
-    (evaluates ?? []).map((script) => evaluateScript(page, script, waitUntil)),
+    (evaluates ?? []).map((script) => evaluateScript(page, script)),
   )
 }
 
@@ -88,7 +86,6 @@ async function navigatePage(
     const evaluateResults = await collectEvaluateResults(
       page,
       request.evaluates,
-      request.waitUntil,
     )
     return {
       response,
