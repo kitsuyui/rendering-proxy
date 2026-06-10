@@ -30,6 +30,16 @@ const originSecurityContextHeaders = [
   'clear-site-data',
 ]
 
+// Cache validation headers are tied to the origin body, not the rendered DOM.
+// Forwarding them for rendered HTML would associate stale validation tokens
+// with content that differs from what the origin computed them against.
+const cacheValidationHeaders = [
+  'etag',
+  'last-modified',
+  'vary',
+  'cache-control',
+]
+
 type Headers = {
   [key: string]: string
 }
@@ -133,6 +143,24 @@ export function excludeOriginSecurityContextHeaders(headers: Headers): Headers {
   const result: Headers = {}
   for (const key in headers) {
     if (originSecurityContextHeaders.includes(key)) {
+      continue
+    }
+    result[key] = headers[key]
+  }
+  return result
+}
+
+/**
+ * Exclude cache validation headers from the response headers.
+ * Use this when the response body was transformed (e.g. rendered DOM instead of
+ * origin HTML), so the origin's cache tokens no longer describe the actual body.
+ * @param headers {Headers}
+ * @returns headers {Headers}
+ */
+export function excludeCacheValidationHeaders(headers: Headers): Headers {
+  const result: Headers = {}
+  for (const key in headers) {
+    if (cacheValidationHeaders.includes(key)) {
       continue
     }
     result[key] = headers[key]

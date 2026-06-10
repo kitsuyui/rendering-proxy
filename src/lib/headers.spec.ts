@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 
 import {
   appendVaryHeader,
+  excludeCacheValidationHeaders,
   excludeContentDependentHeaders,
   excludeHopByHopHeaders,
   excludeOriginSecurityContextHeaders,
@@ -108,6 +109,35 @@ describe('excludeOriginSecurityContextHeaders', () => {
       }),
     ).toStrictEqual({
       etag: '"abc"',
+      'content-type': 'text/html',
+      'x-custom': 'value',
+    })
+  })
+})
+
+describe('excludeCacheValidationHeaders', () => {
+  it('removes etag, last-modified, vary, and cache-control', () => {
+    expect(excludeCacheValidationHeaders({})).toStrictEqual({})
+    expect(
+      excludeCacheValidationHeaders({
+        etag: '"abc123"',
+        'last-modified': 'Wed, 01 Jan 2025 00:00:00 GMT',
+        vary: 'Accept-Encoding',
+        'cache-control': 'max-age=3600',
+        'content-type': 'text/html; charset=utf-8',
+      }),
+    ).toStrictEqual({
+      'content-type': 'text/html; charset=utf-8',
+    })
+  })
+
+  it('preserves non-cache headers', () => {
+    expect(
+      excludeCacheValidationHeaders({
+        'content-type': 'text/html',
+        'x-custom': 'value',
+      }),
+    ).toStrictEqual({
       'content-type': 'text/html',
       'x-custom': 'value',
     })
