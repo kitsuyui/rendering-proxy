@@ -2,6 +2,7 @@
 coverage:
   paths:
     - coverage/clover.xml
+  acceptable: 80%
 codeToTestRatio:
   code:
     - "src/**/*.ts"
