@@ -139,6 +139,87 @@ This sets up two hooks that mirror what CI runs:
 
 CI still runs the full suite on every pull request and push to main — the hooks bring that feedback earlier, to your local machine.
 
+## Programmatic API
+
+`rendering-proxy` exports two namespaces for programmatic use:
+
+```ts
+import { server, cli } from 'rendering-proxy'
+```
+
+### `server.main(options?)`
+
+Starts the rendering proxy HTTP server. Exits when the process receives `SIGTERM` or `SIGINT`.
+
+```ts
+import { server } from 'rendering-proxy'
+
+await server.main({ port: 8080, name: 'chromium', headless: true })
+```
+
+Options:
+
+| Option | Type | Default | Description |
+|---|---|---|---|
+| `port` | `number` | `8080` | Port to listen on |
+| `name` | `'chromium' \| 'firefox' \| 'webkit'` | `'chromium'` | Browser engine |
+| `headless` | `boolean` | `true` | Run browser in headless mode |
+
+### `server.createServer({ browser, port })`
+
+Creates an `http.Server` backed by a pre-launched Playwright `Browser` instance.
+
+```ts
+import { chromium } from 'playwright'
+import { server } from 'rendering-proxy'
+
+const browser = await chromium.launch()
+const httpServer = await server.createServer({ browser, port: 8080 })
+// Use httpServer.close() to stop
+```
+
+### `server.createHandler(browser)`
+
+Returns a `(req, res) => void` handler suitable for use with an existing `http.Server`.
+
+```ts
+import http from 'node:http'
+import { chromium } from 'playwright'
+import { server } from 'rendering-proxy'
+
+const browser = await chromium.launch()
+const httpServer = http.createServer(server.createHandler(browser))
+httpServer.listen(8080)
+```
+
+### `cli.renderToStream(request, writable)`
+
+Renders a URL and writes the resulting HTML to any `Writable` stream.
+
+```ts
+import { cli } from 'rendering-proxy'
+
+await cli.renderToStream(
+  {
+    url: 'https://example.com',
+    name: 'chromium',
+    waitUntil: 'networkidle',
+    evaluates: ['document.title = "patched"'],
+  },
+  process.stdout,
+)
+```
+
+### `cli.main(request)`
+
+Renders a URL and writes to `process.stdout`. Equivalent to the CLI command.
+
+```ts
+import { cli } from 'rendering-proxy'
+
+await cli.main({ url: 'https://example.com', name: 'chromium' })
+```
+
 ## LICENSE
 
 The 3-Clause BSD License. See also LICENSE file.
