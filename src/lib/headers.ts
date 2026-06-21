@@ -180,3 +180,18 @@ export function excludeUnusedHeaders(headers: Headers): Headers {
     excludeContentDependentHeaders(excludeHopByHopHeaders(headers)),
   )
 }
+
+/**
+ * Return a new headers object with keys sorted lexicographically.
+ * Eliminates non-determinism introduced by browser enumeration order or
+ * upstream server header order.
+ * @param headers {Headers}
+ * @returns headers {Headers}
+ */
+export function sortHeaders(headers: Headers): Headers {
+  const result: Headers = {}
+  for (const key of Object.keys(headers).sort()) {
+    result[key] = headers[key]
+  }
+  return result
+}
