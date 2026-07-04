@@ -7,6 +7,7 @@ import {
   excludeHopByHopHeaders,
   excludeOriginSecurityContextHeaders,
   excludeUnusedHeaders,
+  sortHeaders,
 } from './headers'
 
 describe('appendVaryHeader', () => {
@@ -157,5 +158,41 @@ describe('excludeUnusedHeaders', () => {
     ).toStrictEqual({
       etag: '"3147526947"',
     })
+  })
+})
+
+describe('sortHeaders', () => {
+  it('returns empty object unchanged', () => {
+    expect(sortHeaders({})).toStrictEqual({})
+  })
+
+  it('sorts keys lexicographically', () => {
+    const result = sortHeaders({
+      'x-rendering-proxy': 'value',
+      'content-type': 'text/html',
+      'accept-ranges': 'bytes',
+    })
+    expect(Object.keys(result)).toStrictEqual([
+      'accept-ranges',
+      'content-type',
+      'x-rendering-proxy',
+    ])
+    expect(result).toStrictEqual({
+      'accept-ranges': 'bytes',
+      'content-type': 'text/html',
+      'x-rendering-proxy': 'value',
+    })
+  })
+
+  it('preserves all header values', () => {
+    const input = { b: '2', a: '1', c: '3' }
+    const result = sortHeaders(input)
+    expect(result).toStrictEqual({ a: '1', b: '2', c: '3' })
+  })
+
+  it('does not mutate the input object', () => {
+    const input = { z: 'last', a: 'first' }
+    sortHeaders(input)
+    expect(Object.keys(input)).toStrictEqual(['z', 'a'])
   })
 })
