@@ -20,7 +20,7 @@
     },
     {
       "path": "src/render/index.ts",
-      "line": 42,
+      "line": 52,
       "text": "// TODO: support more content types"
     }
   ]
