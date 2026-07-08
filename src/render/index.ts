@@ -30,6 +30,15 @@ export interface RenderResult {
   evaluateResults: EvaluateResult[]
 }
 
+function emptyRenderResult(): RenderResult {
+  return {
+    status: 204,
+    headers: {},
+    body: Buffer.from(''),
+    evaluateResults: [],
+  }
+}
+
 function errorRenderResult(status: 502 | 504): RenderResult {
   return {
     status,
