@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="245" height="20" role="img" aria-label="Type declarations (raw): 16,895 B">
-<title>Type declarations (raw): 16,895 B</title>
+<svg xmlns="http://www.w3.org/2000/svg" width="245" height="20" role="img" aria-label="Type declarations (raw): 16,949 B">
+<title>Type declarations (raw): 16,949 B</title>
 <linearGradient id="smooth" x2="0" y2="100%">
 <stop offset="0" stop-color="#fff" stop-opacity=".7"/>
 <stop offset=".1" stop-color="#aaa" stop-opacity=".1"/>
@@ -15,7 +15,7 @@
 <g fill="#fff" text-anchor="middle" font-family="Verdana,Geneva,DejaVu Sans,sans-serif" font-size="11">
 <text x="87.5" y="15" fill="#010101" fill-opacity=".3">Type declarations (raw)</text>
 <text x="87.5" y="14">Type declarations (raw)</text>
-<text x="210" y="15" fill="#010101" fill-opacity=".3">16,895 B</text>
-<text x="210" y="14">16,895 B</text>
+<text x="210" y="15" fill="#010101" fill-opacity=".3">16,949 B</text>
+<text x="210" y="14">16,949 B</text>
 </g>
 </svg>

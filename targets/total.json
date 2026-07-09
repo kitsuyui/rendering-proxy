@@ -147,6 +147,22 @@
       }
     },
     {
+      "path": "dist/chunk-6QZ53WQW.js",
+      "sizes": {
+        "raw": 3031,
+        "gzip": 1301,
+        "brotli": 1180
+      }
+    },
+    {
+      "path": "dist/chunk-6QZ53WQW.js.map",
+      "sizes": {
+        "raw": 12112,
+        "gzip": 3589,
+        "brotli": 3211
+      }
+    },
+    {
       "path": "dist/chunk-ETHEVVRU.js",
       "sizes": {
         "raw": 98,
@@ -275,22 +291,6 @@
       }
     },
     {
-      "path": "dist/chunk-RRFII5A5.mjs",
-      "sizes": {
-        "raw": 2493,
-        "gzip": 1164,
-        "brotli": 1053
-      }
-    },
-    {
-      "path": "dist/chunk-RRFII5A5.mjs.map",
-      "sizes": {
-        "raw": 11159,
-        "gzip": 3346,
-        "brotli": 3033
-      }
-    },
-    {
       "path": "dist/chunk-UJTNV4GC.js",
       "sizes": {
         "raw": 1505,
@@ -355,19 +355,19 @@
       }
     },
     {
-      "path": "dist/chunk-VRNZJ2VJ.js",
+      "path": "dist/chunk-X7GQOCQK.mjs",
       "sizes": {
-        "raw": 2844,
-        "gzip": 1245,
-        "brotli": 1128
+        "raw": 2665,
+        "gzip": 1219,
+        "brotli": 1104
       }
     },
     {
-      "path": "dist/chunk-VRNZJ2VJ.js.map",
+      "path": "dist/chunk-X7GQOCQK.mjs.map",
       "sizes": {
-        "raw": 11171,
-        "gzip": 3351,
-        "brotli": 3008
+        "raw": 12099,
+        "gzip": 3587,
+        "brotli": 3198
       }
     },
     {
@@ -419,14 +419,6 @@
       }
     },
     {
-      "path": "dist/index-6ax87p27.d.ts",
-      "sizes": {
-        "raw": 2229,
-        "gzip": 712,
-        "brotli": 597
-      }
-    },
-    {
       "path": "dist/index-CWwCQC9e.d.ts",
       "sizes": {
         "raw": 630,
@@ -443,19 +435,27 @@
       }
     },
     {
-      "path": "dist/index-ekI4eNLZ.d.mts",
+      "path": "dist/index-DYYpxH06.d.mts",
       "sizes": {
-        "raw": 2231,
-        "gzip": 713,
-        "brotli": 595
+        "raw": 2258,
+        "gzip": 722,
+        "brotli": 604
+      }
+    },
+    {
+      "path": "dist/index-Dbl83CYh.d.ts",
+      "sizes": {
+        "raw": 2256,
+        "gzip": 721,
+        "brotli": 605
       }
     },
     {
       "path": "dist/index.d.mts",
       "sizes": {
         "raw": 223,
-        "gzip": 147,
-        "brotli": 119
+        "gzip": 146,
+        "brotli": 123
       }
     },
     {
@@ -463,15 +463,15 @@
       "sizes": {
         "raw": 219,
         "gzip": 145,
-        "brotli": 118
+        "brotli": 115
       }
     },
     {
       "path": "dist/index.js",
       "sizes": {
         "raw": 629,
-        "gzip": 294,
-        "brotli": 237
+        "gzip": 295,
+        "brotli": 236
       }
     },
     {
@@ -486,7 +486,7 @@
       "path": "dist/index.mjs",
       "sizes": {
         "raw": 390,
-        "gzip": 205,
+        "gzip": 204,
         "brotli": 174
       }
     },
@@ -662,8 +662,8 @@
       "path": "dist/main.js",
       "sizes": {
         "raw": 2124,
-        "gzip": 904,
-        "brotli": 765
+        "gzip": 905,
+        "brotli": 762
       }
     },
     {
@@ -679,7 +679,7 @@
       "sizes": {
         "raw": 1835,
         "gzip": 820,
-        "brotli": 691
+        "brotli": 696
       }
     },
     {
@@ -742,23 +742,23 @@
       "path": "dist/server/index.d.mts",
       "sizes": {
         "raw": 257,
-        "gzip": 183,
-        "brotli": 150
+        "gzip": 182,
+        "brotli": 147
       }
     },
     {
       "path": "dist/server/index.d.ts",
       "sizes": {
         "raw": 254,
-        "gzip": 180,
-        "brotli": 145
+        "gzip": 182,
+        "brotli": 147
       }
     },
     {
       "path": "dist/server/index.js",
       "sizes": {
         "raw": 907,
-        "gzip": 321,
+        "gzip": 322,
         "brotli": 256
       }
     },
@@ -774,8 +774,8 @@
       "path": "dist/server/index.mjs",
       "sizes": {
         "raw": 424,
-        "gzip": 243,
-        "brotli": 195
+        "gzip": 244,
+        "brotli": 193
       }
     },
     {
@@ -836,8 +836,8 @@
     }
   ],
   "totals": {
-    "raw": 148126,
-    "gzip": 56568,
-    "brotli": 48995
+    "raw": 150420,
+    "gzip": 57179,
+    "brotli": 49482
   }
 }
