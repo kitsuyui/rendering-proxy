@@ -93,7 +93,7 @@ describe('withServer', () => {
       const browser = await getBrowser()
       defer(() => browser.close())
 
-      const server = await createServer({ browser, port })
+      const server = await createServer({ getBrowserFn: () => browser, port })
       defer(() => server.close())
 
       const res: IncomingMessage = await new Promise((resolve) => {
@@ -137,7 +137,7 @@ describe('withServer', () => {
       const browser = await getBrowser()
       defer(() => browser.close())
 
-      const server = await createServer({ browser, port })
+      const server = await createServer({ getBrowserFn: () => browser, port })
       defer(() => server.close())
 
       const res: IncomingMessage = await new Promise((resolve) => {
@@ -153,7 +153,7 @@ describe('withServer', () => {
   it('returns 502 when browser becomes unavailable', async () => {
     const port = 8093
     const browser = await getBrowser()
-    const server = await createServer({ browser, port })
+    const server = await createServer({ getBrowserFn: () => browser, port })
 
     try {
       await browser.close()
@@ -178,7 +178,7 @@ describe('withServer', () => {
       const browser = await getBrowser()
       defer(() => browser.close())
 
-      const server = await createServer({ browser, port })
+      const server = await createServer({ getBrowserFn: () => browser, port })
       defer(() => server.close())
 
       const res: IncomingMessage = await new Promise((resolve) => {
@@ -199,7 +199,7 @@ describe('withServer', () => {
       defer(() => browser.close())
 
       const server = await createServer({
-        browser,
+        getBrowserFn: () => browser,
         port,
         maxConcurrentRenders: 0,
       })
@@ -222,7 +222,7 @@ describe('withServer', () => {
       defer(() => browser.close())
 
       const server = await createServer({
-        browser,
+        getBrowserFn: () => browser,
         port,
         maxConcurrentRenders: 0,
       })
@@ -245,7 +245,7 @@ describe('withServer', () => {
       defer(() => browser.close())
 
       const server = await createServer({
-        browser,
+        getBrowserFn: () => browser,
         port,
         maxConcurrentRenders: 0,
       })
