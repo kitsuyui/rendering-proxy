@@ -42,6 +42,7 @@ export async function renderToStream(
       url: url_,
       waitUntil: request.waitUntil,
       evaluates: request.evaluates,
+      timeout: request.timeout,
     })
     await writeToStream(writable, result.body)
   })
