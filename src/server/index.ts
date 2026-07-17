@@ -99,7 +99,9 @@ async function respondToIncomingRequest(
     },
     badRequest: async () => {
       res.writeHead(400)
-      res.end('Bad Request: x-rendering-proxy header contains invalid JSON')
+      res.end(
+        'Bad Request: x-rendering-proxy header must be a valid JSON object',
+      )
     },
     render: async () => {
       if (parsedRequest.type !== 'render') {

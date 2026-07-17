@@ -51,6 +51,24 @@ describe('parseIncomingRenderRequest', () => {
     })
   })
 
+  it('returns badRequest when x-rendering-proxy is valid JSON but not an object', () => {
+    const req = makeRequest('/http://example.com', {
+      'x-rendering-proxy': '1234',
+    })
+    expect(parseIncomingRenderRequest(req)).toStrictEqual({
+      type: 'badRequest',
+    })
+  })
+
+  it('returns badRequest when x-rendering-proxy fields have invalid types', () => {
+    const req = makeRequest('/http://example.com', {
+      'x-rendering-proxy': '{"evaluates": 1234, "waitUntil": 3456}',
+    })
+    expect(parseIncomingRenderRequest(req)).toStrictEqual({
+      type: 'badRequest',
+    })
+  })
+
   it('returns render type when x-rendering-proxy header is valid JSON', () => {
     const req = makeRequest('/http://example.com', {
       'x-rendering-proxy': '{"waitUntil":"load"}',

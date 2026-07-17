@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest'
 import { parseRenderingProxyHeader } from './request_options'
 
 describe('parseRenderingProxyHeader', () => {
-  it('returns default when header is absent, empty, or contains valid JSON with wrong types', async () => {
+  it('returns default when header is absent or empty', async () => {
     expect(parseRenderingProxyHeader(undefined)).toStrictEqual({
       waitUntil: 'load',
       evaluates: [],
@@ -19,28 +19,28 @@ describe('parseRenderingProxyHeader', () => {
       evaluates: [],
       timeout: undefined,
     })
-    // Valid JSON but not an object — unknown fields normalize to defaults
-    expect(parseRenderingProxyHeader('1234')).toStrictEqual({
-      waitUntil: 'load',
-      evaluates: [],
-      timeout: undefined,
-    })
-    // Valid JSON with wrong field types — normalize to defaults
-    expect(
-      parseRenderingProxyHeader('{"evaluates": 1234, "waitUntil": 3456}'),
-    ).toStrictEqual({
-      waitUntil: 'load',
-      evaluates: [],
-      timeout: undefined,
-    })
   })
 
-  it('throws SyntaxError for syntactically invalid JSON in a non-empty header', async () => {
+  it('throws for syntactically invalid JSON in a non-empty header', async () => {
     // Callers (e.g. the HTTP server) must catch and return 400 Bad Request
     expect(() => parseRenderingProxyHeader('{')).toThrow(SyntaxError)
     expect(() => parseRenderingProxyHeader('[unclosed')).toThrow(SyntaxError)
     expect(() => parseRenderingProxyHeader('{waitUntil: "load"}')).toThrow(
       SyntaxError,
+    )
+  })
+
+  it('throws when the header is valid JSON but not a JSON object', async () => {
+    expect(() => parseRenderingProxyHeader('1234')).toThrow(TypeError)
+    expect(() => parseRenderingProxyHeader('["script"]')).toThrow(TypeError)
+  })
+
+  it('throws when field types do not match the protocol schema', async () => {
+    expect(() =>
+      parseRenderingProxyHeader('{"evaluates": 1234, "waitUntil": 3456}'),
+    ).toThrow(TypeError)
+    expect(() => parseRenderingProxyHeader('{"timeout": "fast"}')).toThrow(
+      TypeError,
     )
   })
 
@@ -105,11 +105,6 @@ describe('parseRenderingProxyHeader', () => {
       timeout: undefined,
     })
     expect(parseRenderingProxyHeader('{"timeout": -1}')).toStrictEqual({
-      waitUntil: 'load',
-      evaluates: [],
-      timeout: undefined,
-    })
-    expect(parseRenderingProxyHeader('{"timeout": "fast"}')).toStrictEqual({
       waitUntil: 'load',
       evaluates: [],
       timeout: undefined,
