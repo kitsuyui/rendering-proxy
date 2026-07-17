@@ -36,8 +36,6 @@ function normalizeWaitUntil(value: unknown): LifecycleEvent {
   return 'load'
 }
 
-const MAX_EVALUATES = 10
-
 function normalizeEvaluates(value: unknown): string[] {
   if (
     !Array.isArray(value) ||
@@ -45,7 +43,7 @@ function normalizeEvaluates(value: unknown): string[] {
   ) {
     return []
   }
-  return value.slice(0, MAX_EVALUATES)
+  return value
 }
 
 function normalizeTimeout(value: unknown): number | undefined {
