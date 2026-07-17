@@ -113,6 +113,8 @@ x-rendering-proxy-version: 1
 | `evaluates` | `string[]` | `[]` | JavaScript snippets to evaluate before capturing the DOM. |
 | `timeout` | `number` (ms) | none | Navigation timeout in milliseconds. |
 
+Requests with a non-object `X-Rendering-Proxy` JSON payload or with fields of the wrong type are rejected with `400 Bad Request`.
+
 **Response header** `X-Rendering-Proxy` — JSON array of `EvaluateResult`:
 
 ```ts
