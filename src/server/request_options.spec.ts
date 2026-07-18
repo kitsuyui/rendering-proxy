@@ -21,7 +21,16 @@ describe('parseRenderingProxyHeader', () => {
     })
   })
 
-  it('throws for syntactically invalid JSON in a non-empty header', async () => {
+  it('rejects repeated x-rendering-proxy header values', async () => {
+    expect(() =>
+      parseRenderingProxyHeader([
+        '{"evaluates":["1 + 1"]}',
+        '{"waitUntil":"load"}',
+      ]),
+    ).toThrow(TypeError)
+  })
+
+  it('throws SyntaxError for syntactically invalid JSON in a non-empty header', async () => {
     // Callers (e.g. the HTTP server) must catch and return 400 Bad Request
     expect(() => parseRenderingProxyHeader('{')).toThrow(SyntaxError)
     expect(() => parseRenderingProxyHeader('[unclosed')).toThrow(SyntaxError)

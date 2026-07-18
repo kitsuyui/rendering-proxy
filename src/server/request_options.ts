@@ -15,6 +15,18 @@ type RequestOptionInput = {
   timeout?: unknown
 }
 
+function normalizeHeaderArray(headerValue: string[]): string {
+  if (headerValue.length === 0) {
+    return ''
+  }
+  if (headerValue.length === 1) {
+    return headerValue[0] ?? ''
+  }
+  throw new TypeError(
+    'X-Rendering-Proxy must be provided as a single header value',
+  )
+}
+
 export function parseRenderingProxyHeader(
   headerValue: undefined | string | string[],
 ): RequestOption {
@@ -22,7 +34,7 @@ export function parseRenderingProxyHeader(
     return parseOptions(headerValue)
   }
   if (Array.isArray(headerValue)) {
-    return parseOptions(headerValue.join(''))
+    return parseOptions(normalizeHeaderArray(headerValue))
   }
   return parseOptions('')
 }
