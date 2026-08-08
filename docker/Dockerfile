@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/playwright:v1.62.0-noble AS base
+FROM mcr.microsoft.com/playwright:v1.62.1-noble AS base
 RUN npm install -g bun@1.3.11
 ADD . /app
 WORKDIR /app
