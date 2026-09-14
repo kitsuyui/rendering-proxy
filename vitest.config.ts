@@ -9,7 +9,7 @@ export default defineConfig({
     globals: false,
     exclude: [...configDefaults.exclude, 'node_modules', 'dist', 'coverage'],
     coverage: {
-      include: ['**/src'],
+      include: ['**/src/**'],
       exclude: ['**/src/**/*.spec.tsx'],
     },
     testTimeout: 30000,
