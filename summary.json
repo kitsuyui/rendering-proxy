@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-09-14T12:23:34.955Z",
+  "generated_at": "2026-09-19T12:02:17.325Z",
   "repository": "kitsuyui/rendering-proxy",
   "default_branch": "main",
   "publish_branch": "gh-build-size-assets",
   "event_name": "push",
   "base_label": "main",
-  "base_reference": "9c9db3ebf70dcb2ee2cf10392c78dc7108f382a2",
+  "base_reference": "33b0738d7e7341c57793eaa5d630728a7808d5cd",
   "head_label": "main",
-  "head_reference": "33b0738d7e7341c57793eaa5d630728a7808d5cd",
+  "head_reference": "5fb8f106a35c43a1038dd2d628da882b2bf92f0f",
   "targets": [
     {
       "id": "total",
