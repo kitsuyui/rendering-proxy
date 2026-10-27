@@ -3,6 +3,7 @@ on:
   # pull-request events are not triggered when a PR is merged
   # push events are not triggered when a PR created from a fork repository
   # So we need both to run tests on every PR and after merging
+  workflow_dispatch:
   pull_request:
   push:
     branches:
@@ -28,7 +29,6 @@ jobs:
       HOME: /root
       RUNNING_IN_DOCKER: "1"
 
-    continue-on-error: true
     strategy:
       fail-fast: false
       matrix:
@@ -52,18 +52,17 @@ jobs:
         run: |
           bun install --frozen-lockfile
 
-      - parallel:
-          - name: Lint
-            run: bun run lint
+      - name: Lint
+        run: bun run lint
 
-          - name: typecheck
-            run: bun run typecheck
+      - name: typecheck
+        run: bun run typecheck
 
-          - name: Test
-            run: bun run test
+      - name: Test
+        run: bun run test
 
-          - name: Build
-            run: bun run build
+      - name: Build
+        run: bun run build
 
       - name: Mark workspace as a safe Git directory
         if: matrix.node-version == '24.x'
