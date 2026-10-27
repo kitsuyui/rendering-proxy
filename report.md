@@ -1,8 +1,8 @@
 # gh-build-size report
 
 - Repository: **kitsuyui/rendering-proxy**
-- Head: `21a07feffd598ee2411b991254b9003e5913ae2c`
-- Generated at: 2026-10-27T14:54:25.760Z
+- Head: `7d038c42017ad26ece9dd29221a7935c4f93052c`
+- Generated at: 2026-10-27T15:46:19.530Z
 
 | File | Raw | Gzip | Brotli |
 | --- | ---: | ---: | ---: |
@@ -24,28 +24,28 @@
 | `dist/chunk-3UJUTDOL.mjs.map` | 1,125 B | 566 B | 517 B |
 | `dist/chunk-4VD5RPR4.mjs` | 87 B | 67 B | 52 B |
 | `dist/chunk-4VD5RPR4.mjs.map` | 79 B | 92 B | 73 B |
-| `dist/chunk-7JOOZY7N.js` | 852 B | 453 B | 398 B |
-| `dist/chunk-7JOOZY7N.js.map` | 2,717 B | 1,039 B | 937 B |
-| `dist/chunk-CY6POPW6.mjs` | 741 B | 431 B | 383 B |
-| `dist/chunk-CY6POPW6.mjs.map` | 2,713 B | 1,036 B | 939 B |
+| `dist/chunk-5QKS7MPG.mjs` | 2,671 B | 1,222 B | 1,108 B |
+| `dist/chunk-5QKS7MPG.mjs.map` | 12,122 B | 3,593 B | 3,221 B |
 | `dist/chunk-ETHEVVRU.js` | 98 B | 78 B | 60 B |
 | `dist/chunk-ETHEVVRU.js.map` | 78 B | 91 B | 78 B |
 | `dist/chunk-F656CL7Q.js` | 359 B | 250 B | 208 B |
 | `dist/chunk-F656CL7Q.js.map` | 1,124 B | 566 B | 494 B |
+| `dist/chunk-GIOPDDGG.mjs` | 741 B | 433 B | 387 B |
+| `dist/chunk-GIOPDDGG.mjs.map` | 2,713 B | 1,036 B | 934 B |
 | `dist/chunk-HW56MZHA.js` | 1,742 B | 837 B | 722 B |
 | `dist/chunk-HW56MZHA.js.map` | 5,348 B | 1,872 B | 1,649 B |
+| `dist/chunk-IFXP5STL.js` | 3,037 B | 1,307 B | 1,180 B |
+| `dist/chunk-IFXP5STL.js.map` | 12,135 B | 3,595 B | 3,216 B |
 | `dist/chunk-J7BPJGZS.mjs` | 264 B | 182 B | 148 B |
 | `dist/chunk-J7BPJGZS.mjs.map` | 773 B | 390 B | 347 B |
 | `dist/chunk-JXPCKPMB.js` | 1,967 B | 886 B | 786 B |
 | `dist/chunk-JXPCKPMB.js.map` | 10,191 B | 3,124 B | 2,804 B |
+| `dist/chunk-PLG4NDMJ.js` | 852 B | 452 B | 406 B |
+| `dist/chunk-PLG4NDMJ.js.map` | 2,717 B | 1,039 B | 938 B |
 | `dist/chunk-PVY2ALL3.mjs` | 1,467 B | 604 B | 526 B |
 | `dist/chunk-PVY2ALL3.mjs.map` | 9,179 B | 2,642 B | 2,306 B |
 | `dist/chunk-Q2J75HN2.mjs` | 451 B | 300 B | 244 B |
 | `dist/chunk-Q2J75HN2.mjs.map` | 79 B | 92 B | 79 B |
-| `dist/chunk-QWHUURTO.mjs` | 2,671 B | 1,222 B | 1,107 B |
-| `dist/chunk-QWHUURTO.mjs.map` | 12,122 B | 3,593 B | 3,197 B |
-| `dist/chunk-SXCHNLUI.js` | 3,037 B | 1,308 B | 1,184 B |
-| `dist/chunk-SXCHNLUI.js.map` | 12,135 B | 3,594 B | 3,209 B |
 | `dist/chunk-UJTNV4GC.js` | 1,505 B | 612 B | 521 B |
 | `dist/chunk-UJTNV4GC.js.map` | 9,178 B | 2,642 B | 2,299 B |
 | `dist/chunk-V2Q7APDQ.js` | 272 B | 188 B | 152 B |
@@ -54,7 +54,7 @@
 | `dist/chunk-YZD62E2L.js.map` | 6,021 B | 1,827 B | 1,605 B |
 | `dist/cli/index.d.mts` | 176 B | 135 B | 113 B |
 | `dist/cli/index.d.ts` | 173 B | 134 B | 121 B |
-| `dist/cli/index.js` | 499 B | 258 B | 198 B |
+| `dist/cli/index.js` | 499 B | 257 B | 197 B |
 | `dist/cli/index.js.map` | 69 B | 82 B | 68 B |
 | `dist/cli/index.mjs` | 284 B | 172 B | 134 B |
 | `dist/cli/index.mjs.map` | 70 B | 83 B | 72 B |
@@ -64,9 +64,9 @@
 | `dist/index-DYYpxH06.d.mts` | 2,258 B | 722 B | 604 B |
 | `dist/index.d.mts` | 223 B | 146 B | 123 B |
 | `dist/index.d.ts` | 219 B | 145 B | 115 B |
-| `dist/index.js` | 629 B | 297 B | 234 B |
+| `dist/index.js` | 625 B | 296 B | 231 B |
 | `dist/index.js.map` | 69 B | 82 B | 68 B |
-| `dist/index.mjs` | 390 B | 205 B | 174 B |
+| `dist/index.mjs` | 390 B | 204 B | 172 B |
 | `dist/index.mjs.map` | 70 B | 83 B | 72 B |
 | `dist/lib/headers.d.mts` | 2,726 B | 885 B | 705 B |
 | `dist/lib/headers.d.ts` | 2,726 B | 885 B | 705 B |
@@ -88,9 +88,9 @@
 | `dist/lib/wait_for_exit.mjs.map` | 78 B | 91 B | 81 B |
 | `dist/main.d.mts` | 78 B | 95 B | 71 B |
 | `dist/main.d.ts` | 78 B | 95 B | 71 B |
-| `dist/main.js` | 2,124 B | 907 B | 765 B |
-| `dist/main.js.map` | 4,832 B | 1,500 B | 1,308 B |
-| `dist/main.mjs` | 1,835 B | 819 B | 688 B |
+| `dist/main.js` | 2,120 B | 906 B | 763 B |
+| `dist/main.js.map` | 4,832 B | 1,500 B | 1,306 B |
+| `dist/main.mjs` | 1,835 B | 820 B | 687 B |
 | `dist/main.mjs.map` | 4,825 B | 1,497 B | 1,306 B |
 | `dist/render/index.d.mts` | 857 B | 399 B | 318 B |
 | `dist/render/index.d.ts` | 857 B | 399 B | 318 B |
@@ -100,9 +100,9 @@
 | `dist/render/index.mjs.map` | 70 B | 83 B | 72 B |
 | `dist/server/index.d.mts` | 257 B | 182 B | 147 B |
 | `dist/server/index.d.ts` | 254 B | 182 B | 147 B |
-| `dist/server/index.js` | 907 B | 322 B | 255 B |
+| `dist/server/index.js` | 907 B | 321 B | 255 B |
 | `dist/server/index.js.map` | 69 B | 82 B | 68 B |
-| `dist/server/index.mjs` | 424 B | 243 B | 195 B |
+| `dist/server/index.mjs` | 424 B | 244 B | 192 B |
 | `dist/server/index.mjs.map` | 70 B | 83 B | 72 B |
 | `dist/server/request_options.d.mts` | 389 B | 261 B | 194 B |
 | `dist/server/request_options.d.ts` | 388 B | 260 B | 195 B |
