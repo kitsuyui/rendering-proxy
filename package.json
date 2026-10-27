@@ -12,11 +12,11 @@
     "typecheck": "tsc --noEmit"
   },
   "bin": {
-    "rendering-proxy": "./dist/main.js"
+    "rendering-proxy": "dist/main.js"
   },
   "name": "rendering-proxy",
   "description": "Proxy to get the DOM rendered in a headless browser",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
