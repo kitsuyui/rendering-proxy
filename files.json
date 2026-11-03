@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-11-03T11:57:53.194Z",
+  "generated_at": "2026-11-03T11:59:14.704Z",
   "repository": "kitsuyui/rendering-proxy",
   "default_branch": "main",
   "publish_branch": "gh-build-size-assets",
   "event_name": "push",
-  "head_reference": "8847aa0d4578784a9afe8d5c883fc9c6fa66d458",
+  "head_reference": "b18e7e277df69a0aa0db5f6231e8fd0e2bedceb5",
   "files": [
     {
       "path": "dist/browser/index.d.mts",
@@ -151,35 +151,35 @@
       }
     },
     {
-      "path": "dist/chunk-7RI3UVT3.js",
+      "path": "dist/chunk-7JOOZY7N.js",
       "sizes": {
         "raw": 852,
-        "gzip": 452,
+        "gzip": 453,
         "brotli": 398
       }
     },
     {
-      "path": "dist/chunk-7RI3UVT3.js.map",
+      "path": "dist/chunk-7JOOZY7N.js.map",
       "sizes": {
         "raw": 2717,
-        "gzip": 1038,
-        "brotli": 946
+        "gzip": 1039,
+        "brotli": 937
       }
     },
     {
-      "path": "dist/chunk-B2XK4YQF.mjs",
+      "path": "dist/chunk-CY6POPW6.mjs",
       "sizes": {
         "raw": 741,
-        "gzip": 433,
-        "brotli": 387
+        "gzip": 431,
+        "brotli": 383
       }
     },
     {
-      "path": "dist/chunk-B2XK4YQF.mjs.map",
+      "path": "dist/chunk-CY6POPW6.mjs.map",
       "sizes": {
         "raw": 2713,
-        "gzip": 1037,
-        "brotli": 934
+        "gzip": 1036,
+        "brotli": 939
       }
     },
     {
@@ -212,22 +212,6 @@
         "raw": 1124,
         "gzip": 566,
         "brotli": 494
-      }
-    },
-    {
-      "path": "dist/chunk-HG2IUB25.mjs",
-      "sizes": {
-        "raw": 2671,
-        "gzip": 1220,
-        "brotli": 1101
-      }
-    },
-    {
-      "path": "dist/chunk-HG2IUB25.mjs.map",
-      "sizes": {
-        "raw": 12122,
-        "gzip": 3593,
-        "brotli": 3194
       }
     },
     {
@@ -279,22 +263,6 @@
       }
     },
     {
-      "path": "dist/chunk-MTWGMYRX.js",
-      "sizes": {
-        "raw": 3037,
-        "gzip": 1308,
-        "brotli": 1181
-      }
-    },
-    {
-      "path": "dist/chunk-MTWGMYRX.js.map",
-      "sizes": {
-        "raw": 12135,
-        "gzip": 3595,
-        "brotli": 3213
-      }
-    },
-    {
       "path": "dist/chunk-PVY2ALL3.mjs",
       "sizes": {
         "raw": 1467,
@@ -324,6 +292,38 @@
         "raw": 79,
         "gzip": 92,
         "brotli": 79
+      }
+    },
+    {
+      "path": "dist/chunk-QWHUURTO.mjs",
+      "sizes": {
+        "raw": 2671,
+        "gzip": 1222,
+        "brotli": 1107
+      }
+    },
+    {
+      "path": "dist/chunk-QWHUURTO.mjs.map",
+      "sizes": {
+        "raw": 12122,
+        "gzip": 3593,
+        "brotli": 3197
+      }
+    },
+    {
+      "path": "dist/chunk-SXCHNLUI.js",
+      "sizes": {
+        "raw": 3037,
+        "gzip": 1308,
+        "brotli": 1184
+      }
+    },
+    {
+      "path": "dist/chunk-SXCHNLUI.js.map",
+      "sizes": {
+        "raw": 12135,
+        "gzip": 3594,
+        "brotli": 3209
       }
     },
     {
@@ -473,9 +473,9 @@
     {
       "path": "dist/index.js",
       "sizes": {
-        "raw": 625,
+        "raw": 629,
         "gzip": 297,
-        "brotli": 233
+        "brotli": 234
       }
     },
     {
@@ -490,8 +490,8 @@
       "path": "dist/index.mjs",
       "sizes": {
         "raw": 390,
-        "gzip": 203,
-        "brotli": 172
+        "gzip": 205,
+        "brotli": 174
       }
     },
     {
@@ -667,7 +667,7 @@
       "sizes": {
         "raw": 2124,
         "gzip": 907,
-        "brotli": 763
+        "brotli": 765
       }
     },
     {
@@ -683,7 +683,7 @@
       "sizes": {
         "raw": 1835,
         "gzip": 819,
-        "brotli": 690
+        "brotli": 688
       }
     },
     {
@@ -763,7 +763,7 @@
       "sizes": {
         "raw": 907,
         "gzip": 322,
-        "brotli": 259
+        "brotli": 255
       }
     },
     {
@@ -778,8 +778,8 @@
       "path": "dist/server/index.mjs",
       "sizes": {
         "raw": 424,
-        "gzip": 242,
-        "brotli": 194
+        "gzip": 243,
+        "brotli": 195
       }
     },
     {
