@@ -8,4 +8,4 @@ permissions:
   pull-requests: write
 jobs:
   update-gitignore:
-    uses: kitsuyui/gh-actions-workflows/.github/workflows/gitignore-in.yml@be26297fad12a1c4664521df618fc3efcc6d7799
+    uses: kitsuyui/gh-actions-workflows/.github/workflows/gitignore-in.yml@36728609c2c48e73b25172ed650de9437a0dfad8
