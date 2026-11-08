@@ -1,8 +1,8 @@
 # gh-build-size report
 
 - Repository: **kitsuyui/rendering-proxy**
-- Head: `b18e7e277df69a0aa0db5f6231e8fd0e2bedceb5`
-- Generated at: 2026-11-03T11:59:14.704Z
+- Head: `1b50e50d016b494a6c9524f1c5e3d4fcef4d5b24`
+- Generated at: 2026-11-08T03:25:19.104Z
 
 | File | Raw | Gzip | Brotli |
 | --- | ---: | ---: | ---: |
